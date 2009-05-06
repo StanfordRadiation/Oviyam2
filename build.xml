@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<project name="oviyam" default="main">
+
+	<property name="source" location="src" />
+	<property name="output" location="target" />
+	<property name="web.dir" location="web" />
+	<property name="lib.dir" location="${web.dir}/WEB-INF/lib" />
+	<property name="classes" location="${web.dir}/WEB-INF/classes" />
+	<property name="war.dir" location="${output}/war" />
+
+
+	<property name="vendor" value="Raster Images" />	
+			
+	<property name="dcm4chee.jar" value="${lib.dir}/dcm4chee.jar" />
+	<property name="dcm4che.jar" value="${lib.dir}/dcm4che.jar" />
+
+    <property name="dcm4che-core-2.0.18.jar" value="${lib.dir}/dcm4che-core-2.0.18.jar" />
+	<property name="log4j-1.2.13.jar" value="${lib.dir}/log4j-1.2.13.jar" />
+	<property name="slf4j-api-1.5.0.jar" value="${lib.dir}/slf4j-api-1.5.0.jar" />   
+	<property name="slf4j-log4j12-1.5.0.jar" value="${lib.dir}/slf4j-log4j12-1.5.0.jar" />
+
+	<property name="jsp.jar" value="${lib.dir}/jsp-api.jar" />
+	<property name="jstl.jar" value="${lib.dir}/jstl.jar" />
+	<property name="servletapi.jar" value="${lib.dir}/servlet-api.jar" />
+
+	<property name="standard.jar" value="${lib.dir}/standard.jar" />
+	<property name="catalinaroot.jar" value="${lib.dir}/catalina-root.jar" />
+	<property name="clibwrapper_jiio.jar" value="${lib.dir}/clibwrapper_jiio.jar" />
+	<property name="commonscli.jar" value="${lib.dir}/commons-cli-1.0.jar" />
+	<property name="getopt.jar" value="${lib.dir}/getopt.jar" />
+	<property name="services.jar" value="${lib.dir}/services.jar" />
+
+	
+    <path id="ref.classpath">
+
+		<pathelement location="${dcm4chee.jar}" />
+		<pathelement location="${dcm4che.jar}" />		
+
+		<pathelement location="${dcm4che-core-2.0.18.jar}" />
+		<pathelement location="${log4j-1.2.13.jar}" />
+		<pathelement location="${slf4j-api-1.5.0.jar}" />
+		<pathelement location="${slf4j-log4j12-1.5.0.jar}" />	
+    	
+    	
+		<pathelement location="${jsp.jar}" />
+		<pathelement location="${jstl.jar}" />		
+		<pathelement location="${servletapi.jar}" />
+
+		<pathelement location="${standard.jar}" />
+		<pathelement location="${catalinaroot.jar}" />
+		<pathelement location="${clibwrapper_jiio.jar}" />		
+		<pathelement location="${commonscli.jar}" />
+		<pathelement location="${getopt.jar}" />
+		<pathelement location="${services.jar}" />
+		
+	 </path>
+    <target name="main" depends="init,compile,war">
+		<property name="cp" refid="ref.classpath"/>
+        <echo message="${cp}" />
+    </target>
+
+	<target name="clean">
+			<delete dir="${output}" />
+	</target>	
+
+	<target name="init">
+			<mkdir dir="${output}/classes" />
+			<mkdir dir="${output}/classes/resources" />
+			<mkdir dir="${output}/classes/conf" />
+	</target>
+    
+
+    <target name="compile" depends="init">
+	     <javac srcdir="${source}" debug="on" destdir="${output}/classes"> 
+            <classpath refid="ref.classpath"/>
+		 </javac>
+		 <copy todir="${output}/classes/resources">
+		         <fileset dir="${source}/resources" includes="**/*" />
+         </copy>
+		  <copy todir="${output}/classes/conf">
+		         <fileset dir="${source}/conf" includes="**/*" />
+         </copy>
+    </target>
+
+	<target name="war" depends="compile">
+	
+		 <copy todir="${classes}">
+				<fileset dir="${output}/classes" includes="**/*" />
+		 </copy>
+		 <mkdir dir="${classes}" />
+		 <mkdir dir="${output}/war" />
+		 <war destFile="${war.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml" update="true">
+	     	<manifest>
+				<attribute name="Implementation-Title" value="oviyam-web"/>
+				<attribute name="Implementation-Version" value="${version} ${TODAY}"/> 
+				<attribute name="Implementation-Vendor" value="${vendor}"/>
+	     	</manifest>
+			<fileset dir="${web.dir}">
+				<exclude name="**/web.xml" />
+				<exclude name="WEB-INF/lib/log4j.jar"/>
+				<exclude name="WEB-INF/lib/jsp-api.jar"/>
+				<exclude name="WEB-INF/lib/servlet-api.jar"/>
+				<exclude name="WEB-INF/lib/services.jar"/>
+			</fileset>
+
+		</war>
+
+	</target>
+
+</project>
