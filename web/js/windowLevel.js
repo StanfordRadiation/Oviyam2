@@ -7,10 +7,9 @@ var sx,sy,wc,ww;
 
 
 function popupQueryOptions() {
-	 document.getElementById('searchPane').style.visibility='visible';
-     new Effect.SlideDown('searchPane',{duration:0.5});
-     document.getElementById('buttons').style.visibility='hidden';
-     document.getElementById('divider').style.visibility='hidden';
+	 document.getElementById('searchPane1').style.visibility='visible';
+     new Effect.SlideDown('searchPane1',{duration:0.5});
+
      if(valuesApplied==false) {
         document.getElementById('wc').value = globalWC;
         document.getElementById('ww').value = globalWW;
@@ -97,7 +96,7 @@ function resetWLValues() {
 }
 
 function closePopupMenu() {
-	new Effect.SlideUp('searchPane',{duration:0.5});
+	new Effect.SlideUp('searchPane1',{duration:0.5});
 	document.onkeydown = KeyCheck;
 	document.onkeypress = KeyPress;  
 	if(valuesApplied==false)

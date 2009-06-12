@@ -58,20 +58,20 @@
 		<form action="serverconfig.do" method="POST">
 				<table>
 						<tr>
-						<td>AE title</td><td><input  type="text" name="aeTitle" id="aeTitle" value="${applicationScope.serverConfig.aeTitle}"></td>
+						<td>AE Title</td><td><input  type="text" name="aeTitle" id="aeTitle" value="${applicationScope.serverConfig.aeTitle}"></td>
 					</tr>
 					<tr>
-						<td>Host name</td><td><input  type="text" name="hostName" id="hostName" value="${applicationScope.serverConfig.hostName}"></td>
+						<td>Host Name</td><td><input  type="text" name="hostName" id="hostName" value="${applicationScope.serverConfig.hostName}"></td>
 					</tr>
 					<tr>
 						<td>Port</td><td><input type="text"  name="port" id="port" value="${applicationScope.serverConfig.port}"></td>
 					</tr>
 					<tr>
-						<td>WADO port</td><td><input  type="text" name="wadoPort" id="wadoPort" value="${applicationScope.serverConfig.wadoPort}"></td>
+						<td>WADO Port</td><td><input  type="text" name="wadoPort" id="wadoPort" value="${applicationScope.serverConfig.wadoPort}"></td>
 					</tr>
 
 	<tr>
-		<td>DcmProtocol</td>
+		<td>Dcm Protocol</td>
 		<td><select name="dcmProtocol" id="dcmProtocol">
 			<option value="DICOM" >DICOM</option>
 			<option value="DICOM_TLS">DICOM_TLS</option>

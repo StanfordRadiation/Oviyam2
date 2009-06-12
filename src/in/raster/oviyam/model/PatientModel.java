@@ -23,6 +23,7 @@
 * Babu Hussain A
 * Bharathi B
 * Manikandan P
+* Meer Asgar Hussain B
 * Prakash J
 * Prakasam V
 * Suresh V
@@ -151,7 +152,5 @@ public class PatientModel {
 	public ArrayList<StudyModel> getStudis(){
 		return this.studyList;
 	}
-	
-	
 
 }

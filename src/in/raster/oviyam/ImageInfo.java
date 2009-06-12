@@ -24,6 +24,7 @@
  * Babu Hussain A
  * Bharathi B
  * Manikandan P
+ * Meer Asgar Hussain B
  * Prakash J
  * Prakasam V
  * Suresh V
@@ -181,13 +182,13 @@ public class ImageInfo {
 				/*
 				 * Creates the InstanceModel and adds it to the instance.
 				 */				
-				//System.out.println(dataSet.getString(Tags.InstanceNumber));
+				
 				if(instance.containsKey(Integer.parseInt(dataSet.getString(Tags.InstanceNumber)))){
 					instance.put(dataSetCount+1, new InstanceModel(dataSet));
 				}else{
 					instance.put(Integer.parseInt(dataSet.getString(Tags.InstanceNumber)), new InstanceModel(dataSet));
 				}
-				//System.out.println("The dataset size after adding " + instance.size());
+				
 
 			} catch (Exception e) {
 				log.error("Unable to get the Dataset from the datasetVector and \n add it to the instaces ArrayList<InstanceModel>",e);

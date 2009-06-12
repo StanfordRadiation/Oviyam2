@@ -149,7 +149,7 @@ public class PatientInfo {
 			searchModality = searchModality.toUpperCase();
 
 			if (searchModality.equalsIgnoreCase("ALL")) {
-				// cfgCDimseService.put("key.ModalitiesInStudy", "*");
+				
 			} else {
 				cfgCDimseService.put("key.ModalitiesInStudy", searchModality);
 			}

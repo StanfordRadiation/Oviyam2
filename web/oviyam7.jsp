@@ -491,6 +491,12 @@
 </div>
 </div>
 
+<div id="searchPane1" class="hiddenPanel" style="visibility: hidden">
+  <div class="back-div">
+      <div id="presetTools"></div>
+  </div>
+</div>
+
 <div id="configPane" class="hiddenPanel" style="visibility: hidden">
 <div class="back-div">
 <div class="front-div">
@@ -555,7 +561,8 @@
 
 <script type="text/javascript" language="javascript">
 		 ajaxpage('searchTools','SearchPopup.jsp');
-		var demoSlider = new Control.Slider('handle','track',
+		 ajaxpage('presetTools','ParameterPopup.jsp');
+		 var demoSlider = new Control.Slider('handle','track',
 			{axis:'horizontal', minimum: 0, maximum:250, alignX: 00,increment: 2, sliderValue: 0.5});
 		demoSlider.options.onSlide = function(value){
 			scaleIt(value);

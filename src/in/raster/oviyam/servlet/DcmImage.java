@@ -82,7 +82,7 @@ public class DcmImage extends HttpServlet{
 	public void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
 		String imageURL="";
 		// Sets the response content type to jpg image.
-		//response.setContentType("img/jpg");		
+				
 		ServerXmlConfiguration sxc = new ServerXmlConfiguration();
 		ServerConfiguration sc = sxc.getElementValues();
 		// Reads the parameters form the request object which is sent by user.
@@ -115,9 +115,6 @@ public class DcmImage extends HttpServlet{
 			imageURL += "&windowWidth="+windowWidth;
 		}
 		
-		//else{
-			//imageURL="http://"+sc.getHostName()+":"+sc.getWadoPort()+"/wado?requestType=WADO&studyUID="+study+"&seriesUID="+series+"&objectUID="+object+"&frameNumber="+frameNo+"&row="+request.getParameter("row");
-		//}
 		
 			InputStream resultInStream = null;
 			//Gets the response's outputStream instance to write a image in the response.
@@ -135,7 +132,7 @@ public class DcmImage extends HttpServlet{
 			while((bytes_read=resultInStream.read(buffer)) != -1){
 				resultOutStream.write(buffer, 0, bytes_read);
 			}
-		//	System.out.println("					"+request.getServletPath());
+
 			//Closing all the input and output streams.
 			resultOutStream.flush();
 			resultOutStream.close();
@@ -146,6 +143,5 @@ public class DcmImage extends HttpServlet{
 		} 
 		
 	}	
-	
 
 }

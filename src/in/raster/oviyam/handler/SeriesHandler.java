@@ -24,6 +24,7 @@
 * Babu Hussain A
 * Bharathi B
 * Manikandan P
+* Meer Asgar Hussain B
 * Prakash J
 * Prakasam V
 * Suresh V
@@ -157,7 +158,6 @@ public class SeriesHandler extends SimpleTagSupport{
 			 *  @see in.raster.oviyam.model.SeriesModel.
 			 */
 			ArrayList<SeriesModel> seriesList = seriesInfo.getSeries();
-			//for (int seriesCount = 0; seriesCount < seriesList.size(); seriesCount++) {
 			for (int seriesCount = seriesList.size()-1 ; seriesCount >=0; seriesCount--) {
 				SeriesModel series = seriesList.get(seriesCount);
 			
@@ -217,7 +217,5 @@ public class SeriesHandler extends SimpleTagSupport{
 		}
 		
 	}
-	
-	
 
 }

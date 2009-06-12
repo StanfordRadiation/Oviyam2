@@ -434,8 +434,6 @@
 			$('seriesDivider').style.top="107px";
 			$('imagePane').style.top="107px";
 			$('patientDiv').style.top="107px";
-			ajaxpage('searchTools','ParameterPopup.jsp');
-			
 		}else{
 			hidetool=0;			
 			new Effect.SlideUp('toolBar',{duration:1.0});			

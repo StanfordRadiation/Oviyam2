@@ -109,8 +109,6 @@ public class DcmWindowLevel extends HttpServlet{
 			String windowCenter = getElementValue("00281050");
 			String windowWidth = getElementValue("00281051");
 
-			//System.out.println("Window Center: "+windowCenter+" Window Width: "+windowWidth);
-						
 			// remove the already exists window center and window width values
 			
 			getServletContext().removeAttribute(windowCenter);

@@ -24,6 +24,7 @@
 * Babu Hussain A
 * Bharathi B
 * Manikandan P
+* Meer Asgar Hussain B
 * Prakash J
 * Prakasam V
 * Suresh V
@@ -171,15 +172,6 @@ public class SeriesDetailsHandler extends SimpleTagSupport{
 				getJspContext().setAttribute("numberOfImages", series.getNumberOfInstances());
 				getJspContext().setAttribute("seriesNumber", series.getSeriesNumber());
 				
-				/* This jsp context information for direct studyUID query
-				
-				getJspContext().setAttribute("studyDesc",seriesInfo.getStudyDesc());
-				getJspContext().setAttribute("studyDate",seriesInfo.getStudyDate());
-				getJspContext().setAttribute("patientSex",seriesInfo.getPatientSex());
-				getJspContext().setAttribute("patientBirthDate",seriesInfo.getPatientBirthDate());
-				getJspContext().setAttribute("refPhysicianName",seriesInfo.getRefPhysicianName());
-				
-				*/
 				
 				/*
 				 * Process the body of the tag and print it to the response. The null argument
@@ -193,18 +185,6 @@ public class SeriesDetailsHandler extends SimpleTagSupport{
 		}
 		
 	}
-	
-	
 
 }
-
-
-
-
-
-
-
-
-
-
 
