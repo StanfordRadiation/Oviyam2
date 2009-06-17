@@ -44,6 +44,7 @@
 * ***** END LICENSE BLOCK ***** */ 
 package in.raster.oviyam.config;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -105,7 +106,14 @@ public class ServerXmlConfiguration {
 
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			documentNameFile = new File(this.getClass().getClassLoader().getResource("/conf/oviyam-config.xml").toURI());
+			String xmlFileName = this.getClass().getResource("/conf/oviyam-config.xml").toString();
+			
+			// check the server and set the documentNameFile according to server
+			
+			if(xmlFileName.indexOf("default") > 0)  // for JBOSS server
+				documentNameFile = new File(xmlFileName.substring(5,xmlFileName.indexOf("default"))+"default/oviyam-config.xml");
+			else  // other than JBOSS
+			    documentNameFile = new File(this.getClass().getClassLoader().getResource("/conf/oviyam-config.xml").toURI());
 
 			if (documentNameFile.exists()) {
 				documentNameFile.delete();					
@@ -208,39 +216,37 @@ public class ServerXmlConfiguration {
 	public void updateElementValues(String AETITLE,String HOSTNAME,String PORT,String WADOPORT,String DCMPROTOCOL)
 	{
 		try{
-		NodeList root=dom.getElementsByTagName("server");		
-		for(int i=0;i<root.getLength();i++){
-			Element element=(Element)root.item(i);
-			NodeList aetitle=element.getElementsByTagName("aetitle");
-			Element aetitleElement=(Element)aetitle.item(0);			
-			aetitleElement.getFirstChild().setTextContent(AETITLE);
+		    NodeList root=dom.getElementsByTagName("server");		
+		    for(int i=0;i<root.getLength();i++){
+			   Element element=(Element)root.item(i);
+			   NodeList aetitle=element.getElementsByTagName("aetitle");
+			   Element aetitleElement=(Element)aetitle.item(0);			
+			   aetitleElement.getFirstChild().setTextContent(AETITLE);
 			
-			NodeList hostname=element.getElementsByTagName("hostname");
-			Element hostnameElement=(Element)hostname.item(0);
-			hostnameElement.getFirstChild().setTextContent(HOSTNAME);
+			   NodeList hostname=element.getElementsByTagName("hostname");
+			   Element hostnameElement=(Element)hostname.item(0);
+			   hostnameElement.getFirstChild().setTextContent(HOSTNAME);
 
-			NodeList port=element.getElementsByTagName("port");
-			Element portElement=(Element)port.item(0);
-			portElement.getFirstChild().setTextContent(PORT);
+			   NodeList port=element.getElementsByTagName("port");
+			   Element portElement=(Element)port.item(0);
+			   portElement.getFirstChild().setTextContent(PORT);
 
-			NodeList wadoport=element.getElementsByTagName("wadoport");
-			Element wadoportElement=(Element)wadoport.item(0);
-			wadoportElement.getFirstChild().setTextContent(WADOPORT);
+			   NodeList wadoport=element.getElementsByTagName("wadoport");
+			   Element wadoportElement=(Element)wadoport.item(0);
+			   wadoportElement.getFirstChild().setTextContent(WADOPORT);
 			
-			NodeList dcmProtocol=element.getElementsByTagName("dcmprotocol");
-			Element dcmProtocolElement=(Element)dcmProtocol.item(0);
-			dcmProtocolElement.getFirstChild().setTextContent(DCMPROTOCOL);
+			   NodeList dcmProtocol=element.getElementsByTagName("dcmprotocol");
+			   Element dcmProtocolElement=(Element)dcmProtocol.item(0);
+			   dcmProtocolElement.getFirstChild().setTextContent(DCMPROTOCOL);
 			
-		}
-		log.info("XML element values have been updated Successfully.");
-		printToFile();
-		
+		    }
+		    log.info("XML element values have been updated Successfully.");
+		    printToFile();
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("Unable to update the element values of XML document",e);
 			return;
 		}
-		
 		
 	}
 	
@@ -254,38 +260,59 @@ public class ServerXmlConfiguration {
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
+		URL url;
 		ServerConfiguration serverConfiguration = new ServerConfiguration();
 		try {
 			db = dbf.newDocumentBuilder();
-			URL url = this.getClass().getResource("/conf/oviyam-config.xml");
+			String xmlFileName = this.getClass().getResource("/conf/oviyam-config.xml").toString();
+			
+			if(xmlFileName.indexOf("default") >0) {
+				File srcFile = new File(this.getClass().getResource("/conf/oviyam-config.xml").toURI());
+				File destFile = new File(xmlFileName. substring(5,xmlFileName. indexOf("default"))+"default/oviyam-config.xml");
+
+				// check the exists of oviyam-config.xml file. If not exists, copy the file to default folder
+				if(!destFile.exists()) {
+					FileInputStream in = new FileInputStream(srcFile);
+					FileOutputStream out = new FileOutputStream(destFile);
+					byte[] buf = new byte[1024];
+					int len;
+					while((len = in.read(buf)) > 0) {
+						out.write(buf, 0, len);
+					}
+					in.close();
+					out.close();
+				}
+				url = destFile.toURL();
+			} else {
+			    url = this.getClass().getResource("/conf/oviyam-config.xml");
+			}
 			
 			InputSource is = new InputSource(url.openStream());
 			dom = db.parse(is);		
-		NodeList root=dom.getElementsByTagName("server");		
-		for(int i=0;i<root.getLength();i++){
-			Element element=(Element)root.item(i);
-			NodeList aetitle=element.getElementsByTagName("aetitle");
-			Element aetitleElement=(Element)aetitle.item(0);
-			serverConfiguration.setAeTitle(aetitleElement.getFirstChild().getNodeValue());
+		    NodeList root=dom.getElementsByTagName("server");		
+		    for(int i=0;i<root.getLength();i++){
+			   Element element=(Element)root.item(i);
+	   		   NodeList aetitle=element.getElementsByTagName("aetitle");
+			   Element aetitleElement=(Element)aetitle.item(0);
+			   serverConfiguration.setAeTitle(aetitleElement.getFirstChild().getNodeValue());
 			
+			   NodeList hostname=element.getElementsByTagName("hostname");
+			   Element hostnameElement=(Element)hostname.item(0);
+			   serverConfiguration.setHostName(hostnameElement.getFirstChild().getNodeValue());
 
-			NodeList hostname=element.getElementsByTagName("hostname");
-			Element hostnameElement=(Element)hostname.item(0);
-			serverConfiguration.setHostName(hostnameElement.getFirstChild().getNodeValue());
+			   NodeList port=element.getElementsByTagName("port");
+			   Element portElement=(Element)port.item(0);
+			   serverConfiguration.setPort(portElement.getFirstChild().getNodeValue());
 
-			NodeList port=element.getElementsByTagName("port");
-			Element portElement=(Element)port.item(0);
-			serverConfiguration.setPort(portElement.getFirstChild().getNodeValue());
-
-			NodeList wadoport=element.getElementsByTagName("wadoport");
-			Element wadoportElement=(Element)wadoport.item(0);
-			serverConfiguration.setWadoPort(wadoportElement.getFirstChild().getNodeValue());
+			   NodeList wadoport=element.getElementsByTagName("wadoport");
+			   Element wadoportElement=(Element)wadoport.item(0);
+			   serverConfiguration.setWadoPort(wadoportElement.getFirstChild().getNodeValue());
 			
-			NodeList dcmProtocol=element.getElementsByTagName("dcmprotocol");
-			Element dcmProtocolElement=(Element)dcmProtocol.item(0);			
-			serverConfiguration.setDcmProtocol(dcmProtocolElement.getFirstChild().getNodeValue());
+			   NodeList dcmProtocol=element.getElementsByTagName("dcmprotocol");
+			   Element dcmProtocolElement=(Element)dcmProtocol.item(0);			
+			   serverConfiguration.setDcmProtocol(dcmProtocolElement.getFirstChild().getNodeValue());
 			
-		}
+		    }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error("Unable to get the values from the XML document.",e);
@@ -314,7 +341,5 @@ public class ServerXmlConfiguration {
 		createRootElement(s);
 		printToFile();
 	}
-	
-
 
 }

@@ -935,8 +935,8 @@ public class CDimseService {
      * and the retrieve level is STUDY, SERIES or IMAGE.
      *
      * @param ds the DICOM object represented as a Dataset.
-     * @return a result-code: 0x0000 = SUCCESS sub-operations complete –no failures,
-     *                        0xB000 = WARNING sub-operations complete – one or more failures,
+     * @return a result-code: 0x0000 = SUCCESS sub-operations complete no failures,
+     *                        0xB000 = WARNING sub-operations complete one or more failures,
      *                        other = errors defined in PS 3.4 - C.4.2.1.5 Status
      * @throws ConnectException
      * @throws InterruptedException
