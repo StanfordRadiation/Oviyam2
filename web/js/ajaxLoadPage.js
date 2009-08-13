@@ -18,8 +18,12 @@ var directSeries=0;
 		}
 		else
 			return false;
-
-		if(containerid != '') {
+		
+		if(containerid != '' && multiFrames == true) {
+		     page_request.open('GET', url, false);
+		     page_request.send(null);
+		     loadpage(page_request,containerid,url);
+		} else if(containerid != '') {
 		  	page_request.onreadystatechange=function() {
 		  		loadpage(page_request,containerid,url);
 		  	}
@@ -28,6 +32,9 @@ var directSeries=0;
 		} else {
 			page_request.open('GET', url, false);
 			page_request.send(null);
+		        if(multiFrames==true) {
+			    return(page_request.responseText);
+			}
 		}
 	}
 	
@@ -68,3 +75,27 @@ var directSeries=0;
 	pageURL = page;
 		
 	}
+
+/*	function getHttpResponse(url) 
+	{
+	    var xmlHttp=null;
+	    try   
+	    {// Firefox, Opera 8.0+, Safari, IE7
+		xmlHttp=new XMLHttpRequest();
+	    }
+	    catch(e)
+	    {// Old IE
+	      try
+	      {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	      }
+	      catch(e)
+	      {
+		alert ("Your browser does not support XMLHTTP!");
+		return;  
+	      }
+	    }
+	    xmlHttp.open("GET",url,false);
+	    xmlHttp.send(null);
+	    return(xmlHttp.responseText);
+	}*/

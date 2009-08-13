@@ -41,12 +41,20 @@
 		<servlet-class>in.raster.oviyam.servlet.DcmWindowLevel</servlet-class>
 	</servlet>	
 	
+	<servlet>
+		<servlet-name>MultiFrames</servlet-name>		
+		<servlet-class>in.raster.oviyam.servlet.MultiFrames</servlet-class>
+	</servlet>	
+	
+	<servlet-mapping>
+		<servlet-name>MultiFrames</servlet-name>
+		<url-pattern>/MFrames</url-pattern>
+	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>DcmWindowLevel</servlet-name>
 		<url-pattern>/DcmWL</url-pattern>
 	</servlet-mapping>
-	
-
 	
 	<servlet-mapping>
 		<servlet-name>wado</servlet-name>

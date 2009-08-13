@@ -86,7 +86,8 @@
 				<img id="dividerImg" src="images/icn_grip1.gif" alt="">
 			</div>
 
-			<div id="thumbNailHolder1" style="display: none">		
+			<div id="thumbNailHolder1" style="display: none">	
+			  <c:if test="${param.numberOfFrames >0}">	
 				<c:set var="incr" value="1"/>
 				<c:forEach var="inc" begin="0" end="${param.numberOfFrames-1}" step="${incr}">			
 					<div class="scale-item">
@@ -94,6 +95,7 @@
 		 				<img alt="" id="img${inc}" class="scale-image" src="Image.do?study=${param.study}&series=${param.series }&object=${param.object }&frameNumber=${inc}" width="100%">
 		 			</div>
 		 		</c:forEach>
+		 	  </c:if>
 			</div>
 
 	<div id="thumbNailHolder">
@@ -103,11 +105,15 @@
 		<div class="scale-item">
 			<div class="imgNo">${instanceNumber}</div>
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
-			<c:choose>				 
-			<c:when test="${param.modality =='XA' }">
-					<img alt="" id="img${img}" src="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" width="100%" onclick=" setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeBorder(this);">		
-				</c:when>
-			</c:choose>
+
+<%--  			<c:choose>				 
+			<c:when test="${param.modality =='XA' }">     --%>
+			
+					<img alt="" id="img${img}" src="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); if('${frames}' == 'yes'){ cineLoop(); } changeBorder(this);">		
+
+				<%-- </c:when>
+			</c:choose>  --%>
+
 		</div>				
 	</img:Image><%--End of Image tag. --%>
 	</div><%--End of thumbNailHolder Div --%>

@@ -78,7 +78,7 @@
 	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
-<c:when test="${param.modality =='XA' }">
+<c:when test="${frames =='yes' }">
 	<div class="shadow" id="patStudyDesc">${param.studyDescription }</div>	
 	<div class="shadow" id="patSex">${param.sex }</div>
 	<div class="shadow" onclick=" even=document.getElementById('picture').event; initwl();" id="patPhyName">${phy_name}</div>
@@ -117,7 +117,7 @@
 			<td class="imageHolder">
 				<div id = "imageHolder" class="imageHolder">
 					<center>
-						<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&rows=512" width="512" id="picture" onload="if(globalWC==0 && globalWW==0) {defaultWC=globalWC=${windowCenter}; defaultWW=globalWW=${windowWidth}; showWindowAttributes(globalWC,globalWW);}">
+						<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&rows=512" width="512" id="picture" onload="if('${windowCenter}'!='' && globalWC==0 && globalWW==0) {defaultWC=globalWC='${windowCenter}'; defaultWW=globalWW='${windowWidth}'; showWindowAttributes(globalWC,globalWW);}">
 				 	</center>
 				 </div>
 			<td>
@@ -152,9 +152,8 @@
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-			<%--	<c:when test="${frames =='yes' }">		 --%>
-				<c:when test="${param.modality =='XA' }">
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick=" setImageInfos('${numberOfFrames}'); setImage=false; multiFrames=true; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeBorder(this);">		
+				<c:when test="${frames =='yes' }">		 
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeBorder(this);">		
 				</c:when>
 
 				<c:otherwise> 

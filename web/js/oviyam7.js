@@ -6,16 +6,18 @@
 	var numberOfImages=0;
 	var cineloop=0;
 	var slideshowspeed=1000;
-    var whichlink=0;
-    var whichimage=0;    
-    var numberOfFrames=0;
-    var frameSrc;
-    var frameNumber=0;
+	var whichlink=0;
+	var whichimage=0;    
+	var numberOfFrames=0;
+	var frameSrc;
+	var frameNumber=0;
 	var ispatientlistvisible=1;
 	var patname;
 	var globalWW=0,globalWC=0;
         var multiFrames = false;
         var defaultWC,defaultWW;
+	var ftv = new Array();
+	var fti = 0;
 
 	function setCursor(){
 		if(selected=="black"){
@@ -565,6 +567,7 @@
 			borderThumb.style.border="2px solid transparent";			
 		if(cineloop==0){			
 			cineloop=1;
+                        //$('cineSlider').title = slideshowspeed;
 			$('cineLoop').style.color="#FFFFFF";
 			$('cineSlider').style.visibility="visible";
 			$('cineLoop').style.background="url(images/icons/icn_play_1.png)  0px center no-repeat";
@@ -579,14 +582,22 @@
 	}
 	
 	function slideit(){
-    	if(cineloop==0){    		
+		if(cineloop==0 || $("img"+whichimage) == null){
     		return
     	}
     	$('picture').src=$("img"+whichimage).src    
-        if(multiFrames == true)
+        if(multiFrames == true) {
     	    $('number').innerHTML="Frame "+(whichimage+1)+" of "+numberOfImages;
-	else
+	    changeSpeed(ftv[fti]);
+	    fti++;
+	    if(fti == numberOfImages-1) {
+	      fti = 0;
+	    }
+        }
+	else {
     	    $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
+        }
+	$('cineSlider').title = slideshowspeed;
     	i=whichimage;
     	whichlink=whichimage
     	if (whichimage<numberOfImages-1)
@@ -594,7 +605,7 @@
     	else
     		whichimage=0
     	setTimeout("slideit()",slideshowspeed)
-    					
+
 	}	
 		
 	function changeSpeed(speedval){
@@ -778,3 +789,7 @@
   	document.cookie = curCookie;
 	}
  
+	function changeSpeed1(ft) {
+	    ftv = ft.split(":");
+	    changeSpeed(ftv[fti]);
+	}
