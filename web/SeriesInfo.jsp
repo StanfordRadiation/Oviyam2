@@ -56,7 +56,7 @@
 				<tr><td>
 				<c:choose>				 
 					<c:when test="${modality =='SR' }">
-						<div class="image" onclick=" borderThumb='';borderSeries=''; setImageInfos('${numberOfImages}');  initScroll();  loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }');"><img  width="128px" class="reflec" src="images/icons/SR_black.jpg" ></div>
+						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}');  initScroll();  loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }');"><img  width="128px" class="reflec" src="images/icons/SR_new.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>

@@ -916,3 +916,12 @@
 		position:relative;
 		z-index:0;
 	}
+
+	#SRContent {
+		position:relative;
+		left:5px;
+		height:100%;
+		overflow:auto;
+		background-color:#FFFFFF;
+		color:#000000;
+	}

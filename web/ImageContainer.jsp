@@ -74,7 +74,7 @@
 <div id="left">
 <c:choose>				 
 <c:when test="${param.modality =='SR' }">
-	<div id="SRContent" style="position:relative;left:10%;width:80%;overflow-x:auto;overflow-y:auto;color:#FFFFFF;"></div>
+	<div id="SRContent"></div>
 	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
@@ -148,7 +148,7 @@
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
 			<c:choose>				 
 			<c:when test="${param.modality =='SR' }">
-				<img alt="" id="img${img}" name="images/icons/SR_black.jpg" class="scale-image" src="images/icons/SR_black.jpg" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); return false;">
+				<img alt="" id="img${img}" name="images/icons/SR_new.png" class="scale-image" src="images/icons/SR_new.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;">
 			</c:when>
 			<c:otherwise>
 				<c:choose>

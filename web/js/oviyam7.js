@@ -125,10 +125,6 @@
 		selected="black";
 		
 		if($('thumbDivider') != null) {
-		    //$("body").style.background="transparent url('images/icons/icn_backgrnd.jpg')";
-		    if($('SRContent')){
-			   $('SRContent').style.color="#FFFFFF";
-		    }
 		    var shadows = document.getElementsByClassName('shadow');		
 			   for (i=0; i < shadows.length; i++) {
 		 		  shadows[i].style.color = '#FFCC00';
@@ -166,9 +162,6 @@
 		selected="dkgrey";
 		
 		if($('thumbDivider') != null) {		
-		    if($('SRContent')){
-			   $('SRContent').style.color="#FFFFFF";
-		    }
 		    var shadows = document.getElementsByClassName('shadow');		
 			   for (i=0; i < shadows.length; i++) {
 		 		  shadows[i].style.color = '#FFCC00';
@@ -208,10 +201,7 @@
 		   with($("body").style){
 			  background="#FFFFFF";
 		   }
-		   if($('SRContent')){
-			  $('SRContent').style.color="#000000";
-		   }
-		
+	
 		   var shadows = document.getElementsByClassName('shadow');		
 		   for (i=0; i < shadows.length; i++) {
 			   shadows[i].style.color = '#FFCC00';
@@ -249,9 +239,6 @@
 		if($('thumbDivider') != null) {		
 		   with($("body").style){
 			 background="#d9d9d9";
-		   }
-		   if($('SRContent')){
-			 $('SRContent').style.color="#000000";
 		   }
 		   var shadows = document.getElementsByClassName('shadow');		
 		   for (i=0; i < shadows.length; i++) {

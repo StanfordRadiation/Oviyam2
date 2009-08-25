@@ -42,7 +42,11 @@ var directSeries=0;
 	
 	function loadpage(page_request, containerid, url){
 		if (page_request.readyState == 4 && (page_request.status==200 || window.location.href.indexOf("http")==-1)){
-			document.getElementById(containerid).innerHTML=page_request.responseText;
+			var pr = page_request.responseText;
+			if(pr.indexOf("wado?") >=0)
+				document.getElementById(containerid).innerHTML = pr.replace(/wado?/g, "/wado");
+			else			
+				document.getElementById(containerid).innerHTML=pr;
 			
 			document.getElementById("loadingView").style.visibility="hidden";
 
@@ -75,27 +79,3 @@ var directSeries=0;
 	pageURL = page;
 		
 	}
-
-/*	function getHttpResponse(url) 
-	{
-	    var xmlHttp=null;
-	    try   
-	    {// Firefox, Opera 8.0+, Safari, IE7
-		xmlHttp=new XMLHttpRequest();
-	    }
-	    catch(e)
-	    {// Old IE
-	      try
-	      {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	      }
-	      catch(e)
-	      {
-		alert ("Your browser does not support XMLHTTP!");
-		return;  
-	      }
-	    }
-	    xmlHttp.open("GET",url,false);
-	    xmlHttp.send(null);
-	    return(xmlHttp.responseText);
-	}*/
