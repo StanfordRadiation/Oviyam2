@@ -74,6 +74,7 @@
 <div id="left">
 <c:choose>				 
 <c:when test="${param.modality =='SR' }">
+	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
 	<div id="SRContent"></div>
 	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
@@ -153,11 +154,11 @@
 			<c:otherwise>
 				<c:choose>
 				<c:when test="${frames =='yes' }">		 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeBorder(this);">		
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeBorder(this); hideDataSet();">		
 				</c:when>
 
 				<c:otherwise> 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this);">
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();">
 				</c:otherwise>
 				</c:choose>
 			</c:otherwise>

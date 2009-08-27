@@ -126,7 +126,7 @@
 	onclick="ajaxpage('searchTools','SearchPopup.jsp'); new Effect.SlideDown('searchPane',{duration:0.5}); 
 	document.getElementById('buttons').style.visibility='visible';
 	document.getElementById('divider').style.visibility='visible';
-	keynav=0;keyaplhabet=0;return false;">
+	keynav=0;keyaplhabet=0; hideDataSet(); return false;">
 </button>
 
 <div id="patientDisName"></div>
@@ -383,27 +383,27 @@
 		<td width="45%">
 		<div id="viewControls">
 		<div title="Click or press 'p' to toggle patient visibility"
-			id="viewPatient" class="viewSwitcher" onclick="hidePatient();">
+			id="viewPatient" class="viewSwitcher" onclick="hidePatient();hideDataSet();">
 		<div class="label">Patient</div>
 		</div>
 
 		<div title="Click or press 's' to toggle series visibility"
-			id="viewSeries" class="viewSwitcher" onclick="hideSeries();">
+			id="viewSeries" class="viewSwitcher" onclick="hideSeries();hideDataSet();">
 		<div class="label">Series</div>
 		</div>
 
 		<div title="Click or press 'g' to display this series in grid view"
-			id="gridView" class="viewSwitcher" onclick="gridView();">
+			id="gridView" class="viewSwitcher" onclick="gridView();hideDataSet();">
 		<div class="label">Grid</div>
 		</div>
 
 		<div title="Click or press 'm' to display this series in mosaic view"
-			id="mosaicView" class="viewSwitcher" onclick="mosaicView();">
+			id="mosaicView" class="viewSwitcher" onclick="mosaicView();hideDataSet();">
 		<div class="label">Mosaic</div>
 		</div>
 
 		<div title="Play a cineLoop of this series" id="cineLoop"
-			class="viewSwitcher" onclick="cineLoop();">
+			class="viewSwitcher" onclick="cineLoop();hideDataSet();">
 		<div class="label">Loop</div>
 		</div>
 
@@ -611,7 +611,7 @@
 	</c:otherwise>
 </c:choose>
 <center>
-<div id="dataSet">
+<div id="dataSet" style="visibility:hidden;">
 <div id="dsImageHolder"><img src="" title="Back to Image"
 	id="dataSetImage" alt="" onclick="hideDataSet();">
 <div id="dataSetPatient" class="ds"></div>

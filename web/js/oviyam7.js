@@ -546,7 +546,8 @@
 	}
 		
 	function hideDataSet(){
-		$('dataSet').style.visibility="hidden";
+		if($('dataSet').style.visibility != "hidden")
+		   $('dataSet').style.visibility="hidden";
 	}
 		
 	function cineLoop(){
@@ -780,3 +781,8 @@
 	    ftv = ft.split(":");
 	    changeSpeed(ftv[fti]);
 	}
+	
+	function changeDataset() {
+        if($('dataSet').style.visibility != "hidden")
+	      loadDataSet('','');
+     }
