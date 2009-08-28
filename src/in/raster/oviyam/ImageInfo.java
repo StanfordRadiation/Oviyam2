@@ -172,7 +172,7 @@ public class ImageInfo {
 			log.error(e.getMessage());
 			return;
 		}
-	//	System.out.println("The data set count is "+datasetVector.size());
+		
 		/*
 		 * Gets the Dataset from the datasetVector and add it to the instances ArrayList<InstanceModel>
 		 */

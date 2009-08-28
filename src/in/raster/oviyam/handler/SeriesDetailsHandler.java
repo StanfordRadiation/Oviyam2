@@ -50,6 +50,8 @@ import in.raster.oviyam.model.SeriesModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -148,6 +150,28 @@ public class SeriesDetailsHandler extends SimpleTagSupport{
 			 * @see in.raster.oviyam.model.SeriesModel.
 			 */
 			ArrayList<SeriesModel> seriesList = seriesInfo.getSeries();
+			
+		    Collections.sort(seriesList, new Comparator(){
+				 
+	            public int compare(Object o1, Object o2) {
+	                SeriesModel p1 = (SeriesModel) o1;
+	                SeriesModel p2 = (SeriesModel) o2;
+	                
+	                if(p1.getSeriesNumber() == null)
+	                	return(-1);
+	                else if(p2.getSeriesNumber() == null)
+	                	return(1);
+	                else if(p1.getSeriesNumber().indexOf("+") >= 0 || p1.getSeriesNumber().indexOf("-") >= 0 || p2.getSeriesNumber().indexOf("+") >= 0 || p2.getSeriesNumber().indexOf("-") >= 0)
+	                    return(p1.getSeriesNumber().compareTo(p2.getSeriesNumber()));	
+	                else {
+	                  int a=Integer.parseInt(p1.getSeriesNumber());
+	                  int b=Integer.parseInt(p2.getSeriesNumber());
+	                  int t=(a==b ? 0 :(a>b ? 1 : -1));
+	                  return t;
+	                }
+	            }
+	        });
+		
 			for (int seriesCount = 0; seriesCount < seriesList.size(); seriesCount++) {
 				
 				/*

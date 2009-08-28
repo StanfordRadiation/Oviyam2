@@ -106,9 +106,6 @@ public class MultiFrames extends HttpServlet{
 			for(i=0; i<dicomData.length; i++)
 		        dicomData[i] = dis.readUnsignedByte();
 			
-			//String frameIncPointer = getElementValue("00280009");
-			
-			//if (frameIncPointer.equals)
 			String noOfFrames = getElementValue("00280008").trim();
 			String frameTime = getElementValue("00181063");
 			String frameTimeVector = "";
@@ -118,26 +115,9 @@ public class MultiFrames extends HttpServlet{
 				for(int x=0; x<Integer.parseInt(noOfFrames); x++)
 					frameTimeVector = frameTimeVector + frameTime + ":";
 			} else {
-			  //String frameDelay = getElementValue("00181066");
 			  frameTimeVector = getElementValue("00181065");
 			}
-			System.out.println("Frame : "+frameTimeVector);
 			
-			//getServletContext().removeAttribute(frameTimeVector);
-			//getServletContext().setAttribute("frameTimeVector", frameTimeVector);
-
-			// remove the already exists values
-			
-			//getServletContext().removeAttribute(frameTime);
-			//getServletContext().removeAttribute(frameDelay);
-			//getServletContext().removeAttribute(frameTimeVector);
-			
-			// set the attributes
-						
-			//getServletContext().setAttribute("frameTime", frameTime);
-			//getServletContext().setAttribute("frameDelay", frameDelay);
-			//getServletContext().setAttribute("frameTimeVector", frameTimeVector); 
-						
 			dis.skipBytes(50000000);
 				
 			is.close();

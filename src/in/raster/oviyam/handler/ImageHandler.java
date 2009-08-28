@@ -168,7 +168,7 @@ public class ImageHandler extends SimpleTagSupport {
 				 * @see in.raster.oviyam.InstanceModel.
 				 */
 				InstanceModel instance = instances.get(instanceCount);
-			//	System.out.println("Number of instances are "+instances.size());
+			
 				getJspContext().setAttribute("img", instanceCount);
 				getJspContext().setAttribute("imageId", instance.getSopIUID());
 				getJspContext()
