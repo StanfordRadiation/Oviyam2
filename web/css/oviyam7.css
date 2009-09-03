@@ -291,6 +291,7 @@
 		color:#FFFFFF;		
 		font-size:14px;	
 		border:0px;	
+		table-layout:fixed;
 	}
 	
 	#queryHeader{
@@ -895,9 +896,11 @@
 	
 	/* Scrollable Content Height */
 	.scrollContent {
-		position:relative;
- 		height:90%;
- 		overflow:auto;
+		position:absolute;
+		width:99.5%;
+ 		height:96%;
+ 		overflow-x:hidden;
+ 		overflow-y:auto;
 	}
 
 	.fixedHeader{	
@@ -905,7 +908,29 @@
 		cursor:pointer;		
 	}	
 	
-	
+	#tableContainer {
+		overflow:hidden;
+		width:100%;
+        height:100%;
+        z-index:3;
+	}
+
+	#innerTable {
+		width:610px;
+	}
+
+	#studyDescTD {
+	      width:430px;
+	}
+
+	#plusTD {
+		width:20px;                
+	}
+
+	#modalityTD, #studyDateTD {
+		width: 80px;
+	}
+			
 	.image{
 		width:128px;
 		cursor:pointer;
@@ -925,3 +950,54 @@
 		background-color:#FFFFFF;
 		color:#000000;
 	}
+	
+	/* define width of TD (TH) elements of fixedHeader   */
+	thead.fixedHeader td {
+		width: 3%;
+	}
+
+	thead.fixedHeader td + td {
+		width: 48%;
+	}
+
+	thead.fixedHeader td + td + td {
+		width: 13%;
+	}
+
+	thead.fixedHeader td + td + td + td {
+		width: 3%;
+	}
+
+	thead.fixedHeader td + td + td +td +td {
+		width: 7%;
+	}
+
+	thead.fixedHeader td + td + td +td + td + td{
+		width: 26%;
+	}
+
+	/* define width of TD elements of scrollContent (table body)  */
+	tbody.scrollContent td {
+		width: 30px;
+	}
+
+	tbody.scrollContent td + td {
+		width: 610px;
+	}
+
+	tbody.scrollContent td + td + td {
+		width: 170px;
+	}
+
+	tbody.scrollContent td + td + td + td {
+		width: 30px;
+	}
+
+	tbody.scrollContent td + td + td + td + td {
+		width: 90px;
+	}
+
+	tbody.scrollContent td + td + td +td + td + td {
+		width: 275px;
+	}
+		

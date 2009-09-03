@@ -51,8 +51,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<div id="TableContainer" class="TableContainer" style="height: 100%;width:100%;">
-<table id="queryResult"  class="queryResult" width="100%">
+<div id="tableContainer" class="TableContainer">
+<table id="queryResult"  class="queryResult">
 
 <thead class="fixedHeader">
 
@@ -79,7 +79,7 @@
 		<tr style="vertical-align:top;">
 			<td class="serNo" >${serNo }</td>		
 			<td> 
-			<table width="100%">
+			<table id="innerTable">
 			<c:choose>
 	<c:when test="${sex =='F' || sex=='f' }">		
 		<tr title="Female"> <td class="serNo" colspan="4" ><img style="background:transparent;" src="images/pic1.gif" alt="">&nbsp;&nbsp;${patientName}<br></td></tr>
@@ -97,29 +97,26 @@
 </c:choose>
 	<study:Study patientId="${patientId}" modality="${param.modality}">	
 						<tr>						
-							<td width="20"  class = "studyInfo" onclick="  addRow(${no},'seriesDetails.jsp?patient=${patientId }&study=${studyId}&studyDescription=${StudyDesc }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}');"><center><img alt="" title="click to expand/shrink this study" id="expand${no}" src="images/TopPlus1.gif" class="expand" ></center></td>
-							<td width="50%" class = "studyInfo" colspan="4" onclick= 'hidePatient(); document.getElementById("imagePane").innerHTML=""; ajaxpage("seriesPane", "SeriesInfo.jsp?patient=${patientId }&study=${studyId}&studyDescription=${studyDescription }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}"); return false'>
+							<td id="plusTD" class = "studyInfo" onclick=" addRow(${no},'seriesDetails.jsp?patient=${patientId }&study=${studyId}&studyDescription=${StudyDesc }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}');"><center><img alt="" title="click to expand/shrink this study" id="expand${no}" src="images/TopPlus1.gif" class="expand"></center></td>
+							<td id="studyDescTD" class = "studyInfo" colspan="3" onclick= 'hidePatient(); document.getElementById("imagePane").innerHTML=""; ajaxpage("seriesPane", "SeriesInfo.jsp?patient=${patientId }&study=${studyId}&studyDescription=${studyDescription }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}"); return false'>
 								${studyDescription}
 							</td>
-							<td>
+							<td id="modalityTD">
 							${modalityInStudy}
 							</td>
-							<td>
+							<td id="studyDateTD">
 								${studyDates}
 							</td>
-							
-							
-							
+						
 						</tr>
 						<tr>
 							<td ></td>
-							<td colspan="4" align="left">
+							<td colspan="3" align="left">
 							<div style="position:relative;width:100%;" id="seriesHolder${no}" class="seriesHolder">				
 							</div>
 							</td>
 						</tr> 
-					
-				
+			
 				</study:Study>
 			</table>
 			</td>
@@ -136,7 +133,3 @@
 
 </table>
 </div>
-
-<script type="text/javascript">
-
-</script>

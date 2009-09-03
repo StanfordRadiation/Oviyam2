@@ -146,7 +146,7 @@
 		} 
 		
 		if($("queryResult") != null) {
-			document.getElementById('queryResult').style.background='#000000';
+			document.getElementById('queryBody').style.background='#000000';
 			$("queryBody").style.color='#FFFFFF';
 		}
 		$("black").style.background="transparent url('images/icons/icn_black_backColor.png') no-repeat scroll  0px -18px ";
@@ -183,7 +183,7 @@
 		} 
 		
 		if($("queryResult") != null) {
-			document.getElementById('queryResult').style.background='#262626';
+			document.getElementById('queryBody').style.background='#262626';
 			$("queryBody").style.color='#d9d9d9';
 		}
 		
@@ -222,7 +222,7 @@
 		} 
 		
 		if($("queryResult") != null) {
-			document.getElementById('queryResult').style.background='#FFFFFF';
+			document.getElementById('queryBody').style.background='#FFFFFF';
 			$("queryBody").style.color='#000000';
 		}
 		$("white").style.background="transparent url('images/icons/icn_white_backColor.png') no-repeat scroll  0px -18px ";
@@ -260,7 +260,7 @@
 		}
 		
 		if($("queryResult") != null) {
-			document.getElementById('queryResult').style.background='#d9d9d9';
+			document.getElementById('queryBody').style.background='#d9d9d9';
 			$("queryBody").style.color='#000000';
 		}
 		$("ltgrey").style.background="transparent url('images/icons/icn_ltgrey_backColor.png') no-repeat scroll  0px -18px ";
