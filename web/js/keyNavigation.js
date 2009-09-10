@@ -1,15 +1,17 @@
-document.onkeydown = KeyCheck;
+document.onkeydown = KeyPress;
 var KeyID;
 
-function KeyCheck(e){
+/*function KeyCheck(e){
 	KeyID = (window.event) ? event.keyCode : e.keyCode;	
 }
 
-document.onkeypress = KeyPress;       
+document.onkeypress = KeyPress;    */
+
 var keynav=0;
 var keyaplhabet=0;
 
 function KeyPress(e){
+	KeyID = (window.event) ? event.keyCode : e.keyCode;
 	if(keynav==1){		
 		switch(KeyID){				
 			case 37:

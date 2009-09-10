@@ -269,62 +269,62 @@
 		$("dkgrey").style.background="transparent url('images/icons/icn_dkgrey_backColor.png') no-repeat scroll  0px -56px ";
 	}	
 	function changeslides(which){
-		i=which;
+		inc=which;
 		whichimage=which;
 		var imgsrc = $("img"+which).src;
 		if(globalWC!=0 && globalWW!=0)
 			imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		$('picture').src=imgsrc;
-		$('number').innerHTML="Image "+(i+1)+" of "+numberOfImages;
+		$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
 		showWindowAttributes(globalWC,globalWW);
 		valuesApplied=false;
 	}
 	
 	function changeImages(which){
-		i=which;
+		inc=which;
 		whichimage=which;
 		$('picture').src=$("img"+which).src;		
 	}
 	
 
-	var i=0;
+	var inc=0;
 	
 	function nextImage(){
-		i++;		
+		inc++;		
 		try{
-		    var imgsrc = $("img"+i).src;
+		    var imgsrc = $("img"+inc).src;
 		    if(globalWC!=0 && globalWW!=0)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
 		    showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
-			changeBorder($("img"+i));	
-			$('number').innerHTML="Image "+(i+1)+" of "+numberOfImages;
-			whichimage=i;
+			changeBorder($("img"+inc));	
+			$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
+			whichimage=inc;
 		}
 		catch(e){
-			i=-1;
+			inc=-1;
 			
 			nextImage();
 		}		
 	}
 	
 	function prevImage(){
-		i--;
+		inc--;
 		try{
-		    var imgsrc = $("img"+i).src;
+		    var imgsrc = $("img"+inc).src;
 		    if(globalWC!=0 && globalWW!=0)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
 		    showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
-			changeBorder($("img"+i));			
-			$('number').innerHTML="Image "+(i+1)+" of "+numberOfImages;
-			whichimage=i;
+			changeBorder($("img"+inc));			
+			$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
+			whichimage=inc;
 		}
 		catch(e){
 			
-			i=numberOfImages;
+			inc=numberOfImages;
 			prevImage();
 		}	
 	}
@@ -356,7 +356,7 @@
 	
 	function showTools(){
 		keynav=1;
-		i=0;		
+		inc=0;		
 		$('hideButton').style.visibility="visible";
 		$('toolBar').style.visibility="visible";
 		hideTools();
@@ -586,7 +586,7 @@
     	    $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
         }
 	$('cineSlider').title = slideshowspeed;
-    	i=whichimage;
+	inc=whichimage;
     	whichlink=whichimage
     	if (whichimage<numberOfImages-1)
     		whichimage++

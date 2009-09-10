@@ -97,8 +97,8 @@ function resetWLValues() {
 
 function closePopupMenu() {
 	new Effect.SlideUp('searchPane1',{duration:0.5});
-	document.onkeydown = KeyCheck;
-	document.onkeypress = KeyPress;  
+	document.onkeydown = KeyPress;
+	  
 	if(valuesApplied==false)
 	  resetWLValues();
 	return false;
