@@ -14,10 +14,12 @@
 	var ispatientlistvisible=1;
 	var patname;
 	var globalWW=0,globalWC=0;
-        var multiFrames = false;
-        var defaultWC,defaultWW;
+    var multiFrames = false;
+    var defaultWC,defaultWW;
 	var ftv = new Array();
 	var fti = 0;
+	
+	var vlc_controls = null;
 
 	function setCursor(){
 		if(selected=="black"){
@@ -535,6 +537,8 @@
 	}
 	
 	function loadDataSet(url,imgurl){
+		if($("mymovie") != null)
+			document.getElementById('mymovie').style.visibility = 'hidden';
 		$('dataSetImage').src=$("img"+whichimage).src;
 		$('dataSet').style.visibility="visible";
 		$('dataSetPatient').innerHTML=$('patientDisName').innerHTML;
@@ -546,6 +550,8 @@
 	}
 		
 	function hideDataSet(){
+		if($("mymovie") != null)
+			$('mymovie').style.visibility = 'visible';
 		if($('dataSet').style.visibility != "hidden")
 		   $('dataSet').style.visibility="hidden";
 	}
@@ -786,3 +792,21 @@
         if($('dataSet').style.visibility != "hidden")
 	      loadDataSet('','');
      }
+	
+	function init_vlc_player() {
+		stopTimer();
+		
+		if( vlc_controls == null) {
+			//load plugin
+			myvlc = new VLCObject("mymovie", "600", "350");
+			myvlc.write($("MPEGContent"));
+			
+			// load controls
+			vlc_controls = new VLCcontrols(myvlc);
+		}
+	}
+
+	function stopTimer() {
+		if(interval != null)
+			clearInterval(interval);
+	}

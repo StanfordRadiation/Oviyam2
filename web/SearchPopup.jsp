@@ -85,13 +85,13 @@
 							<tr>
 								
 								<td>
-								<input name="from" id="from" value=""> 
+								<input name="from" id="from" value="" size="10"> 
 									<input value="from" onclick="displayDatePicker('from', this);document.getElementsByName('group1')[5].checked=true;" type="button">	
 								</td>
 							</tr>
 							<tr>
 								
-								<td><input id="to" name="to" value="">
+								<td><input id="to" name="to" value="" size="10">
 								<input value="to" onclick="displayDatePicker('to', this);document.getElementsByName('group1')[5].checked=true;" type="button"></td>
 							</tr>
 						</table>
@@ -122,66 +122,29 @@
 		
 		<table class="searchTable">
 			<tr>
-				<td>
-					<input  type="radio" name="modality" value="ALL" checked="checked">ALL
-				</td>
-				<td>
-					<input  type="radio" name="modality" value="CR">CR
-				</td>
-				<td>
-					<input  type="radio" name="modality" value="DX">DX
-				</td>
+				<td> <input  type="radio" name="modality" value="ALL" checked="checked"></td><td>ALL</td>
+				<td> <input  type="radio" name="modality" value="CR"></td><td>CR</td>
+				<td> <input  type="radio" name="modality" value="DX"></td><td>DX</td>
 			</tr>
 			
 			<tr>
-				<td>
-					<input  type="radio" name="modality" value="CT">CT
-				</td>
-				<td>
-					<input  type="radio" name="modality" value="SC">SC
-				</td>
-				<td>
-					<input  type="radio" name="modality" value="US">US
-				</td>
+				<td> <input  type="radio" name="modality" value="CT"></td><td>CT</td>
+				<td> <input  type="radio" name="modality" value="SC"></td><td>SC</td>
+				<td> <input  type="radio" name="modality" value="US"></td><td>US</td>
 			</tr>
 			
 			<tr>
-				<td>
-					<input  type="radio" name="modality" value="MR">MR
-				</td>
-				
-				<td>
-					<input  type="radio" name="modality" value="NM">NM
-				</td>
-				
-				<td>
-					<input  type="radio" name="modality" value="PX" >PX
-				</td>
+				<td> <input  type="radio" name="modality" value="MR"></td><td>MR</td>
+				<td> <input  type="radio" name="modality" value="NM"></td><td>NM</td>
+				<td> <input  type="radio" name="modality" value="PX" ></td><td>PX</td>
 			</tr>
 			
 			<tr>
-				<td>
-					<input  type="radio" name="modality" value="XA">XA
-				</td>
-				
-				<td>
-					<input  type="radio" name="modality" value="RF">RF
-				</td>
-				
-				<td>
-					
-					<input  type="radio" name="modality" value="OT">OT
-				</td>
+				<td> <input  type="radio" name="modality" value="XA"></td><td>XA</td>
+				<td> <input  type="radio" name="modality" value="RF"></td><td>RF</td>
+				<td> <input  type="radio" name="modality" value="OT"></td><td>OT</td>
 			</tr>
-			
-		
 		</table>
 	</td>
 </tr>
 </table>
-		
-
-
-
-
-

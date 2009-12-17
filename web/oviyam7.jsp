@@ -79,6 +79,10 @@
 	src="js/DatePicker.js"></script>
 <script type="text/javascript" language="javascript" src="js/windowLevel.js"></script>
 
+<script type="text/javascript" language="javascript" src="js/VLCobject.js"></script>
+<script type="text/javascript" language="javascript" src="js/VLCcontrols.js"></script>
+<script type="text/javascript" language="javascript" src="js/ExternalLibLoader.js"></script>
+
 <c:choose>
 	<c:when test="${param.studyUID != null && param.seriesUID!=null}">
 		<link type="text/css" rel="StyleSheet" href="./css/Study.css" />
@@ -126,7 +130,10 @@
 	onclick="ajaxpage('searchTools','SearchPopup.jsp'); new Effect.SlideDown('searchPane',{duration:0.5}); 
 	document.getElementById('buttons').style.visibility='visible';
 	document.getElementById('divider').style.visibility='visible';
-	keynav=0;keyaplhabet=0; hideDataSet(); return false;">
+	keynav=0;keyaplhabet=0; hideDataSet(); 
+	if($('mymovie') != null)
+	   document.getElementById('mymovie').style.visibility='hidden';
+	return false;">
 </button>
 
 <div id="patientDisName"></div>
@@ -475,13 +482,13 @@
 <div class="label">Reset</div>
 </div>
 </button>
-<button class="pushSearch" type="submit" onclick="loadFile(); keynav=1;">
+<button class="pushSearch" type="submit" onclick="stopTimer();loadFile(); keynav=1;">
 <div class="outer">
 <div class="label">Search</div>
 </div>
 </button>
 <button class="pushCancel" type="reset"
-	onclick=" keynav=1; new Effect.SlideUp('searchPane',{duration:0.5}); return false; keynav=1;">
+	onclick="if($('mymovie') != null) document.getElementById('mymovie').style.visibility='visible'; keynav=1; new Effect.SlideUp('searchPane',{duration:0.5}); return false; keynav=1;">
 <div class="outer">
 <div class="label">Cancel</div>
 </div>
