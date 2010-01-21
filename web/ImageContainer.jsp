@@ -117,7 +117,9 @@
 	<div class="shadow" id="patModality">${param.modality}</div>
 	
 	<div class="shadow" id="windowLevel"></div>
-
+	
+	<div class="shadow" id="full_resolution" style="visibility:hidden;" onclick="showFullResolution();">&nbsp;View Full Resolution&nbsp;</div>
+	
 	<div class="shadow" id="number">Image 1 of ${param.totalImages }</div>
 	<table id="imgTable">
 		<tr>
@@ -169,7 +171,7 @@
 				</c:when>
 
 				<c:otherwise> 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();">
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();" onload = "checkResolution(${rows});">
 				</c:otherwise>
 				</c:choose>
 			</c:otherwise>

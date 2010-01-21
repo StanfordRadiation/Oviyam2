@@ -810,3 +810,22 @@
 		if(interval != null)
 			clearInterval(interval);
 	}
+	
+	function showFullResolution() {
+	    var oriPath = $('picture').src;
+
+	    var img_URL = "FullResolution.jsp?imageURL=" + oriPath;
+   	    var params  = 'width='+screen.width;
+	        params += ',height='+screen.height;
+	        params += ',fullscreen=yes'
+	        params += ',scrollbars=yes';
+	        params += ',titlebar=no';
+	        params += ',location=no';
+		window.open(img_URL, '' , params);
+	  }
+	
+	  function checkResolution(resolution)
+	  {
+		if(parseInt(resolution) > 512)
+			document.getElementById("full_resolution").style.visibility = "visible";
+	  }	

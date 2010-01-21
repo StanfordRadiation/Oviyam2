@@ -461,6 +461,21 @@
 		font-size: 15px;
 	}
 	
+	#full_resolution {
+		position: absolute;
+		left: 78%;
+		bottom: 3%;
+		font-size: 13px;
+		cursor: pointer; /* hand-shaped cursor */	
+		background:#000000;
+	}
+
+ 	#full_resolution:hover {
+ 		font-weight: bold;
+		/* background:#FFCC00;
+		color:#000000 !important; */
+	}
+	
 	#imgTable{
 		position:absolute;
 		height:100%;
