@@ -79,6 +79,12 @@
 	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
+<c:when test="${param.modality =='KO' }">
+	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
+	<div id="KOContent"></div>
+	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
+</c:when>
+
 <c:when test="${param.modality == 'ES'}">
      <div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription}</div>
      <div id="MPEGContent"></div>
@@ -157,9 +163,13 @@
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
 			<c:choose>				 
 			<c:when test="${param.modality =='SR' }">
-				<img alt="" id="img${img}" name="images/icons/SR_new.png" class="scale-image" src="images/icons/SR_new.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;">
+				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;">
 			</c:when>
 			
+			<c:when test="${param.modality =='KO' }">
+				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;">
+			</c:when>
+
 			<c:when test="${param.modality == 'ES' }">
 			    <img alt="" id="img${img}" name="images/icons/icn_video.gif" class="scale-image" src="images/icons/icn_video.gif" width="100%" onclick="vlc_controls=null; init_vlc_player(); vlc_controls.play('wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${param.series}&objectUID=${imageId}'); changeBorder(this); return false;">
 			</c:when>		

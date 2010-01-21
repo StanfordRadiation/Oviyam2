@@ -229,6 +229,15 @@
 					<div class="seriesDetails">${seriesDescs}</div>
 					<div class="seriesDetails">Total Images : ${numberOfImages}</div>
 
+					<c:if test="${modality =='SR' }">
+						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					</c:if>
+
+					<c:if test="${modality =='KO' }">
+						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					</c:if>
+
+
 					<div class="image"
 					    onclick="globalWC=globalWW=0; borderThumb=''; ajaxpage('','DcmWL?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}'); setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
 						width="128px" class="reflec"
@@ -260,6 +269,14 @@
 						<td style="border-bottom: 2px solid #d9d9d9;">
 						<div class="seriesDetails">${seriesDescs}</div>
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div>
+
+					<c:if test="${modality =='SR' }">
+						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					</c:if>
+
+					<c:if test="${modality =='KO' }">
+						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					</c:if>
 
 						<div class="image"
 					  	onclick="globalWC=globalWW=0; borderThumb=''; ajaxpage('','DcmWL?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${studyId}&seriesUID=${seriesId}&objectUID=${imageId}'); setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"

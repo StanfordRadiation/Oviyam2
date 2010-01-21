@@ -966,6 +966,15 @@
 		color:#000000;
 	}
 	
+	#KOContent {
+		position:relative;
+		left:5px;
+		height:100%;
+		overflow:auto;
+		background-color:#FFFFFF;
+		color:#000000;
+	}
+	
 	#MPEGContent {
 		position: relative;
 		margin: 125px 5px 5px 75px;

@@ -1,6 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-
 	body {
 		margin: 0;
 		padding: 0;
@@ -11,6 +10,7 @@
 		background:#232323;
 		font-family: Helvetica,  Arial;
 	}	
+
 	#desktop{
 		position:absolute;		
 		width:100%;
@@ -42,6 +42,7 @@
 		color:#FFFFFF;		
 		cursor:pointer;
 	}
+	
 	.seriesinfos:hover{
 		color:#000000;
 		background:#FFFFFF;		
@@ -52,10 +53,7 @@
 		width:100%;
 		z-index:0;
 	}
-	
-	
-
-	
+		
 	/*************************headerArea*******************************/
 	
 	#headerArea{
@@ -71,11 +69,7 @@
 		overflow: hidden;
 		border-top: 1px solid #343434;
 	}
-	
-	
-	
-	
-	
+		
 	#searchButton {
 		cursor: pointer ;
 		position: absolute ;
@@ -94,7 +88,7 @@
 		visibility:hidden;
 	}
 	
-	 #patientDisName {
+	#patientDisName {
 	    font-family: Helvetica,  Arial;
 	 	font-weight: normal;
 	 	color: #ffffff;
@@ -108,11 +102,8 @@
 	 	overflow: hidden;
 	 	margin-bottom: 15px;
 	 	position: absolute;
-	 	
-	 }
-	
-	
-	
+	}
+		
 	/*#searchButton:active{
 		background-position:0px -80px;
 	}*/
@@ -133,7 +124,6 @@
 		text-indent: -14px;
 		background: transparent url('../images/buttons/show_tools.gif') no-repeat scroll 0px 0px;
 		right: -6px;
-		
 	}
 	
 	/**********************************toolBar********************************/
@@ -182,8 +172,6 @@
 		color:#616161;
 	}
 	
-	
-	
 	.toolBarText {
 		vertical-align: bottom;
 		padding-top: 30px;	
@@ -228,7 +216,6 @@
 		color: #FFFFFF;
 	}
 
-
 	#resetButton {
 		background-image:url('../images/icons/icn_reset_off.png');
 	}
@@ -255,7 +242,6 @@
 		background-image:url(../images/icons/icn_zoom_on.PNG);
 		color:#FFFFFF;
 	}
-
 	
 	#zoomInButton {
 		visibility:hidden;
@@ -316,7 +302,6 @@
 		color:#FFFFFF;		
 		font-size:14px;	
 		border:0px;	
-		
 	}
 	
 	#queryHeader{
@@ -326,8 +311,7 @@
 		font-weight:bold;		
 	}
 
-	
-		#seriesPane{		
+	#seriesPane{		
 		position: absolute ;
 		top: 57px; 
 		left: 0; 
@@ -336,13 +320,9 @@
 		overflow: auto; /*Disable scrollbars. Set to "scroll" to enable*/
 		background-color:transparent ;		
 		z-index:450;
-		
 	}
 	
-	
 	#seriesDivider{
-	
-		
 		position: absolute ;
 		top: 57px;		
 		left:200px;
@@ -364,8 +344,6 @@
 		overflow:auto;
 		background:#d9d9d9;
 		z-index:451;
-		
-		
 	}
 	
 	#dividerImg{			
@@ -373,11 +351,8 @@
 		margin: 25% auto;
 		margin-top: 25%;
 		top:50%;		
-	
 	}
-	
 
-	
 	#imagePane{
 		position: fixed; 
 		top: 57px;
@@ -387,10 +362,7 @@
 		overflow: hidden; 
 		background:transparent;		
 		z-index:450;
-				
 	}
-	
-	
 	
 	* html #imagePane{ /*IE6 hack*/
 		height: 100%; 
@@ -451,14 +423,11 @@
 		font-size: 15px;
 	}
 	
-	
-	
 	#patPhyName{		
 		top:30px;
 		left:10px;
 		font-size: 15px;
 	}
-	
 	
 	#patBirthDate{
 		top:0px;
@@ -478,8 +447,6 @@
 		font-size: 15px;
 	}
 	
-	
-	
 	#number{
 		position:absolute;	
 		width:100%;
@@ -496,8 +463,25 @@
 		bottom:40px;
 		font-size: 15px;
 	}
-
 	
+	#SRContent {
+		position:relative;
+		left:5px;
+		height:100%;
+		overflow:auto;
+		background-color:#FFFFFF;
+		color:#000000;
+	}
+
+	#KOContent {
+		position:relative;
+		left:5px;
+		height:100%;
+		overflow:auto;
+		background-color:#FFFFFF;
+		color:#000000;
+	}
+		
 	#imgTable{
 		position:absolute;
 		height:100%;
@@ -545,7 +529,6 @@
 		border: 0px ;
 	}
 	
-	
 	/************************footerArea*************************************/
 	
 	#footerArea{
@@ -557,7 +540,6 @@
 		bottom:0px;
 		overflow:hidden;
 		font-family: Helvetica,  Arial;
-		
 	}
 	
 	#pageFooter{
