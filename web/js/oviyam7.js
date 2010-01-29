@@ -5,7 +5,7 @@
 	var hidesereis=0;
 	var numberOfImages=0;
 	var cineloop=0;
-	var slideshowspeed=1000;
+	var slideshowspeed=500;
 	var whichlink=0;
 	var whichimage=0;    
 	var numberOfFrames=0;
@@ -18,6 +18,8 @@
     var defaultWC,defaultWW;
 	var ftv = new Array();
 	var fti = 0;
+	var fps = 30;
+	
 	
 	var vlc_controls = null;
 
@@ -575,32 +577,36 @@
 		}
 	}
 	
-	function slideit(){
-		if(cineloop==0 || $("img"+whichimage) == null){
-    		return
-    	}
-    	$('picture').src=$("img"+whichimage).src    
-        if(multiFrames == true) {
-    	    $('number').innerHTML="Frame "+(whichimage+1)+" of "+numberOfImages;
-	    changeSpeed(ftv[fti]);
-	    fti++;
-	    if(fti == numberOfImages-1) {
-	      fti = 0;
-	    }
-        }
-	else {
-    	    $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
-        }
-	$('cineSlider').title = slideshowspeed;
-	inc=whichimage;
-    	whichlink=whichimage
-    	if (whichimage<numberOfImages-1)
-    		whichimage++
-    	else
-    		whichimage=0
-    	setTimeout("slideit()",slideshowspeed)
 
-	}	
+	function slideit(){
+	    if(cineloop==0 || $("img"+whichimage) == null){
+    	      return
+    	    }
+    	    $('picture').src=$("img"+whichimage).src; 
+            if(multiFrames == true) {
+    	         $('number').innerHTML="Frame "+(whichimage+1)+" of "+numberOfImages;
+	         if(ftv == null)
+		     changeSpeed(slideshowspeed);
+	         else
+	             changeSpeed(ftv[fti]);
+	         fti++;
+	         if(fti == numberOfImages-1) {
+	              fti = 0;
+	         }
+           }
+	   else {
+    	       $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
+               $('cineSlider').title = slideshowspeed;
+	   }
+	   inc=whichimage;
+           whichlink=whichimage
+    	   if (whichimage<numberOfImages-1)
+    		whichimage++
+    	   else
+    		whichimage=0;
+           interval = setTimeout("slideit()",slideshowspeed);
+	}
+	
 		
 	function changeSpeed(speedval){
 		slideshowspeed=parseInt(speedval);			
@@ -763,6 +769,11 @@
 		}	
 	}
 	
+	function changeInstanceBorder(ins_id)
+	{
+		document.getElementById(ins_id).style.border = "2px solid #FF0000";
+	}
+	
 	function changeSeriesBorder(which){	
 		if(borderSeries==''){		
 			borderSeries = which;
@@ -784,8 +795,32 @@
 	}
  
 	function changeSpeed1(ft) {
-	    ftv = ft.split(":");
-	    changeSpeed(ftv[fti]);
+		stopTimer();		
+		if(ft != "\r\n") {
+	          ftv = ft.split(":");
+                  changeSpeed(ftv[fti]);
+		 fps = parseInt(1000/ftv[fti]);
+	      }
+
+		//cineSlider.setValue(0.5, 0);
+
+		cineSlider.dispose();
+		cineSlider = new Control.Slider('cineHandle','cineTrack',{axis:'horizontal', minimum:100, maximum:1000, alignX:00,increment:100, sliderValue:0.5});
+		$('cineSlider').title = fps+" fps";
+
+		cineSlider.options.onSlide = function(value){
+			changeSpeed(1000-(value*1000));
+		}
+		cineSlider.options.onChange = function(value){
+			ftv = null;
+			var t1=Math.round(value*(fps*2));
+			if(t1<=0) {
+ 			   t1=1;
+			}
+			var t2=1000/t1;
+			changeSpeed(t2);
+			$('cineSlider').title = t1+" fps";
+		}
 	}
 	
 	function changeDataset() {
@@ -829,3 +864,16 @@
 		if(parseInt(resolution) > 512)
 			document.getElementById("full_resolution").style.visibility = "visible";
 	  }	
+	  
+	  function resetLoop() 
+	  {
+			stopTimer();		
+			cineSlider.dispose();
+			cineSlider = new Control.Slider('cineHandle','cineTrack',{axis:'horizontal', minimum:100, maximum:1000, alignX:00,increment:100, sliderValue:0.5});
+			cineSlider.options.onSlide = function(value){
+				changeSpeed(1000-(value*1000));
+			}
+			cineSlider.options.onChange = function(value){
+				changeSpeed(1000-(value*1000));
+			}
+	  }

@@ -98,7 +98,7 @@
 	<study:Study patientId="${patientId}" modality="${param.modality}">	
 						<tr>						
 							<td id="plusTD" class = "studyInfo" onclick=" addRow(${no},'seriesDetails.jsp?patient=${patientId }&study=${studyId}&studyDescription=${StudyDesc }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}');"><center><img alt="" title="click to expand/shrink this study" id="expand${no}" src="images/TopPlus1.gif" class="expand"></center></td>
-							<td id="studyDescTD" class = "studyInfo" colspan="3" onclick= 'hidePatient(); document.getElementById("imagePane").innerHTML=""; ajaxpage("seriesPane", "SeriesInfo.jsp?patient=${patientId }&study=${studyId}&studyDescription=${studyDescription }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}"); return false'>
+							<td id="studyDescTD" class = "studyInfo" colspan="3" onclick= 'hidePatient(); document.getElementById("imagePane").innerHTML=""; ajaxpage("seriesPane", "SeriesInfo.jsp?patient=${patientId }&study=${studyId}&studyDescription=${studyDescription }&sex=${sex }&birthDate=${birthDate }&studyDates=${studyDates }&physicianName=${physicianName}"); resetLoop(); return false'>
 								${studyDescription}
 							</td>
 							<td id="modalityTD">
