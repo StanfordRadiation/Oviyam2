@@ -19,8 +19,7 @@
 	var ftv = new Array();
 	var fti = 0;
 	var fps = 30;
-	
-	
+	var selectedInstanceIndex = null;	
 	var vlc_controls = null;
 
 	function setCursor(){
@@ -541,11 +540,19 @@
 	function loadDataSet(url,imgurl){
 		if($("mymovie") != null)
 			document.getElementById('mymovie').style.visibility = 'hidden';
-		$('dataSetImage').src=$("img"+whichimage).src;
+		
+		if(multiFrames == true) {
+			$('dataSetImage').src=$("img"+selectedInstanceIndex).src;
+			var dataset = $("imgs"+selectedInstanceIndex).name;
+		} else {
+			$('dataSetImage').src=$("img"+whichimage).src;
+			var dataset = $("imgs"+whichimage).name;
+		}
+	
 		$('dataSet').style.visibility="visible";
 		$('dataSetPatient').innerHTML=$('patientDisName').innerHTML;
 		$('stuDesc').innerHTML=$('patStudyDesc').innerHTML;
-		var dataset = $("imgs"+whichimage).name;			
+		
 		dataset = dataset.replace(/amp;/,'');			
 		var datasetURL = 'DICOMDataset.do?datasetURL='+dataset;			
 		ajaxpage('dataSetHolder',datasetURL);	

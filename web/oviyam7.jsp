@@ -637,10 +637,10 @@
 <center>
 <div id="dataSet" style="visibility:hidden;">
 <div id="dsImageHolder"><img src="" title="Back to Image"
-	id="dataSetImage" alt="" onclick="hideDataSet();">
+	id="dataSetImage" alt="" onclick="hideDataSet();"><br>
 <div id="dataSetPatient" class="ds"></div>
 <br>
-<div id="stuDesc" class="ds"></div>
+<div id="stuDesc" class="ds"></div><br>
 <input type="button" value="Back to Image" onclick="hideDataSet();">
 </div>
 <div id="dataSetHolder"></div>

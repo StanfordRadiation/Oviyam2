@@ -45,6 +45,11 @@
 -->
 <%@page contentType="text/html"%>
 
+<style>
+	#modalityTable { width:85%; }
+        #modalityTable td {vertical-align: bottom; }
+</style>
+
 <table class="searchTable" id="searchTable" width="100%" style="color:#FFFFFF;">
 	<tr>
 		<td>
@@ -120,7 +125,7 @@
 		</td>
 		<td >
 		
-		<table class="searchTable">
+		<table class="searchTable" id="modalityTable">
 			<tr>
 				<td> <input  type="radio" name="modality" value="ALL" checked="checked"></td><td>ALL</td>
 				<td> <input  type="radio" name="modality" value="CR"></td><td>CR</td>
