@@ -492,6 +492,12 @@
 				grp=grpElements[i].value
 			}
 		}
+
+		if ( grp=="between" && $("from").value=="" && $("to").value=="" )
+		{
+			alert('From/To date field kept blank...!');
+			return;
+		}
 		
 		if((moda=="ALL") && grp=="All Date" && $("patientId").value=="" && $("patientName").value=="" && $("accNo").value=="" && $("birthDate").value==""){
 				
@@ -519,7 +525,7 @@
 		
 		var filename="patient.jsp?patientId="+$('patientId').value+ 
 		"&patientName="+$('patientName').value+
-		"&modality="+moda+"&group1="+grp+"&from="+$('from').value+"&to="+$('to').value+"&accessionNumber="+$('accNo').value+"&birthDate="+$('birthDate').value;
+		"&modality="+moda+"&group1="+grp+"&from="+$('from').value+"&to="+$('to').value+"&accessionNumber="+$('accNo').value+"&birthDate="+$('birthDate').value.replace(/\//g,''); 
 		
 		$('seriesPane').innerHTML="";
 		$('imagePane').innerHTML="";	
