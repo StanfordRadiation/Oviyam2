@@ -69,6 +69,10 @@ public class DcmWindowLevel extends HttpServlet{
 	 */
 	private static Logger log = Logger.getLogger(DcmWindowLevel.class);
 	
+	private static final String WINDOW_CENTER_PARAM = "windowCenter";
+	
+	private static final String WINDOW_WIDTH_PARAM = "windowWidth";
+	
 	int[] dicomData = new int[10*1024];
 	
 	@Override
@@ -108,16 +112,11 @@ public class DcmWindowLevel extends HttpServlet{
 			
 			String windowCenter = getElementValue("00281050");
 			String windowWidth = getElementValue("00281051");
-
-			// remove the already exists window center and window width values
-			
-			getServletContext().removeAttribute(windowCenter);
-			getServletContext().removeAttribute(windowWidth); 
 			
 			// set the window center and window width attributes
 			
-			getServletContext().setAttribute("windowCenter",windowCenter);
-			getServletContext().setAttribute("windowWidth",windowWidth); 
+			getServletContext().setAttribute(WINDOW_CENTER_PARAM, windowCenter == null ? null : windowCenter.trim());
+			getServletContext().setAttribute(WINDOW_WIDTH_PARAM, windowWidth == null ? null : windowWidth.trim()); 
 			
 			dis.skipBytes(50000000);
 				
