@@ -15,12 +15,20 @@
 			WLdrag=true;
 			adjustWLWW();
 			drag=true;
-			document.getElementById('picture').style.cursor="move";
+			
+			var pic = document.getElementById('picture');
+			if (pic)
+			    pic.style.cursor="move";
+		
 			document.getElementById("moveButton").style.background="transparent url('images/icons/icn_fit_on.png') no-repeat center 0px ";
 			document.getElementById("moveText").style.color="#FFFFFF";
 		}else{
 			drag=false;
-			document.getElementById('picture').style.cursor="default";
+			
+			var pic = document.getElementById('picture');
+			if (pic)
+			    pic.style.cursor="default";
+
 			document.getElementById("moveButton").style.background="transparent url('images/icons/icn_fit_off.png') no-repeat center 0px ";
 			document.getElementById("moveText").style.color="#616161";
 		}
@@ -38,7 +46,9 @@
 	
 	function selectmouse(e){
 		var fobj       = nn6 ? e.target : event.srcElement;
-		var topelement = nn6 ? "HTML" : "TABLE.TD";
+		
+		var topelement = nn6 ? "HTML" : "BODY";
+	
 		while (fobj.tagName != topelement && fobj.className != "dragme"){
 			fobj = nn6 ? fobj.parentNode : fobj.parentElement;
 		}	

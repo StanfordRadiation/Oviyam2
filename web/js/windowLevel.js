@@ -5,6 +5,7 @@ var queryLength=0;
 var WLdrag=false;
 var sx,sy,wc,ww;
 
+var isIE = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
 
 function popupQueryOptions() {
 	 document.getElementById('searchPane1').style.visibility='visible';
@@ -126,20 +127,53 @@ function adjustWLWW(){
 		WLdrag=true;
 		document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_on.png') no-repeat center 0px ";
 		document.getElementById("wcText").style.color="#FFFFFF";
-	    document.getElementById('imageHolder').addEventListener("mousedown",startDrag,false);
-        document.getElementById('imageHolder').addEventListener("mouseup",endDrag,false);   
-		document.getElementById('wcButton').removeEventListener("mouseover",WLMouseOver,false);
-		document.getElementById('wcButton').removeEventListener("mouseout",WLMouseOut,false);
+		
+	    var ih = document.getElementById('imageHolder');
+        if (ih){
+            if (isIE){
+                ih.attachEvent("onmousedown",startDrag);
+                ih.attachEvent("onmouseup",endDrag);  
+                ih.attachEvent("onmousemove", IEMouseMove);
+            } else {
+                ih.addEventListener("mousedown",startDrag,false);
+                ih.addEventListener("mouseup",endDrag,false);
+            }
+        }
+        var wcb = document.getElementById('wcButton');
+        if (isIE){   
+            wcb.detachEvent("onmouseover",WLMouseOver);
+            wcb.detachEvent("onmouseout",WLMouseOut);
+        } else if (ih.attachEvent){
+            wcb.removeEventListener("mouseover",WLMouseOver,false);
+            wcb.removeEventListener("mouseout",WLMouseOut,false);
+        }
+		
 		wc=globalWC;
 		ww=globalWW;
 	}else{
 		WLdrag=false;
 		document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_off.png') no-repeat center 0px ";
 		document.getElementById("wcText").style.color="#616161";
-	    document.getElementById('imageHolder').removeEventListener("mousedown",startDrag,false);
-        document.getElementById('imageHolder').removeEventListener("mouseup",endDrag,false); 
-		document.getElementById('wcButton').addEventListener("mouseover",WLMouseOver,false);
-		document.getElementById('wcButton').addEventListener("mouseout",WLMouseOut,false);
+		
+	    var ih = document.getElementById('imageHolder');
+	    if (ih){
+	        if (isIE){
+        	    ih.detachEvent("onmousedown",startDrag);
+                ih.detachEvent("onmouseup",endDrag);
+                ih.detachEvent("onmousemove", IEMouseMove);
+	        } else {
+        	    ih.removeEventListener("mousedown",startDrag,false);
+                ih.removeEventListener("mouseup",endDrag,false);
+	        }   
+	    }
+		var wcb = document.getElementById('wcButton');
+	    if (isIE){
+    		wcb.attachEvent("onmouseover",WLMouseOver);
+    		wcb.attachEvent("onmouseout",WLMouseOut);
+        } else if (ih.detachEvent){
+    		wcb.addEventListener("mouseover",WLMouseOver,false);
+    		wcb.addEventListener("mouseout",WLMouseOut,false);
+        }
 	}
 }
 
@@ -147,14 +181,18 @@ function startDrag(e) {
    	if(e.preventDefault) {
 	  	e.preventDefault();
    	}
-   	sx=e.pageX;
-   	sy=e.pageY;
+   	
+   	sx = e.pageX ? e.pageX : e.x;
+   	sy = e.pageY ? e.pageY : e.y;
+   	
+   	return false;
 }
 
 function endDrag(e) {
 	var srcc=document.getElementById('picture').src;
-    var ex=e.pageX;
-	var ey=e.pageY;
+	
+    var ex = e.pageX ? e.pageX : e.x;
+	var ey = e.pageY ? e.pageY : e.y;
 
 	if(ex>sx) 
 	   ww = parseInt(ww) + (ex-sx);
@@ -183,6 +221,11 @@ function endDrag(e) {
    	valuesApplied=false;
 }
 
+function IEMouseMove(e){
+    // The mousemove event needs to be cancelled in IE otherwise the mouseup event will not fire after the mouse is dragged.
+    return false;   
+}
+
 function WLMouseOver(e) {
 	document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_on.png') no-repeat center 0px ";
 	document.getElementById("wcText").style.color="#FFFFFF";
@@ -192,4 +235,3 @@ function WLMouseOut(e) {
 	document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_off.png') no-repeat center 0px ";
 	document.getElementById("wcText").style.color="#616161";
 }
-
