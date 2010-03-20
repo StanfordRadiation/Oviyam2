@@ -21,6 +21,7 @@
 	var fps = 30;
 	var selectedInstanceIndex = null;	
 	var vlc_controls = null;
+	var isWLAdjusted = false;
 
 	function setCursor(){
 		if(selected=="black"){
@@ -275,7 +276,9 @@
 		inc=which;
 		whichimage=which;
 		var imgsrc = $("img"+which).src;
-		if(globalWC!=0 && globalWW!=0)
+	
+		//if(globalWC!=0 && globalWW!=0)
+	    if(isWLAdjusted == true)
 			imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		$('picture').src=imgsrc;
 		$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
@@ -296,7 +299,9 @@
 		inc++;		
 		try{
 		    var imgsrc = $("img"+inc).src;
-		    if(globalWC!=0 && globalWW!=0)
+		    
+		    //if(globalWC!=0 && globalWW!=0)
+		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
 		    showWindowAttributes(globalWC,globalWW);
@@ -316,7 +321,9 @@
 		inc--;
 		try{
 		    var imgsrc = $("img"+inc).src;
-		    if(globalWC!=0 && globalWW!=0)
+		    
+		    //if(globalWC!=0 && globalWW!=0)
+		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
 		    showWindowAttributes(globalWC,globalWW);

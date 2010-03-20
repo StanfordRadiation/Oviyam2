@@ -65,6 +65,7 @@ function applyPreview() {
 }
 
 function applyAllValues(){
+    isWLAdjusted = true;
     globalWC=document.getElementById('wc').value;
     globalWW=document.getElementById('ww').value;
     showWindowAttributes(globalWC,globalWW);
@@ -123,6 +124,7 @@ function showWindowAttributes(winCenter,winWidth) {
 function adjustWLWW(){
 	if(WLdrag==false){
 		drag=true;
+	    isWLAdjusted = true;
 		dragMe();
 		WLdrag=true;
 		document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_on.png') no-repeat center 0px ";
