@@ -115,8 +115,8 @@ public class DcmWindowLevel extends HttpServlet{
 			
 			// set the window center and window width attributes
 			
-			getServletContext().setAttribute(WINDOW_CENTER_PARAM, windowCenter == null ? null : windowCenter.trim());
-			getServletContext().setAttribute(WINDOW_WIDTH_PARAM, windowWidth == null ? null : windowWidth.trim()); 
+			request.getSession(true).setAttribute(WINDOW_CENTER_PARAM, windowCenter == null ? null : windowCenter.trim());
+			request.getSession(true).setAttribute(WINDOW_WIDTH_PARAM, windowWidth == null ? null : windowWidth.trim());
 			
 			dis.skipBytes(50000000);
 				
