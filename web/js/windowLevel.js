@@ -2,7 +2,6 @@ var windowWidth;
 var windowCenter;
 var valuesApplied=false;
 var queryLength=0;
-var WLdrag=false;
 var sx,sy,wc,ww;
 
 var isIE = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
@@ -122,14 +121,11 @@ function showWindowAttributes(winCenter,winWidth) {
 }
 
 function adjustWLWW(){
-	if(WLdrag==false){
-		drag=true;
-	    isWLAdjusted = true;
-		dragMe();
-		WLdrag=true;
-		document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_on.png') no-repeat center 0px ";
-		document.getElementById("wcText").style.color="#FFFFFF";
 		
+		jQuery("#toolBar").data("mode","wlww");
+	    isWLAdjusted = true;
+		jQuery("#wcButton").removeClass("wcButton").addClass("wcButtonOn");
+
 	    var ih = document.getElementById('imageHolder');
         if (ih){
             if (isIE){
@@ -152,31 +148,42 @@ function adjustWLWW(){
 		
 		wc=globalWC;
 		ww=globalWW;
-	}else{
-		WLdrag=false;
-		document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_off.png') no-repeat center 0px ";
-		document.getElementById("wcText").style.color="#616161";
 		
-	    var ih = document.getElementById('imageHolder');
-	    if (ih){
-	        if (isIE){
-        	    ih.detachEvent("onmousedown",startDrag);
-                ih.detachEvent("onmouseup",endDrag);
-                ih.detachEvent("onmousemove", IEMouseMove);
-	        } else {
-        	    ih.removeEventListener("mousedown",startDrag,false);
-                ih.removeEventListener("mouseup",endDrag,false);
-	        }   
-	    }
-		var wcb = document.getElementById('wcButton');
-	    if (isIE){
-    		wcb.attachEvent("onmouseover",WLMouseOver);
-    		wcb.attachEvent("onmouseout",WLMouseOut);
-        } else if (ih.detachEvent){
-    		wcb.addEventListener("mouseover",WLMouseOver,false);
-    		wcb.addEventListener("mouseout",WLMouseOut,false);
-        }
-	}
+		
+		var wlOff = function() {
+    	    jQuery("#wcButton").removeClass("wcButtonOn").addClass("wcButton");
+            //document.getElementById("wcButton").style.background="transparent url('images/icons/icn_bricon_off.png') no-repeat center 0px ";
+            //document.getElementById("wcText").style.color="#878B8E";
+
+            var ih = document.getElementById('imageHolder');
+            if (ih){
+                if (isIE){
+            	    ih.detachEvent("onmousedown",startDrag);
+                    ih.detachEvent("onmouseup",endDrag);
+                    ih.detachEvent("onmousemove", IEMouseMove);
+                } else {
+            	    ih.removeEventListener("mousedown",startDrag,false);
+                    ih.removeEventListener("mouseup",endDrag,false);
+                }   
+            }
+            var wcb = document.getElementById('wcButton');
+            if (isIE){
+            	wcb.attachEvent("onmouseover",WLMouseOver);
+            	wcb.attachEvent("onmouseout",WLMouseOut);
+            } else if (ih.detachEvent){
+            	wcb.addEventListener("mouseover",WLMouseOver,false);
+            	wcb.addEventListener("mouseout",WLMouseOut,false);
+            }
+            jQuery(".toolBarButton").unbind("click.disableMode.WC");
+            jQuery("#wcButton").click(adjustWLWW);
+            jQuery("#wcButton").hover(function(){jQuery(this).addClass("wcButtonHover")},function(){jQuery(this).removeClass("wcButtonHover")});
+            jQuery("#toolBar").data("mode","none");
+    	};
+
+		jQuery("#wcButton").removeClass("wcButtonHover");
+        jQuery("#wcButton").unbind();
+        jQuery(".toolBarButton:not(#configButton,#infoButton,#presetButton)").bind("click.disableMode.WC", wlOff);
+		
 }
 
 function startDrag(e) {

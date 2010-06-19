@@ -21,6 +21,9 @@
 		if (!document.all&&!document.getElementById)
 		return;
 		whatcache=eval("document.images."+what);
+		if (!whatcache){
+		    return;
+		}
 		prefix=(state=="in")? 1 : -1;
 		if (whatcache.style.width==""||state=="restore"){
 			whatcache.style.width=originalW+'px';
@@ -41,24 +44,33 @@
 	}
 	
 	function zoomOnOff(){
-		
 	
-		if(zoomFlag==false){		
-			zoomFlag=true;
-			document.getElementById('zoomInButton').style.visibility="visible";
-			document.getElementById('zoomOutButton').style.visibility="visible";
-			document.getElementById("zoomButton").style.background="transparent url('images/icons/icn_zoom_on.PNG') no-repeat center 0px ";
-			document.getElementById('zoomText').innerHTML="Zoom off";
-			
-			document.getElementById('zoomText').style.color="#FFFFFF";
-			
-			
-		}else{		
-			zoomFlag=false;
-			document.getElementById('zoomInButton').style.visibility="hidden";
-			document.getElementById('zoomOutButton').style.visibility="hidden";
-			document.getElementById("zoomButton").style.background="transparent url('images/icons/icn_zoom_off.PNG') no-repeat center 0px ";
-			document.getElementById('zoomText').innerHTML="Zoom on";
-			document.getElementById('zoomText').style.color="#616161";
-		}	
+	   zoomFlag=true;
+	   jQuery("#toolBar").data("mode","zoom");
+	   
+	   var zoomOff = function(){
+	       zoomFlag=false;
+       	   document.getElementById('zoomInButton').style.visibility="hidden";
+       	   document.getElementById('zoomOutButton').style.visibility="hidden";
+       	   //document.getElementById("zoomButton").style.background="transparent url('images/icons/icn_zoom_off.PNG') no-repeat center 0px ";
+       	   document.getElementById('zoomText').innerHTML="Zoom on";
+       	   //document.getElementById('zoomText').style.color="#616161";
+       	   
+       	   jQuery("#zoomButton").removeClass("zoomButtonOn").addClass("zoomButton");
+           jQuery(".toolBarButton").unbind("click.disableMode.Zoom");
+           jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover")},function(){jQuery(this).removeClass("zoomButtonHover")});
+           jQuery("#zoomButton").click(zoomOnOff);
+           jQuery("#toolBar").data("mode","none");
+	   };
+	   
+	   document.getElementById('zoomInButton').style.visibility="visible";
+	   document.getElementById('zoomOutButton').style.visibility="visible";
+	   //document.getElementById("zoomButton").style.background="transparent url('images/icons/icn_zoom_on.PNG') no-repeat center 0px ";
+	   document.getElementById('zoomText').innerHTML="Zoom off";
+	   //document.getElementById('zoomText').style.color="#FFFFFF";
+	   jQuery("#zoomButton").unbind();
+       jQuery(".toolBarButton:not(#configButton,#infoButton,#presetButton)").bind("click.disableMode.Zoom", zoomOff);
+       jQuery("#zoomButton").removeClass("zoomButton").addClass("zoomButtonOn");
+       jQuery("#zoomButton").removeClass("zoomButtonHover");
+		
 	}

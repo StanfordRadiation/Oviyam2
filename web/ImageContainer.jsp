@@ -51,6 +51,8 @@
 <%@ page isELIgnored="false" %>
 <%@ page errorPage="ErrorPage.jsp" %>
 <%@ taglib prefix="img" uri="ImageInfo" %>
+<%@ taglib prefix="lbx" uri="LightBox" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -99,7 +101,11 @@
 	<div class="shadow" id="patStudyDate">${param.studyDates}</div>
 	<div class="shadow" id="patModality">${param.modality}</div>
 	
-        <div class="shadow" id="number">Frame 1 of ${param.totalImages }</div>
+	<div class="shadow" id="windowLevel"></div>
+	<div class="shadow" id="pixelSpacing"></div>
+	<div class="shadow" id="nativeRes"></div>
+	
+    <div class="shadow" id="number">Frame 1 of ${param.totalImages }</div>
 	<table id="imgTable">
 		<tr>
 			<td class="imageHolder">
@@ -123,19 +129,23 @@
 	<div class="shadow" id="patModality">${param.modality}</div>
 	
 	<div class="shadow" id="windowLevel"></div>
+	<div class="shadow" id="pixelSpacing"></div>
+	<div class="shadow" id="nativeRes"></div>
 	
 	<div class="shadow" id="full_resolution" style="visibility:hidden;" onclick="showFullResolution();">&nbsp;View Full Resolution&nbsp;</div>
 	
 	<div class="shadow" id="number">Image 1 of ${param.totalImages }</div>
 	<table id="imgTable">
 		<tr>
+			<lbx:LightBox patientId="${param.patient}" study="${param.study}" seriesId="${param.series}" objectId="${param.imageId}" >
 			<td class="imageHolder">
 				<div id = "imageHolder" class="imageHolder">
-					<center>
-						<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&rows=512" width="512" id="picture" onload="if('${windowCenter}'!='' && globalWC==0 && globalWW==0) {defaultWC=globalWC='${windowCenter}'; defaultWW=globalWW='${windowWidth}'; showWindowAttributes(globalWC,globalWW);}">
-				 	</center>
+				
+						<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&rows=${rows}" width="512" id="picture" onload="ajaxDicomHeaders(this)"></img>
+				 	
 				 </div>
 			<td>
+			</lbx:LightBox>
 		</tr>
 	</table>
 
@@ -156,7 +166,7 @@
 	<%-- thumbNailHolder Div to contain the thumbnails of the selected Series. --%>
 	<div id="thumbNailHolder">
 	
-	<%-- Image tag that gives the instance informations--%>
+	<%-- Image tag that gives the instance information--%>
 	<img:Image patientId="${param.patient}" study="${param.study}" seriesId="${param.series}" >
 		<div class="scale-item">
 			<div class="imgNo">${instanceNumber}</div>

@@ -149,7 +149,7 @@ public class ImageHandler extends SimpleTagSupport {
 			 */
 			imageInfo = new ImageInfo();
 			AE ae = new AE();
-			imageInfo.callFindWithQuery(patientId, study,	seriesId);
+			imageInfo.callFindWithQuery(patientId, study, seriesId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("Unable to create instance of ImageInfo and access the callFindWithQuery()",e);

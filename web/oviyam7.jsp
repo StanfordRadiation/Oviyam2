@@ -57,31 +57,26 @@
 
 <title>Oviyam</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+<script type="text/javascript" language="javascript" src="js/lib/prototype.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/oviyam7.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/imageDrag.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/imageZoom.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/ajaxLoadPage.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/keyNavigation.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/sortTable.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/webtoolkit.sortabletable.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/lib/prototype.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/src/scriptaculous.js"></script>
-<script type="text/javascript" language="javascript"
-	src="js/DatePicker.js"></script>
+<script type="text/javascript" language="javascript" src="js/imageDrag.js"></script>
+<script type="text/javascript" language="javascript" src="js/imageZoom.js"></script>
+<script type="text/javascript" language="javascript" src="js/ajaxLoadPage.js"></script>
+<script type="text/javascript" language="javascript" src="js/keyNavigation.js"></script>
+<script type="text/javascript" language="javascript" src="js/sortTable.js"></script>
+<script type="text/javascript" language="javascript" src="js/webtoolkit.sortabletable.js"></script>
+<script type="text/javascript" language="javascript" src="js/src/scriptaculous.js"></script>
+<script type="text/javascript" language="javascript" src="js/DatePicker.js"></script>
 <script type="text/javascript" language="javascript" src="js/windowLevel.js"></script>
-
 <script type="text/javascript" language="javascript" src="js/VLCobject.js"></script>
 <script type="text/javascript" language="javascript" src="js/VLCcontrols.js"></script>
 <script type="text/javascript" language="javascript" src="js/ExternalLibLoader.js"></script>
+<script type="text/javascript" language="javascript" src="js/imageMeasure.js"></script>
+<script type="text/javascript" language="javascript" src="js/LightBox.js"></script>
+<script type="text/javascript" language="javascript" src="js/Ruler.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/raphael-min.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/raphaelle.js"></script>
 
 <c:choose>
 	<c:when test="${param.studyUID != null && param.seriesUID!=null}">
@@ -127,7 +122,7 @@
 	<c:otherwise> style="background:#232323;" </c:otherwise></c:choose>>
 <div id="pageHeader">
 <button id="searchButton" class="large"
-	onclick="ajaxpage('searchTools','SearchPopup.jsp'); new Effect.SlideDown('searchPane',{duration:0.5}); 
+	onclick="resetAll(); ajaxpage('searchTools','SearchPopup.jsp'); new Effect.SlideDown('searchPane',{duration:0.5}); 
 	document.getElementById('buttons').style.visibility='visible';
 	document.getElementById('divider').style.visibility='visible';
 	keynav=0;keyaplhabet=0; hideDataSet(); 
@@ -146,32 +141,36 @@
 
 <div id="infoButton" class="toolBarButton" onclick="loadDataSet('','');"
 	onmouseout="clearzoom()">
-<div class="toolBarText">DICOM Info</div>
+<div class="toolBarText toolBarTextNonMode">DICOM Info</div>
 </div>
 
 <div id="configButton" class="toolBarButton"
 	onclick="keynav=0; configServer('${applicationScope.serverConfig.aeTitle}','${applicationScope.serverConfig.hostName}','${applicationScope.serverConfig.port}','${applicationScope.serverConfig.wadoPort}'); document.getElementById('configPane').style.visibility='visible'; new Effect.SlideDown('configPane',{duration:0.5});">
-<div class="toolBarText">Config</div>
+	<div class="toolBarText toolBarTextNonMode">Config</div>
 </div>
 
-<div id="wcButton" class="toolBarButton" onclick="adjustWLWW();">
-<div class="toolBarText" id="wcText">WL/WW</div>
+<div id="wcButton" class="wcButton toolBarButton">
+	<div class="toolBarText" id="wcText">WL/WW</div>
 </div>
 
 <div id="presetButton" class="toolBarButton" onclick="popupQueryOptions();">
-<div class="toolBarText" id="presetText">Preset</div>
+	<div class="toolBarText toolBarTextNonMode" id="presetText">Preset</div>
 </div>
 
 <div id="resetButton" class="toolBarButton" onclick="resetAll();">
-<div class="toolBarText">Reset</div>
+	<div class="toolBarText toolBarTextNonMode">Reset</div>
 </div>
 
-<div id="moveButton" class="toolBarButton" onclick="dragMe();">
-<div class="toolBarText" id="moveText">Move</div>
+<div id="moveButton" class="toolBarButton moveButton">
+	<div class="toolBarText" id="moveText">Move</div>
 </div>
 
-<div id="zoomButton" class="toolBarButton" onclick="zoomOnOff();">
-<div class="toolBarText" id="zoomText">Zoom on</div>
+<div id="measureButton" class="measureButton toolBarButton">
+	<div class="toolBarText" id="measureText">Measure</div>
+</div>
+
+<div id="zoomButton" class="toolBarButton zoomButton">
+	<div class="toolBarText" id="zoomText">Zoom on</div>
 </div>
 
 <div id="zoomInButton" class="toolBarButton"
@@ -229,17 +228,17 @@
 					<div class="seriesDetails">${seriesDescs}</div>
 					<div class="seriesDetails">Total Images : ${numberOfImages}</div>
 
-					<c:if test="${modality =='SR' }">
+					<c:if test="${modality =='SR' }"> <%--Structured Reporting Document--%>
 						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
 					</c:if>
 
-					<c:if test="${modality =='KO' }">
+					<c:if test="${modality =='KO' }"> <%--Key Object Selection--%>
 						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
 					</c:if>
 
-
+<%-- Removing call to dcmWL, a separate ajax call is more appropriate. --%>
 					<div class="image"
-					    onclick="globalWC=globalWW=0; borderThumb=''; ajaxpage('','DcmWL?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}'); setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
+					    onclick="resetAll(); globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
 						width="128px" class="reflec"
 						src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
 
@@ -257,7 +256,7 @@
 					keynav=1;
 				</script>
 	</c:when>
-	
+
     <c:when test="${param.patientID == null && param.accessionNumber!=null && param.studyUID== null}">
 
 		<c:if test="${totalNoOfStudies==1}">
@@ -270,7 +269,7 @@
 						<div class="seriesDetails">${seriesDescs}</div>
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div>
 
-					<c:if test="${modality =='SR' }">
+					<c:if test="${modality =='SR' }"> 
 						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
 					</c:if>
 
@@ -279,7 +278,7 @@
 					</c:if>
 
 						<div class="image"
-					  	onclick="globalWC=globalWW=0; borderThumb=''; ajaxpage('','DcmWL?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${studyId}&seriesUID=${seriesId}&objectUID=${imageId}'); setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
+					  	onclick="resetAll();globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
 						width="128px" class="reflec"
 						src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
 
@@ -302,9 +301,9 @@
 	
 </c:choose></div>
 
-<div id="seriesDivider" onclick="hideSeries();"
-	title="Click or press 's' to toggle series visibility"><img
-	id="dividerImg" src="images/icn_grip1.gif" alt=""></div>
+<div id="seriesDivider" onclick="hideSeries();" title="Click or press 's' to toggle series visibility">
+	<img id="dividerImg" src="images/icn_grip1.gif" alt="">
+</div>
 
 <c:choose>
 	<c:when test="${param.studyUID == null && param.seriesUID ==null}">

@@ -39,7 +39,12 @@
 	<servlet>
 		<servlet-name>DcmWindowLevel</servlet-name>		
 		<servlet-class>in.raster.oviyam.servlet.DcmWindowLevel</servlet-class>
-	</servlet>	
+	</servlet>
+	
+	<servlet>
+		<servlet-name>DcmAttributeRetrieve</servlet-name>		
+		<servlet-class>in.raster.oviyam.servlet.DcmAttributeRetrieve</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>MultiFrames</servlet-name>		
@@ -54,6 +59,11 @@
 	<servlet-mapping>
 		<servlet-name>DcmWindowLevel</servlet-name>
 		<url-pattern>/DcmWL</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>DcmAttributeRetrieve</servlet-name>
+		<url-pattern>/DcmAttr</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

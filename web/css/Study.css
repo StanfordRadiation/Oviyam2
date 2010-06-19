@@ -1,5 +1,7 @@
 @CHARSET "ISO-8859-1";
-
+    img {
+        -ms-interpolation-mode: bicubic;
+    }
 	body {
 		margin: 0;
 		padding: 0;
@@ -20,6 +22,14 @@
 	table.searchTable{		
 		color:#FFFFFF;
 	}	
+	
+	.crosshair{
+	    cursor:crosshair;
+	}
+	
+	.move{
+	    cursor:move;
+	}
 	
 	.studyInfo{
 		color:#FFFFFF;
@@ -168,13 +178,14 @@
 		background-repeat: no-repeat;
 	}
 	
-	.toolBarButton:hover{
-		color:#616161;
-	}
 	
 	.toolBarText {
 		vertical-align: bottom;
 		padding-top: 30px;	
+	}
+	
+	.toolBarTextNonMode:hover{
+	    color:#FFFFFF;
 	}
 	
 	#infoButton{
@@ -198,14 +209,27 @@
 		color:#FFFFFF;
 	}
 	
-    #wcButton {
-        background-image: url('../images/icons/icn_bricon_off.png');
-	}
+    .wcButton {
+          background-image: url('../images/icons/icn_bricon_off.png');
+  	}
 
-    #wcButton:hover {
-        background-image: url('../images/icons/icn_bricon_on.png');
-		color: #FFFFFF;
-	}
+    .wcButtonHover {
+          background-image: url('../images/icons/icn_bricon_on.png');
+  		color: #FFFFFF;
+  	}
+
+  	.wcButtonOn {
+           background-image: url('../images/icons/icn_bricon_on.png');
+   	}
+
+   	.wcButtonOn .toolBarText {
+   	    color: #FFFFFF;
+   	}
+   	
+   	.wcButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+
 
     #presetButton {
         background-image: url('../images/icons/icn_bricon_off.png');
@@ -225,23 +249,67 @@
 		color:#FFFFFF;
 	}
 	
-	#moveButton {
+	.moveButton {
 		background-image:url('../images/icons/icn_fit_off.png');
 	}
 	
-	#moveButton:hover {
+	.moveButtonOn {
+	    background-image:url('../images/icons/icn_fit_on.png');
+	}
+	
+	.moveButtonHover {
 		background-image:url('../images/icons/icn_fit_on.png');
 		color:#FFFFFF;
 	}
 	
-	#zoomButton {
-		background-image:url(../images/icons/icn_zoom_off.PNG);
+	.moveButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+ 	
+ 	.moveButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+	
+	.measureButton {
+		background-image:url('../images/icons/icn_meas_off.png');
 	}
 	
-	#zoomButton:hover {
-		background-image:url(../images/icons/icn_zoom_on.PNG);
+	.measureButtonOn {
+	    background-image:url('../images/icons/icn_meas_on.png');
+	}
+	
+	.measureButtonHover {
+		background-image:url('../images/icons/icn_meas_on.png');
 		color:#FFFFFF;
 	}
+	
+	.measureButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+ 	
+ 	.measureButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+	
+	.zoomButton {
+		background-image:url('../images/icons/icn_zoom_off.PNG');
+	}
+	
+	.zoomButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+	.zoomButtonOn {
+		background-image:url('../images/icons/icn_zoom_off.PNG');
+	}
+	
+	.zoomButtonHover {
+		background-image:url('../images/icons/icn_zoom_on.PNG');
+		color:#FFFFFF;
+	}
+	
+	.zoomButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
 	
 	#zoomInButton {
 		visibility:hidden;
@@ -458,9 +526,29 @@
 
 	#windowLevel{
 	    position:absolute;	
-		width:100%;
+		width:auto;
 		left: 15px;
 		bottom:40px;
+		font-size: 15px;
+	}
+	
+	#pixelSpacing{
+	    position:absolute;	
+		width:auto;
+		/*vertical-align:middle;
+		text-align:left;	*/
+		right: 50px;
+		bottom:40px;
+		font-size: 15px;
+	}
+	
+	#nativeRes{
+	    position:absolute;	
+		width:auto;
+		/*vertical-align:middle;
+		text-align:left;	*/
+		right: 50px;
+		bottom:2px;
 		font-size: 15px;
 	}
 	
@@ -809,6 +897,8 @@
 	.dragme{
 		position:relative;		
 		border:1px solid #000;
+		margin-right:auto;
+		margin-left:auto;
 	}
 	
 	

@@ -46,16 +46,15 @@ var directSeries=0;
 			if(pr.indexOf("wado?") >=0)
 				document.getElementById(containerid).innerHTML = pr.replace(/wado?/g, "/wado");
 			else			
-				document.getElementById(containerid).innerHTML=pr;
+				document.getElementById(containerid).innerHTML = pr;
 			
 			document.getElementById("loadingView").style.visibility="hidden";
 
 			setPatientInfos();
-			
 			if(setImage == true){
-				
-				load();
-			
+			    // This function call actually downloads the images that wind up in the thumbnails, ImageContainer.jsp just puts thumbnails in there, and sets the name
+			    // attribute of the img tag equal to the path.
+				load();		
 			}
 			
 			if(directSeries==1){

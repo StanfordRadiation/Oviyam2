@@ -65,6 +65,7 @@ import org.dcm4che.data.Dataset;
 import org.dcm4che.dict.Tags;
 import org.dcm4che.util.DcmURL;
 
+
 /**
  * Queries(cFIND) the Instance informations from the machine(dcmProtocol://aeTitle@hostName:port).
  * @author bharathi
@@ -115,9 +116,10 @@ public class ImageInfo {
 	 * @param patientID
 	 * @param studyInstanceUID
 	 * @param seriesInstanceUID
+	 * @param SOPInstanceUID
 	 */
 	@SuppressWarnings("unchecked")
-	public void callFindWithQuery(String patientID, String studyInstanceUID, String seriesInstanceUID) {
+	public void callFindWithQuery(String patientID, String studyInstanceUID, String seriesInstanceUID, String SOPInstanceUID) {
 		ConfigProperties cfgCDimseService;
 		boolean isOpen;
 		Vector datasetVector;
@@ -143,6 +145,9 @@ public class ImageInfo {
 		cfgCDimseService.put("key.PatientID", patientID);
 		cfgCDimseService.put("key.StudyInstanceUID", studyInstanceUID);
 		cfgCDimseService.put("key.SeriesInstanceUID", seriesInstanceUID);
+		if (SOPInstanceUID != null){
+		    cfgCDimseService.put("key.SOPInstanceUID", SOPInstanceUID);
+		}
 
 		try {
 			cDimseService = new CDimseService(cfgCDimseService, url);

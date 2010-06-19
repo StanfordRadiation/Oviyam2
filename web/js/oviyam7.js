@@ -22,7 +22,28 @@
 	var selectedInstanceIndex = null;	
 	var vlc_controls = null;
 	var isWLAdjusted = false;
-
+	var pixelSpacing = 0;
+	var nativeRows = 0;
+	var nativeColumns = 0;
+	var timeout = null;
+    var	latestAjaxRequest = null;
+    
+    $.noConflict();
+    //Setup the toolbar handlers. These needed to be jQuery events, because mixing with regular events and jQuery style events was 
+    //causing odd behavior (events added to a click event during a click event were firing on that same click event.)
+    jQuery(function(){
+        jQuery("#toolBar").data("mode","none");
+        jQuery("#wcButton").click(adjustWLWW);
+        jQuery("#wcButton").hover(function(){jQuery(this).addClass("wcButtonHover")},function(){jQuery(this).removeClass("wcButtonHover")});
+        jQuery("#moveButton").click(dragMe);
+        jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover")},function(){jQuery(this).removeClass("moveButtonHover")});
+        jQuery("#measureButton").click(measureOn);
+        jQuery("#measureButton").hover(function(){jQuery(this).addClass("measureButtonHover")},function(){jQuery(this).removeClass("measureButtonHover")});
+        jQuery("#zoomButton").click(zoomOnOff);
+        jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover")},function(){jQuery(this).removeClass("zoomButtonHover")});
+    });
+    
+    
 	function setCursor(){
 		if(selected=="black"){
 			$("black").style.cursor="default";
@@ -273,16 +294,19 @@
 		$("dkgrey").style.background="transparent url('images/icons/icn_dkgrey_backColor.png') no-repeat scroll  0px -56px ";
 	}	
 	function changeslides(which){
+	    // If in measure mode, disable measure mode and go to new image
+		if (jQuery("#toolBar").data("mode") === "measure"){
+		    jQuery("#moveButton").first().trigger("click.disableMode");
+    	    jQuery("#toolBar").data("mode","none");
+		}
+		
 		inc=which;
 		whichimage=which;
 		var imgsrc = $("img"+which).src;
-	
-		//if(globalWC!=0 && globalWW!=0)
 	    if(isWLAdjusted == true)
 			imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		$('picture').src=imgsrc;
 		$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
-		showWindowAttributes(globalWC,globalWW);
 		valuesApplied=false;
 	}
 	
@@ -300,11 +324,10 @@
 		try{
 		    var imgsrc = $("img"+inc).src;
 		    
-		    //if(globalWC!=0 && globalWW!=0)
 		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
-		    showWindowAttributes(globalWC,globalWW);
+		    //showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
 			changeBorder($("img"+inc));	
 			$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
@@ -322,11 +345,10 @@
 		try{
 		    var imgsrc = $("img"+inc).src;
 		    
-		    //if(globalWC!=0 && globalWW!=0)
 		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
 		    $('picture').src=imgsrc;
-		    showWindowAttributes(globalWC,globalWW);
+		    //showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
 			changeBorder($("img"+inc));			
 			$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
@@ -340,17 +362,18 @@
 	}
 	
 	function setPatientInfos(){
-
 		if(ispatientlistvisible==0)
 		{	
+
 			$("patientDisName").style.visibility="visible";
-		$("patientDisName").innerHTML=$("patname").innerHTML;
-		window.document.title='Oviyam -'+$("patname").innerHTML;;
-		if(!$('loadingText'))return;
-		else
-		$('loadingText').innerHTML='Loading series...';
+		    $("patientDisName").innerHTML=$("patname").innerHTML;
+		    window.document.title='Oviyam -'+$("patname").innerHTML;;
+		    if(!$('loadingText'))return;
+		    else
+		    $('loadingText').innerHTML='Loading series...';
 		}
 	}
+	
 	function setPatientInfoVisible(patientName){
 			
 		if(ispatientlistvisible==0)
@@ -372,8 +395,6 @@
 		hideTools();
 	}
 	
-
-		
 	function hidePatient(){
 		if(hidepatient==0){
 			hidepatient=1;			
@@ -385,9 +406,8 @@
 			return false;
 		}
 		else{
-			
 			hidepatient=0;
-			ispatientlistvisible=1;
+			ispatientlistvisible=1; // This is the patient list from a search result
 			new Effect.SlideDown('patientDiv',{duration:1.0});			
 			$('seriesPane').style.visibility="hidden";	
 			$('imagePane').style.visibility="hidden";
@@ -451,6 +471,10 @@
 
 	
 	function resetAll(){
+	    if (!$('picture')){
+	        // If this was called before anything was viewed; ignore
+	        return;
+	    }
 		zoomFlag=true;
 		zoom(512,512,'picture','restore');
 		zoomFlag=false;
@@ -463,12 +487,13 @@
 		$('picture').style.filter='';
 		
 		var imageHolder = $('imageHolder');
-		var left = imageHolder.style.width/4 ;		
-		$('picture').style.left=left+"px";		
-		$("moveButton").style.background="transparent url('images/icons/icn_fit_off.png') no-repeat center 0px ";
-		$("moveText").style.color="#616161";
-		$("zoomButton").style.background="transparent url('images/icons/icn_zoom_off.PNG') no-repeat center 0px ";
-		$("zoomText").style.color="#616161";
+		if (imageHolder) {
+		    var left = imageHolder.style.width/4 ;		
+		    $('picture').style.left=left+"px";		
+	    }
+		// Disable any modes that are currently enabled.
+		jQuery("#moveButton").first().trigger("click.disableMode");
+	    jQuery("#toolBar").data("mode","none");
 		document.getElementById("zoomText").innerHTML="Zoom on";
 
 		var cs = document.getElementById('picture').src;
@@ -478,9 +503,14 @@
                   var rs = cs;
                 document.getElementById('picture').src = rs;
 
-	        globalWC = defaultWC;
-                globalWW = defaultWW;
-		showWindowAttributes(globalWC,globalWW);
+	    globalWC = defaultWC;
+        globalWW = defaultWW;
+        // Some modes do not have spots to show attributes
+        try{
+		    showWindowAttributes(globalWC,globalWW);
+	    } catch (e) {
+	        // We are in video mode with no access to those attributes.
+	    }
 	}
 	
 	var moda="";
@@ -534,19 +564,21 @@
 		"&patientName="+$('patientName').value+
 		"&modality="+moda+"&group1="+grp+"&from="+$('from').value+"&to="+$('to').value+"&accessionNumber="+$('accNo').value+"&birthDate="+$('birthDate').value.replace(/\//g,''); 
 		
-		$('seriesPane').innerHTML="";
+		$('seriesPane').innerHTML="";  // This is causing an issue when multiFrame = yes and the user hits search, not sure where the fix is yet. -JM
 		$('imagePane').innerHTML="";	
 		sortPatientTable();
-		ajaxpage('patientDiv', filename );
+	
 		hidepatient=1;
 		if(hidepatient==1){
-			hidePatient();					
+			hidePatient();
+			ajaxpage('patientDiv', filename );		 // Hacky fix to repair Search in multi frame mode			
 			$('viewPatient').style.color="#FFFFFF";			
 			$('viewSeries').style.color="#616161";
 			$('gridView').style.color="#616161";
 			$('mosaicView').style.color="#616161";
 			return false;			
 		}
+	    ajaxpage('patientDiv', filename );        // Hacky fix to repair Search in multi frame mode
 		$('loadingText').innerHTML='Loading patient/study details...';
 	}
 	
@@ -583,13 +615,22 @@
 			borderThumb.style.border="2px solid transparent";			
 		if(cineloop==0){			
 			cineloop=1;
-                        //$('cineSlider').title = slideshowspeed;
+			clearDicomHeaderInfo();
+            // If in measure mode, exit it, doesn't make sense to be measuring while looping.
+            if (jQuery("#toolBar").data("mode") === "measure"){
+        	    jQuery("#moveButton").first().trigger("click.disableMode");
+                jQuery("#toolBar").data("mode","none");
+        	}
+            
 			$('cineLoop').style.color="#FFFFFF";
 			$('cineSlider').style.visibility="visible";
 			$('cineLoop').style.background="url(images/icons/icn_play_1.png)  0px center no-repeat";
 			slideit();
 		}else{
 			cineloop=0;
+			if ($("picture")){
+			    ajaxDicomHeaders($("picture"));
+		    }
 			$('cineSlider').style.visibility="hidden";
 			$('cineLoop').style.background="url(images/icons/icn_play_0.png)  0px center no-repeat";
 			$('cineLoop').style.color="#616161";
@@ -722,13 +763,16 @@
 	function initMouseWheel(){
 		if($('picture')){
 			   var picture = $('picture');
-	 		if(window.addEventListener)	 	 	
+	 		if(window.addEventListener)	{
 	 	 		picture.addEventListener('DOMMouseScroll', wheel, false);
+ 	 		}
 	 	 	picture.onmousewheel = wheel;
 	 	}
 	 }
 
 	function handle(delta){
+		// We want top fetch image related info when the 
+		// user switches images.
 		switch (delta > 0){
 			case true:
 				prevImage();
@@ -738,6 +782,7 @@
 				break;
 		}
 	}
+	
 	var showdetails = 1;
 	function showDetails(){
 		if(showdetails==1){
@@ -749,7 +794,7 @@
 			
 		}else{
 			showdetails = 1;
-			var details = document.getElementsByClassName('shadow');		
+			var details = document.getElementsByClassName('shadow');	
 			 for (i=0; i < details.length; i++) {
 		 		details[i].style.visibility = 'visible';
 		 	}
@@ -896,4 +941,68 @@
 			cineSlider.options.onChange = function(value){
 				changeSpeed(1000-(value*1000));
 			}
+	  }
+	  
+	  function showDicomHeaderInfo(rows,cols,spacing){
+	      jQuery("#nativeRes").html("<p>Native Resolution:"+rows+"px by "+cols+"px</p>");
+	      jQuery("#pixelSpacing").html("Pixel Spacing: " +spacing);
+	      
+	  }
+	  
+	  function clearDicomHeaderInfo(){
+	      jQuery("#nativeRes").empty();
+  	      jQuery("#pixelSpacing").empty();
+	  }
+	  
+	  // This function will ask the server for the dicom information represented by the img tag passed in
+	  // Uses too many globals
+	  function ajaxDicomHeaders(img){
+	      // Currently we don't want to change header info if the user is in measure mode.
+	      // This is because the image is not changing, so the headers should not change
+	      if ((jQuery("#toolBar").data("mode") === "measure") || (cineloop)){
+	          return;
+	      }
+	      clearDicomHeaderInfo();
+	      if (timeout !== null){
+	           clearTimeout(timeout);
+	           timeout=null;
+	      }
+	      
+	      var url = "DcmAttr?"+img.src.split("?")[1];
+	      executeCall = function(){
+	          timeout = null;
+	          
+	          if (latestAjaxRequest !== null){
+      	          latestAjaxRequest.abort();
+      	          latestAjaxRequest = null;
+      	      }
+      	      
+	          latestAjaxRequest  = jQuery.getJSON(url, function(data){
+	            latestAjaxequest = null;
+	            if (data.status == "error") {
+	                if ((globalWC==0) && (globalWW==0)){  // Prevent overriding user adjusted values.
+      	                defaultWC=globalWC=0;
+      	                defaultWW=globalWW=0;
+                    }
+                    
+                    nativeRows    =    0;
+      	            nativeColumns =    0;
+      	            pixelSpacing  =    0;
+      	            showWindowAttributes(globalWC,globalWW);
+      	            showDicomHeaderInfo(nativeRows,nativeColumns,pixelSpacing);
+                    return;
+	            }
+  	            if ((globalWC==0) && (globalWW==0)){  // Prevent overriding user adjusted values.
+  	                defaultWC=globalWC=data.windowCenter;
+  	                defaultWW=globalWW=data.windowWidth;
+                }
+                
+  	            nativeRows =    data.nativeRows;
+  	            nativeColumns = data.nativeColumns; 
+  	            pixelSpacing =  data.pixelSpacing;
+  	            showWindowAttributes(globalWC,globalWW);
+  	            showDicomHeaderInfo(nativeRows,nativeColumns,pixelSpacing);
+  	        });
+	      }
+	      timeout = setTimeout(executeCall,150); 
 	  }

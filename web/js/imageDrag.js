@@ -5,33 +5,38 @@
 	var dobj;
 	var drag=false;
 
-
+    // Using jQuery event namespacing here to make it so that once a feature is turned on, it will automatically be disabled
+    // when another mode is enabled, this way as we add modes we don't have go back and change the code in every mode.
+    // Also removed references to wldrag, since we don't need them if we use the new event model
 	function dragMe(){
-	
-	//document.getElementById('picture').onmousemove = mouseMove;
-	//document.getElementById('picture').onmousedown = mouseDown; 
-	//document.getElementById('picture').onmouseup = mouseUp; 
-		if(drag==false){
-			WLdrag=true;
-			adjustWLWW();
-			drag=true;
-			
-			var pic = document.getElementById('picture');
-			if (pic)
-			    pic.style.cursor="move";
-		
-			document.getElementById("moveButton").style.background="transparent url('images/icons/icn_fit_on.png') no-repeat center 0px ";
-			document.getElementById("moveText").style.color="#FFFFFF";
-		}else{
-			drag=false;
-			
-			var pic = document.getElementById('picture');
-			if (pic)
-			    pic.style.cursor="default";
+		drag=true;
+		jQuery("#toolBar").data("mode","drag");
+		var pic = document.getElementById('picture');
+		if (pic){
+		    pic.style.cursor="move";
+	    }
+		//See note in imageMeasure.js about fixing this up
+		var dragOff = function(event){
+    	       drag=false;
+    	       jQuery("#moveButton").removeClass("moveButtonOn").addClass("moveButton");
+               jQuery(".toolBarButton").unbind("click.disableMode.Drag");
+               jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover")},function(){jQuery(this).removeClass("moveButtonHover")});
+               jQuery("#moveButton").click(dragMe);
+               var pic = document.getElementById('picture');
+               if (pic){
+                   pic.style.cursor="default";
+               }
+               jQuery("#toolBar").data("mode","none");
 
-			document.getElementById("moveButton").style.background="transparent url('images/icons/icn_fit_off.png') no-repeat center 0px ";
-			document.getElementById("moveText").style.color="#616161";
-		}
+    	};
+		jQuery("#moveButton").unbind();
+		jQuery(".toolBarButton:not(#configButton,#infoButton,#presetButton)").bind("click.disableMode.Drag", dragOff);
+		jQuery("#moveButton").removeClass("moveButton").addClass("moveButtonOn");
+		
+		// We need to take more control over the hover, turn it off when the button is pressed, and remove the class.
+		// Using the css hover did not work because it stopped working once we manually manipulated the classes, not exactly sure why though, perhaps once
+		// you change the class definition, the engine no longer considers the class to the same? This will work in all browser anyway.
+		jQuery("#moveButton").removeClass("moveButtonHover");
 	}
 	
 	function movemouse(e){
@@ -44,11 +49,10 @@
 	
 	var zoom=1;
 	
+	// This is always on, but only does something when drag == true
 	function selectmouse(e){
 		var fobj       = nn6 ? e.target : event.srcElement;
-		
 		var topelement = nn6 ? "HTML" : "BODY";
-	
 		while (fobj.tagName != topelement && fobj.className != "dragme"){
 			fobj = nn6 ? fobj.parentNode : fobj.parentElement;
 		}	

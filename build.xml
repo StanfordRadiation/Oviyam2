@@ -29,7 +29,7 @@
 	<property name="commonscli.jar" value="${lib.dir}/commons-cli-1.0.jar" />
 	<property name="getopt.jar" value="${lib.dir}/getopt.jar" />
 	<property name="services.jar" value="${lib.dir}/services.jar" />
-
+	<property name="json.jar" value="${lib.dir}/json.jar" />
 	
     <path id="ref.classpath">
 
@@ -52,6 +52,7 @@
 		<pathelement location="${commonscli.jar}" />
 		<pathelement location="${getopt.jar}" />
 		<pathelement location="${services.jar}" />
+		<pathelement location="${json.jar}" />
 		
 	 </path>
     <target name="main" depends="init,compile,war">

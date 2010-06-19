@@ -47,13 +47,15 @@
 <%@page errorPage="ErrorPage.jsp" %>
 <%@ taglib prefix="img" uri="ImageInfo" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%-- Why is this a full page worth of html? This is injected into a div. Commenting out html, head, title, and link tags for now - jeffm --%>
+<%--<html>
 <head>
 <title>Oviyam - Multiframe</title>
 <script type="text/javascript" src="js/MultiFrames.js"></script>
 <link type="text/css" rel="StyleSheet" href="./css/oviyam7.css">
 </head>
-<body bgcolor="#000000">	
+<body bgcolor="#000000">
+--%>	
 		<div id="left">			
 			<div class="shadow" id="patStudyDesc">${param.studyDescription }</div>
 			<div class="shadow" id="patSex">${param.sex }</div>
@@ -61,6 +63,10 @@
 			<div class="shadow" id="patBirthDate">${param.birthDate }</div>
 			<div class="shadow" id="patStudyDate">${param.studyDates}</div>
 			<div class="shadow" id="patModality">${param.modality}</div>
+			
+			<div class="shadow" id="windowLevel"></div>
+			<div class="shadow" id="pixelSpacing"></div>
+			<div class="shadow" id="nativeRes"></div>
 	
 			<table id="imgTable">
 				<tr>
@@ -123,6 +129,7 @@
 		numberOfFrames = ${param.numberOfFrames};
 		load();
  	</script>
+<%--
 </body>
 </html>
-
+--%>

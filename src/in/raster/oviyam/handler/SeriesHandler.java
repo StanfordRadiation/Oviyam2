@@ -211,7 +211,7 @@ public class SeriesHandler extends SimpleTagSupport{
 			 * particular study and series. 
 			 */
 			imageInfo = new ImageInfo();
-			imageInfo.callFindWithQuery(patientId, study,series.getSeriesUID());
+			imageInfo.callFindWithQuery(patientId, study,series.getSeriesUID(),null);
 			//ArrayList contains the InstanceModel objects.
 			ArrayList<InstanceModel> instances = imageInfo.getInstances();
 			if(instances.size()>=1)

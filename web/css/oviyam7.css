@@ -1,6 +1,8 @@
 @CHARSET "ISO-8859-1";
-
-
+	img {
+	    -ms-interpolation-mode: bicubic;
+	}
+	
 	body {
 		margin: 0;
 		padding: 0;
@@ -28,6 +30,14 @@
 	.seriesDetails{
 		color:#FFCC00;
 		font-family: Helvetica,  Arial;
+	}
+	
+	.crosshair{
+	    cursor:crosshair;
+	}
+	
+	.move{
+	    cursor:move;
 	}
 	
 	.studyInfo:hover{
@@ -168,20 +178,16 @@
 		background-repeat: no-repeat;
 	}
 
-	.toolBarButton:hover{
-		color:#616161;
-	}
-	
-
 	.toolBarText {
 		vertical-align: bottom;
 		padding-top: 30px;	
 		color:#878B8E;
 	}
 	
-	.toolBarText:hover {
-		color:#FFFFFF;
+	.toolBarTextNonMode:hover{
+	    color:#FFFFFF;
 	}
+	
 
 	#infoButton{
 		background-image:url('../images/icons/i_off.png');
@@ -202,14 +208,26 @@
 		color:#FFFFFF;
 	}
 
-    #wcButton {
+    .wcButton {
         background-image: url('../images/icons/icn_bricon_off.png');
 	}
 
-    #wcButton:hover {
+    .wcButtonHover {
         background-image: url('../images/icons/icn_bricon_on.png');
 		color: #FFFFFF;
 	}
+	
+	.wcButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+	
+	.wcButtonOn {
+         background-image: url('../images/icons/icn_bricon_on.png');
+ 	}
+ 	
+ 	.wcButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
 
     #presetButton {
         background-image: url('../images/icons/icn_bricon_off.png');
@@ -229,23 +247,68 @@
 		color:#FFFFFF;
 	}
 	
-	#moveButton {
+	.moveButton {
 		background-image:url('../images/icons/icn_fit_off.png');
 	}
 	
-	#moveButton:hover {
+	.moveButtonOn {
+	    background-image:url('../images/icons/icn_fit_on.png');
+	}
+	
+	.moveButtonHover {
 		background-image:url('../images/icons/icn_fit_on.png');
 		color:#FFFFFF;
 	}
 	
-	#zoomButton {
-		background-image:url(../images/icons/icn_zoom_off.PNG);
+	.moveButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+	
+	.moveButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+	
+	.measureButton {
+		background-image:url('../images/icons/icn_meas_off.png');
 	}
 	
-	#zoomButton:hover {
-		background-image:url(../images/icons/icn_zoom_on.PNG);
+	.measureButtonOn {
+	    background-image:url('../images/icons/icn_meas_on.png');
+	}
+	
+	.measureButtonHover {
+		background-image:url('../images/icons/icn_meas_on.png');
 		color:#FFFFFF;
 	}
+	
+	.measureButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
+	
+	.measureButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+	
+	.zoomButton {
+		background-image:url('../images/icons/icn_zoom_off.PNG');
+	}
+	
+	.zoomButtonOn .toolBarText {
+ 	    color: #FFFFFF;
+ 	}
+ 	
+	.zoomButtonOn {
+		background-image:url('../images/icons/icn_zoom_on.PNG');
+	}
+	
+	.zoomButtonHover {
+		background-image:url('../images/icons/icn_zoom_on.PNG');
+		color:#FFFFFF;
+	}
+	
+	.zoomButtonHover .toolBarText {
+        color: #FFFFFF;
+    }
 
 	#zoomInButton {
 		visibility:hidden;
@@ -261,7 +324,7 @@
 		background-image:url('../images/icons/icn_zoom_minus_off.png');
 	}
 	
-	#zoomOutButton:hover {
+	#zoomOutButtonHover {
 		background-image:url('../images/icons/icn_zoom_minus_on.png');
 		color:#FFFFFF;
 	}
@@ -393,6 +456,8 @@
 	.dragme{
 		position:relative;
 		vertical-align: middle;
+		margin-right:auto;
+		margin-left:auto;
 	}
 	
 	.shadow{
@@ -453,7 +518,7 @@
 
 	#windowLevel{
 	    position:absolute;	
-		width:100%;
+		width:auto;
 		/*vertical-align:middle;
 		text-align:left;	*/
 		left: 15px;
@@ -461,10 +526,31 @@
 		font-size: 15px;
 	}
 	
+	#pixelSpacing{
+	    position:absolute;	
+		width:auto;
+		/*vertical-align:middle;
+		text-align:left;	*/
+		right: 50px;
+		bottom:40px;
+		font-size: 15px;
+	}
+	
+	#nativeRes{
+	    position:absolute;	
+		width:auto;
+		/*vertical-align:middle;
+		text-align:left;	*/
+		right: 50px;
+		bottom:2px;
+		font-size: 15px;
+	}
+
+	
 	#full_resolution {
 		position: absolute;
-		left: 78%;
-		bottom: 3%;
+		left: 85%;
+		bottom: 80px;
 		font-size: 13px;
 		cursor: pointer; /* hand-shaped cursor */	
 		background:#000000;
