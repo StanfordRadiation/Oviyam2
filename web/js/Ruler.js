@@ -18,7 +18,7 @@ var ruler = function(lightBox, ratio){ //lightBox should be the Raphael-based sv
     var calculateLength = function () {
         // We are doing floating point math here, which is not perfect, there is the opportunity for small 
         // representation errors. All of the power of 10 code in here is shifting the calculations to integers
-        // to avoid repeated/compounded floating point errors. I am also rounding to the nearest 100th of a mm when displaying.
+        // to avoid repeated/compounded floating point errors. I am also rounding to the nearest 10th of a mm when displaying.
         // There are two libraries, BigDecimal (a port of Java's BigDecimal Library) and BigNumber, which could be used here to prevent
         // any floating point errors if this could be a problem. Note pixelSpacing is a global here, should probably be changed in the future.
         var mult = 1;
