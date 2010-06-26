@@ -549,8 +549,8 @@
 	
 	#full_resolution {
 		position: absolute;
-		left: 85%;
-		bottom: 80px;
+		left: 77%;
+		bottom: 70px;
 		font-size: 13px;
 		cursor: pointer; /* hand-shaped cursor */	
 		background:#000000;
