@@ -49,6 +49,7 @@ package in.raster.oviyam.servlet;
 
 import in.raster.oviyam.EchoService;
 import in.raster.oviyam.config.ServerConfiguration;
+import in.raster.oviyam.config.ServerXmlConfiguration;
 import in.raster.oviyam.utils.AE;
 
 import java.io.IOException;
@@ -98,7 +99,10 @@ public class Validator extends HttpServlet{
 			response.addCookie(agreeCookie);		
 		}
 		
-		try{			
+		try{	
+			String contextPath = request.getContextPath().replaceAll("/","");
+			ServerXmlConfiguration.fname = contextPath + "-config.xml"; 
+						
 			ae = new AE();
 			//assigns the serverConfiguration instance.			
 			serverConfiguration = ae.getServerConfiguration();

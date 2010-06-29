@@ -82,7 +82,7 @@ public class ServerConfig extends HttpServlet {
 		String port = request.getParameter("port");
 		String wadoPort = request.getParameter("wadoPort");		
 		String dcmProtocol = request.getParameter("dcmProtocol");
-		String contextPath = request.getContextPath().replaceAll("/","");
+						
 		try {
 			// Initialize the ServerXmlConfiguration instance.
 			ServerXmlConfiguration sxc = new ServerXmlConfiguration();
@@ -91,14 +91,12 @@ public class ServerConfig extends HttpServlet {
 			 * wadoPort,dcmProtocol). It will create the new oviyam-config.xml
 			 * file with the given element values.
 			 */
-			sxc.creatXml(aeTitle, hostName, port, wadoPort, dcmProtocol, contextPath);
+			sxc.creatXml(aeTitle, hostName, port, wadoPort, dcmProtocol);
 		} catch (Exception e) {
 			log.error("Unable to create oviyam-config.xml ",e);
 		}
 		response.sendRedirect("oviyam");		
 	}
 
-	
-	
 
 }

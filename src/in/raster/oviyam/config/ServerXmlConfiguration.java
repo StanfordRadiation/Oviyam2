@@ -78,7 +78,7 @@ public class ServerXmlConfiguration {
 	Document dom;
 	
 	File documentNameFile;
-	static String fname = "oviyam-config.xml";
+	public static String fname;
 	
 	// Constructor -----------------------------------------------------------
 	/*
@@ -99,16 +99,14 @@ public class ServerXmlConfiguration {
 	 * It reads and checks whether the file exists or not. If the file does not exist then it creates 
 	 * a new xml document with the specified name.
 	 * 
-	 * @param contextPath
 	 */
-	public void createAndParseXML(String contextPath) {
+	public void createAndParseXML() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
 
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			String xmlFileName = this.getClass().getResource("/conf/oviyam-config.xml").toString();
-			fname = contextPath + "-config.xml"; 
 			
 			// check the server and set the documentNameFile according to server
 			
@@ -259,7 +257,7 @@ public class ServerXmlConfiguration {
 	 * @return The ServerConfiguration object.
 	 */
 	public ServerConfiguration getElementValues(){
-		
+						
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		URL url;
@@ -331,9 +329,9 @@ public class ServerXmlConfiguration {
 	 * @param wadoPort
 	 * @param dcmProtocol
 	 */
-	public void creatXml(String aeTitle, String hostName, String port, String wadoPort, String dcmProtocol, String contextPath){
+	public void creatXml(String aeTitle, String hostName, String port, String wadoPort, String dcmProtocol){
 		
-		createAndParseXML(contextPath);
+		createAndParseXML();
 		ServerConfiguration  s=new ServerConfiguration();
 		s.setAeTitle(aeTitle);
 		s.setHostName(hostName);
