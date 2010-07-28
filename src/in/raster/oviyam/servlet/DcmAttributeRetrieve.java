@@ -158,9 +158,14 @@ public class DcmAttributeRetrieve extends HttpServlet{
 			}
 			
 			if ((spacing != null) && (spacing.vm(null) == 2)){
-				spacingValueNum = new Double(spacingValue.split("\\\\")[0].trim()).doubleValue();
-			} else if (spacing != null) {
-				spacingValueNum = new Double(spacingValue.trim()).doubleValue();
+			    // Only report a pixel spacing value if both row and col
+			    // spacing are the same.
+			    String[] spacingValues = spacingValue.split("\\\\");
+			    if (spacingValues[0].trim().equals(spacingValues[1].trim())){
+			        spacingValueNum = new Double(spacingValues[0].trim()).doubleValue();
+			    }
+			} else if ((spacing != null) && (spacing.vm(null) == 1)){
+			    spacingValueNum = new Double(spacingValue.trim()).doubleValue();
 			}
 			
 			dis.close();
