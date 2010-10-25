@@ -1,4 +1,3 @@
-
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -139,13 +138,23 @@ public class DcmImage extends HttpServlet {
 
             // Closing all the input and output streams.
             resultOutStream.flush();
-            resultOutStream.close();
-            resultInStream.close();
         } catch (Exception e) {
             log.error(
                     "Unable to read and write the image from http://"
                             + sc.getHostName() + ":" + sc.getWadoPort(), e);
-
+        } finally {
+            if (resultOutStream != null) {
+                try {
+                    resultOutStream.close();
+                } catch (Exception ignore) {
+                }
+            }
+            if (resultInStream != null) {
+                try {
+                    resultInStream.close();
+                } catch (Exception ignore) {
+                }
+            }
         }
 
     }
