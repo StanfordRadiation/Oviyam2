@@ -36,10 +36,10 @@
 		<pathelement location="${dcm4chee.jar}" />
 		<pathelement location="${dcm4che.jar}" />		
 
-		<pathelement location="${dcm4che-core-2.0.18.jar}" />
+		<pathelement location="${dcm4che-core-2.0.21.jar}" />
 		<pathelement location="${log4j-1.2.13.jar}" />
-		<pathelement location="${slf4j-api-1.5.0.jar}" />
-		<pathelement location="${slf4j-log4j12-1.5.0.jar}" />	
+		<pathelement location="${slf4j-api-1.6.1.jar}" />
+		<pathelement location="${slf4j-log4j12-1.6.1.jar}" />	
     	
     	
 		<pathelement location="${jsp.jar}" />
