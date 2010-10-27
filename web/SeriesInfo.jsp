@@ -91,5 +91,4 @@
 			</ser:Series>
 		</table>
 	</div>
-	<div id= "patname" style="display:none;" >${patientName}</div>
 </center>

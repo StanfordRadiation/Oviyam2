@@ -366,8 +366,8 @@
 		{	
 
 			$("patientDisName").style.visibility="visible";
-		    $("patientDisName").innerHTML=$("patname").innerHTML;
-		    window.document.title='Oviyam -'+$("patname").innerHTML;;
+		    //$("patientDisName").innerHTML=$("patname").innerHTML;
+		    //window.document.title='Oviyam -'+$("patname").innerHTML;;
 		    if(!$('loadingText'))return;
 		    else
 		    $('loadingText').innerHTML='Loading series...';
@@ -402,7 +402,7 @@
 			$('seriesPane').style.visibility="visible";
 			$('imagePane').style.visibility="visible";
 			ispatientlistvisible=0;
-			
+			$("patientDisName").style.visibility="visible";
 			return false;
 		}
 		else{
