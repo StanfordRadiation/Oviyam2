@@ -14,10 +14,10 @@
 	<property name="dcm4chee.jar" value="${lib.dir}/dcm4chee.jar" />
 	<property name="dcm4che.jar" value="${lib.dir}/dcm4che.jar" />
 
-    <property name="dcm4che-core-2.0.18.jar" value="${lib.dir}/dcm4che-core-2.0.18.jar" />
+    <property name="dcm4che-core-2.0.21.jar" value="${lib.dir}/dcm4che-core-2.0.21.jar" />
 	<property name="log4j-1.2.13.jar" value="${lib.dir}/log4j-1.2.13.jar" />
-	<property name="slf4j-api-1.5.0.jar" value="${lib.dir}/slf4j-api-1.5.0.jar" />   
-	<property name="slf4j-log4j12-1.5.0.jar" value="${lib.dir}/slf4j-log4j12-1.5.0.jar" />
+	<property name="slf4j-api-1.6.0.jar" value="${lib.dir}/slf4j-api-1.6.0.jar" />   
+	<property name="slf4j-log4j12-1.6.1.jar" value="${lib.dir}/slf4j-log4j12-1.6.1.jar" />
 
 	<property name="jsp.jar" value="${lib.dir}/jsp-api.jar" />
 	<property name="jstl.jar" value="${lib.dir}/jstl.jar" />
