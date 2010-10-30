@@ -126,18 +126,24 @@ public class DcmImage extends HttpServlet {
             // Initialize the URL for the requested image.
             URL imageUrl = new URL(imageURL);
             // opens the inputStream of the URL.
-            resultInStream = imageUrl.openStream();
-            // Initialize the byte array object to read and hold the bytes form
-            // the image URL stream.
-            byte[] buffer = new byte[4096];
-            int bytes_read;
-            // writes the image bytes into the response's output stream.
-            while ((bytes_read = resultInStream.read(buffer)) != -1) {
-                resultOutStream.write(buffer, 0, bytes_read);
-            }
+            
+            if (object!=null && !object.equalsIgnoreCase(""))
+            {
+            	resultInStream = imageUrl.openStream();
+            
+            	// Initialize the byte array object to read and hold the bytes form
+            	// the image URL stream.
+            	byte[] buffer = new byte[4096];
+            	int bytes_read;
+            	// writes the image bytes into the response's output stream.
+            	while ((bytes_read = resultInStream.read(buffer)) != -1) {
+            		resultOutStream.write(buffer, 0, bytes_read);
+            	}
 
-            // Closing all the input and output streams.
+            	// Closing all the input and output streams.
+            }
             resultOutStream.flush();
+            
         } catch (Exception e) {
             log.error(
                     "Unable to read and write the image from http://"
