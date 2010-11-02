@@ -179,6 +179,7 @@ public class ImageHandler extends SimpleTagSupport {
 						seriesId);
 				getJspContext().setAttribute("instanceNumber", instance.getInstanceNumber());
 				getJspContext().setAttribute("numberOfFrames", instance.getNumberOfFrames());
+				getJspContext().setAttribute("sopClassUID", instance.getSopClassUID());
 				
 				String noOfRows = instance.getRows();
 				if(noOfRows != null) {

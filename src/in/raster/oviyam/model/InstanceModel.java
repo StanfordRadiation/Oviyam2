@@ -67,6 +67,8 @@ public class InstanceModel {
 	
 	private String rows;
 	
+	private String sopClassUID;
+	
 	// Constructors -----------------------------------------------------------
 	/**
 	 * Used to create a instance of InstanceModel.The properties of 
@@ -80,6 +82,7 @@ public class InstanceModel {
 		patientName = dataSet.getString(Tags.PatientName)!=null? dataSet.getString(Tags.PatientName):"unknown";
 		instanceNumber = dataSet.getString(Tags.InstanceNumber);
 		rows = dataSet.getString(Tags.Rows);
+		sopClassUID = dataSet.getString(Tags.SOPClassUID);
 	}
 	
 	/**
@@ -120,6 +123,14 @@ public class InstanceModel {
 	 */
 	public String getRows(){
 		return rows;
+	}
+	
+	/**
+	 * Getter for property sopClassUID.
+	 * @return Value of property sopClassUID.
+	 */
+	public String getSopClassUID(){
+		return sopClassUID;
 	}	
 	
 }

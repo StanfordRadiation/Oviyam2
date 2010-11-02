@@ -47,7 +47,7 @@
     pageEncoding="ISO-8859-1" isELIgnored="false" %>
 
 <%@ page errorPage="ErrorPage.jsp" %>
-<%@ taglib prefix="ser" uri="SeriesDetails" %>
+<%@ taglib prefix="ser" uri="SeriesInfo" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	
 <div STYLE="position:relative;overflow:auto;">
@@ -58,7 +58,7 @@
 			<tr onclick= 'hidesereis=1; directSeries=1; initScroll(); hideSeries(); hidePatient(); setImageInfos("${numberOfImages}"); setImage=true; cineloop=0; ajaxpage("seriesPane","MultiFrameImages.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }"); setPatientInfoVisible("${patientName}"); return false;'>
 			</c:when>
 			<c:otherwise>
-			<tr onclick='  document.getElementById("seriesPane").innerHTML="";hidesereis=0; directSeries=1; hideSeries(); hidePatient(); initScroll();  setImageInfos("${numberOfImages}"); setImage=true; cineloop=0; loadImages("ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }"); setPatientInfoVisible("${patientName}"); return false;'>
+			<tr onclick='  document.getElementById("seriesPane").innerHTML="";hidesereis=0; directSeries=1; hideSeries(); hidePatient(); initScroll();  setImageInfos("${numberOfImages}"); setImage=true; cineloop=0; loadImages("ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName}&sopClassUid=${sopClassUID}"); setPatientInfoVisible("${patientName}"); return false;'>
 			</c:otherwise>
 			</c:choose>
 			<td class="seriesInfos" >

@@ -227,26 +227,31 @@
 					<td style="border-bottom: 2px solid #d9d9d9;">
 					<div class="seriesDetails">${seriesDescs}</div>
 					<div class="seriesDetails">Total Images : ${numberOfImages}</div>
+					<c:choose>
+					   <c:when test="${modality =='SR' }"> <%--Structured Reporting Document--%>
+						  <div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					   </c:when>
 
-					<c:if test="${modality =='SR' }"> <%--Structured Reporting Document--%>
-						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
-					</c:if>
-
-					<c:if test="${modality =='KO' }"> <%--Key Object Selection--%>
-						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
-					</c:if>
-
+					   <c:when test="${modality =='KO' }"> <%--Key Object Selection--%>
+						 <div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					   </c:when>
+					
+					   <c:when test="${modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">					
+						 <div class="image" onclick="loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}'); "><img  width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="changeSeriesBorder(this);"></div>
+					   </c:when>					
+					
 <%-- Removing call to dcmWL, a separate ajax call is more appropriate. --%>
-					<div class="image"
-					    onclick="resetAll(); globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
-						width="128px" class="reflec"
-						src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+			           <c:otherwise>
+					     <div class="image" onclick="resetAll(); globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+					   </c:otherwise>
+					</c:choose>
 
-					<script type="text/javascript" language="javascript">
-										    ispatientlistvisible=0;
-											setPatientInfoVisible("${patientName}");
-											ispatientlistvisible=1;
-										</script></td>
+					    <script type="text/javascript" language="javascript">
+							    ispatientlistvisible=0;
+								setPatientInfoVisible("${patientName}");
+								ispatientlistvisible=1;
+					   </script>
+					</td>
 				</tr>
 			</ser:Series>
 		</table>
@@ -268,25 +273,31 @@
 						<td style="border-bottom: 2px solid #d9d9d9;">
 						<div class="seriesDetails">${seriesDescs}</div>
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div>
+						
+						<c:choose>
+					       <c:when test="${modality =='SR' }"> 
+						      <div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					       </c:when>
 
-					<c:if test="${modality =='SR' }"> 
-						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
-					</c:if>
+					       <c:when test="${modality =='KO' }">
+						      <div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
+					       </c:when>
+					
+					       <c:when test="${modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">					
+						      <div class="image" onclick="loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}'); "><img  width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="changeSeriesBorder(this);"></div>
+					       </c:when>
+					       
+					       <c:otherwise>
+						      <div class="image" onclick="resetAll();globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+						   </c:otherwise>
+						 </c:choose>
 
-					<c:if test="${modality =='KO' }">
-						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); ajaxpage('KOContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"></div>
-					</c:if>
-
-						<div class="image"
-					  	onclick="resetAll();globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}"
-						width="128px" class="reflec"
-						src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
-
-					<script type="text/javascript" language="javascript">
+					  <script type="text/javascript" language="javascript">
 						ispatientlistvisible=0;
 						setPatientInfoVisible("${patientName}");
 						ispatientlistvisible=1;
-					</script></td>
+					  </script>
+					</td>
 				</tr>
 			</ser:Series>
 		    </table>

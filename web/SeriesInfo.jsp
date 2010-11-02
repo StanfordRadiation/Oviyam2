@@ -74,8 +74,8 @@
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>
 					
-					<c:when test="${modality =='ES' }">
-						<div class="image" onclick="loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }'); "><img id="series${seriesNumber}" width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="changeSeriesBorder(this);"></div>
+					<c:when test="${modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">					
+						<div class="image" onclick="loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}'); "><img id="series${seriesNumber}" width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="changeSeriesBorder(this);"></div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>					

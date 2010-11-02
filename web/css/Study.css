@@ -569,7 +569,12 @@
 		background-color:#FFFFFF;
 		color:#000000;
 	}
-		
+	
+	#MPEGContent {
+		position: relative;
+		margin: 125px 5px 5px 75px;
+	}
+			
 	#imgTable{
 		position:absolute;
 		height:100%;

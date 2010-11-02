@@ -87,7 +87,7 @@
 	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
-<c:when test="${param.modality == 'ES'}">
+<c:when test="${param.modality == 'ES' && param.sopClassUid == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
      <div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription}</div>
      <div id="MPEGContent"></div>
      <img alt="" class="dragme" name="picture" src="" width="0" id="picture">
@@ -180,7 +180,7 @@
 				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;">
 			</c:when>
 
-			<c:when test="${param.modality == 'ES' }">
+			<c:when test="${param.modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
 			    <img alt="" id="img${img}" name="images/icons/icn_video.gif" class="scale-image" src="images/icons/icn_video.gif" width="100%" onclick="vlc_controls=null; init_vlc_player(); vlc_controls.play('wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${param.series}&objectUID=${imageId}'); changeBorder(this); return false;">
 			</c:when>		
 			

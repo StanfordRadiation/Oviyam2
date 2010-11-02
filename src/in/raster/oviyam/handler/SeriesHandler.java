@@ -226,6 +226,7 @@ public class SeriesHandler extends SimpleTagSupport{
 				InstanceModel instance = instances.get(0);
 				
 				getJspContext().setAttribute("imageId",instance.getSopIUID());
+				getJspContext().setAttribute("sopClassUID", instance.getSopClassUID());
 				getJspContext().setAttribute("numberOfImages",series.getNumberOfInstances());
 				/*
 				 * Process the body of the tag and print it to the response. The null argument
