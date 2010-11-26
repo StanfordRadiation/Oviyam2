@@ -1006,3 +1006,9 @@
 	      }
 	      timeout = setTimeout(executeCall,150); 
 	  }
+	  
+	  function loadHtml(containerid, url) {
+		  if($(containerid).innerHTML == "") {
+			  ajaxpage(containerid, url);
+		  }
+	  }

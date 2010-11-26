@@ -78,13 +78,11 @@
 <c:when test="${param.modality =='SR' }">
 	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
 	<div id="SRContent"></div>
-	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
 <c:when test="${param.modality =='KO' }">
 	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
 	<div id="KOContent"></div>
-	<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study }&series=${param.series }&object=${param.imageId }" width="0" id="picture">
 </c:when>
 
 <c:when test="${param.modality == 'ES' && param.sopClassUid == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
@@ -173,11 +171,11 @@
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
 			<c:choose>				 
 			<c:when test="${param.modality =='SR' }">
-				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;">
+				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${param.imageId}&contentType=text/html');">
 			</c:when>
 			
 			<c:when test="${param.modality =='KO' }">
-				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;">
+				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('KOContent','Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&contentType=text/html');>
 			</c:when>
 
 			<c:when test="${param.modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
