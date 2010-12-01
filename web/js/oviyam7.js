@@ -1012,3 +1012,9 @@
 			  ajaxpage(containerid, url);
 		  }
 	  }
+	  
+	  function loadStudyDesc(studyDesc) {
+		  if($('patStudyDesc').innerHTML == "") {
+			  $('patStudyDesc').innerHTML = studyDesc;
+		  }
+	  }

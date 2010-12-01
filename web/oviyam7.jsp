@@ -1,10 +1,11 @@
-<%@ page contentType="text/html;" isELIgnored="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="ser" uri="SeriesInfo"%>
 <%@ taglib prefix="img" uri="ImageInfo"%>
-<%@taglib prefix="pat" uri="PatientInfo" %>
+<%@ taglib prefix="pat" uri="PatientInfo" %>
 <%@ page errorPage="ErrorPage.jsp"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!--
 /* ***** BEGIN LICENSE BLOCK *****
@@ -56,7 +57,7 @@
 <head>
 
 <title>Oviyam</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" language="javascript" src="js/lib/prototype.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/oviyam7.js"></script>

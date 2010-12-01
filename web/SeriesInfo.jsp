@@ -43,8 +43,7 @@
 *
 * ***** END LICENSE BLOCK ***** */ 
 -->
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" isELIgnored="false" %>   
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1" isELIgnored="false" %> 
 <%@ page errorPage="ErrorPage.jsp" %>
 <%@ taglib prefix="ser" uri="SeriesInfo" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

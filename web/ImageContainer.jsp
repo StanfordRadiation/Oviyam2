@@ -48,6 +48,7 @@
 @author:  Bharathi.
 @version: 0.7
 --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page isELIgnored="false" %>
 <%@ page errorPage="ErrorPage.jsp" %>
 <%@ taglib prefix="img" uri="ImageInfo" %>
@@ -76,23 +77,23 @@
 <div id="left">
 <c:choose>				 
 <c:when test="${param.modality =='SR' }">
-	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
+	<div class="shadow" id="patStudyDesc" style="visibility:hidden;"></div>
 	<div id="SRContent"></div>
 </c:when>
 
 <c:when test="${param.modality =='KO' }">
-	<div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription }</div>
+	<div class="shadow" id="patStudyDesc" style="visibility:hidden;"></div>
 	<div id="KOContent"></div>
 </c:when>
 
 <c:when test="${param.modality == 'ES' && param.sopClassUid == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
-     <div class="shadow" id="patStudyDesc" style="visibility:hidden;">${param.studyDescription}</div>
+     <div class="shadow" id="patStudyDesc" style="visibility:hidden;"></div>
      <div id="MPEGContent"></div>
      <img alt="" class="dragme" name="picture" src="" width="0" id="picture">
 </c:when>
 
 <c:when test="${frames =='yes' }">
-	<div class="shadow" id="patStudyDesc">${param.studyDescription }</div>	
+	<div class="shadow" id="patStudyDesc"></div>	
 	<div class="shadow" id="patSex">${param.sex }</div>
 	<div class="shadow" onclick=" even=document.getElementById('picture').event; initwl();" id="patPhyName">${phy_name}</div>
 	<div class="shadow" id="patBirthDate">${param.birthDate }</div>
@@ -119,7 +120,7 @@
 </c:when>
 
 <c:otherwise>			
-	<div class="shadow" id="patStudyDesc">${param.studyDescription }</div>	
+	<div class="shadow" id="patStudyDesc"></div>	
 	<div class="shadow" id="patSex">${param.sex }</div>
 	<div class="shadow" onclick=" even=document.getElementById('picture').event; initwl();" id="patPhyName">${phy_name}</div>
 	<div class="shadow" id="patBirthDate">${param.birthDate }</div>
@@ -171,25 +172,25 @@
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
 			<c:choose>				 
 			<c:when test="${param.modality =='SR' }">
-				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${param.imageId}&contentType=text/html');">
+				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${param.imageId}&contentType=text/html'); loadStudyDesc('${studyDesc}');">
 			</c:when>
 			
 			<c:when test="${param.modality =='KO' }">
-				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('KOContent','Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&contentType=text/html');>
+				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('KOContent','Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&contentType=text/html'); loadStudyDesc('${studyDesc}');">
 			</c:when>
 
 			<c:when test="${param.modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
-			    <img alt="" id="img${img}" name="images/icons/icn_video.gif" class="scale-image" src="images/icons/icn_video.gif" width="100%" onclick="vlc_controls=null; init_vlc_player(); vlc_controls.play('wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${param.series}&objectUID=${imageId}'); changeBorder(this); return false;">
+			    <img alt="" id="img${img}" name="images/icons/icn_video.gif" class="scale-image" src="images/icons/icn_video.gif" width="100%" onclick="vlc_controls=null; init_vlc_player(); vlc_controls.play('wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${param.series}&objectUID=${imageId}'); changeBorder(this); return false;" onload="loadStudyDesc('${studyDesc}');">
 			</c:when>		
 			
 			<c:otherwise>
 				<c:choose>
 				<c:when test="${frames =='yes' }">		 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&studyDescription=${param.studyDescription }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeInstanceBorder('instance${img}'); selectedInstanceIndex = ${img}; changeDataset();">		
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&studyDescription=${param.studyDescription }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeInstanceBorder('instance${img}'); selectedInstanceIndex = ${img}; changeDataset();" onload="loadStudyDesc('${studyDesc}');">		
 				</c:when>
 
 				<c:otherwise> 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();" onload = "checkResolution(${rows});">
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();" onload = "checkResolution(${rows}); loadStudyDesc('${studyDesc}');">
 				</c:otherwise>
 				</c:choose>
 			</c:otherwise>
