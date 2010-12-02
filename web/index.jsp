@@ -64,7 +64,7 @@
 <center>
   <div id="welcomePane">
 	<div style="position:relative;margin:300px 0px 0px 0px;width:100%;">
-		<img src="images/oviyam_web_logo.png" style="position:relative;" alt=""> 
+		<img src="images/oviyam_web_logo.png" style="position:relative;" alt="" title="Version:0.9.1(02.12.2010)"> 
 		<%
 			if (myCookie == null) {
 		%> 
