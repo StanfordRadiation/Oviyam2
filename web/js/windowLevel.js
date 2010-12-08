@@ -39,7 +39,7 @@ function applyCentAndWidth(owc,oww) {
        var s = test;
     else		
        var s = test + '&windowCenter='+owc+'&windowWidth='+oww;
-    document.getElementById('picture').src=s;
+    setImageAndHeaders(s);
 }
 
 function setPresetValues() {
@@ -175,9 +175,13 @@ function adjustWLWW(){
             	wcb.addEventListener("mouseout",WLMouseOut,false);
             }
             jQuery(".toolBarButton").unbind("click.disableMode.WC");
-            jQuery("#wcButton").click(adjustWLWW);
+            jQuery("#wcButton").bind("click.on", adjustWLWW);
             jQuery("#wcButton").hover(function(){jQuery(this).addClass("wcButtonHover")},function(){jQuery(this).removeClass("wcButtonHover")});
-            jQuery("#toolBar").data("mode","none");
+            if (jQuery("#toolBar").data("mode") === "wlww"){
+                // If we clicked this button while in wlww, we are now in no mode, otherwise
+                // another button will set the mode.
+                jQuery("#toolBar").data("mode","none");
+            }
     	};
 
 		jQuery("#wcButton").removeClass("wcButtonHover");
@@ -223,7 +227,7 @@ function endDrag(e) {
 		srcc = srcc.substring(0,srcc.indexOf('&windowCenter'));
 	    srcc += "&windowCenter="+wc+"&windowWidth="+ww;
 	}
-	document.getElementById('picture').src=srcc;
+   setImageAndHeaders(srcc);
    	globalWC=wc;
    	globalWW=ww;
    	showWindowAttributes(wc,ww);

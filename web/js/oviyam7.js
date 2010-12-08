@@ -22,25 +22,29 @@
 	var selectedInstanceIndex = null;	
 	var vlc_controls = null;
 	var isWLAdjusted = false;
-	var pixelSpacing = 0;
+	var xPixelSpacing = 0;
+	var yPixelSpacing = 0;
 	var nativeRows = 0;
 	var nativeColumns = 0;
-	var timeout = null;
-    var	latestAjaxRequest = null;
+	var ajaxDelayTimeout = null;
+    var latestAjaxRequest = null;
+    var requestSemaphore = 0;
+    var measureSafe = false;
+    
+    // Load all images in a multi-frame ahead of time?
+    var enableImageCache = true;
     
     $.noConflict();
     //Setup the toolbar handlers. These needed to be jQuery events, because mixing with regular events and jQuery style events was 
     //causing odd behavior (events added to a click event during a click event were firing on that same click event.)
     jQuery(function(){
         jQuery("#toolBar").data("mode","none");
-        jQuery("#wcButton").click(adjustWLWW);
-        jQuery("#wcButton").hover(function(){jQuery(this).addClass("wcButtonHover")},function(){jQuery(this).removeClass("wcButtonHover")});
-        jQuery("#moveButton").click(dragMe);
-        jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover")},function(){jQuery(this).removeClass("moveButtonHover")});
-        jQuery("#measureButton").click(measureOn);
-        jQuery("#measureButton").hover(function(){jQuery(this).addClass("measureButtonHover")},function(){jQuery(this).removeClass("measureButtonHover")});
-        jQuery("#zoomButton").click(zoomOnOff);
-        jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover")},function(){jQuery(this).removeClass("zoomButtonHover")});
+        jQuery("#wcButton").bind("click.on", adjustWLWW);
+        jQuery("#wcButton").hover(function(){jQuery(this).addClass("wcButtonHover");},function(){jQuery(this).removeClass("wcButtonHover");});
+        jQuery("#moveButton").bind("click.on", dragMe);
+        jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover");},function(){jQuery(this).removeClass("moveButtonHover");});
+        jQuery("#zoomButton").bind("click.on", zoomOnOff);
+        jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover");},function(){jQuery(this).removeClass("zoomButtonHover");});
     });
     
     
@@ -294,18 +298,12 @@
 		$("dkgrey").style.background="transparent url('images/icons/icn_dkgrey_backColor.png') no-repeat scroll  0px -56px ";
 	}	
 	function changeslides(which){
-	    // If in measure mode, disable measure mode and go to new image
-		if (jQuery("#toolBar").data("mode") === "measure"){
-		    jQuery("#moveButton").first().trigger("click.disableMode");
-    	    jQuery("#toolBar").data("mode","none");
-		}
-		
 		inc=which;
 		whichimage=which;
 		var imgsrc = $("img"+which).src;
 	    if(isWLAdjusted == true)
 			imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
-		$('picture').src=imgsrc;
+		setImageAndHeaders(imgsrc);
 		$('number').innerHTML="Image "+(inc+1)+" of "+numberOfImages;
 		valuesApplied=false;
 	}
@@ -313,7 +311,7 @@
 	function changeImages(which){
 		inc=which;
 		whichimage=which;
-		$('picture').src=$("img"+which).src;		
+		setImageAndHeaders($("img"+which).src);		
 	}
 	
 
@@ -326,7 +324,7 @@
 		    
 		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
-		    $('picture').src=imgsrc;
+		    setImageAndHeaders(imgsrc);
 		    //showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
 			changeBorder($("img"+inc));	
@@ -344,10 +342,9 @@
 		inc--;
 		try{
 		    var imgsrc = $("img"+inc).src;
-		    
 		    if(isWLAdjusted == true)
 			    imgsrc += "&windowCenter=" + globalWC + "&windowWidth=" + globalWW;
-		    $('picture').src=imgsrc;
+		    setImageAndHeaders(imgsrc);
 		    //showWindowAttributes(globalWC,globalWW);
 		    valuesApplied=false;
 			changeBorder($("img"+inc));			
@@ -475,6 +472,8 @@
 	        // If this was called before anything was viewed; ignore
 	        return;
 	    }
+	    measureSafe = false;
+	    disableMeasure();
 		zoomFlag=true;
 		zoom(512,512,'picture','restore');
 		zoomFlag=false;
@@ -520,13 +519,13 @@
 		var modElements = document.getElementsByName("modality");
 		for (var i=0; i < modElements.length; i++) {
 			if(modElements[i].checked==true){
-		 		moda=modElements[i].value 
+		 		moda=modElements[i].value;
 		 	}
 		}
 		var grpElements = document.getElementsByName("group1");
 		for (var i=0; i < grpElements.length; i++) {
 			if(grpElements[i].checked==true){
-				grp=grpElements[i].value
+				grp=grpElements[i].value;
 			}
 		}
 
@@ -614,58 +613,78 @@
 		if(borderThumb!='')
 			borderThumb.style.border="2px solid transparent";			
 		if(cineloop==0){			
-			cineloop=1;
-			clearDicomHeaderInfo();
-            // If in measure mode, exit it, doesn't make sense to be measuring while looping.
+			// Disable measuring, can't measure on a moving image.
+			// If in measure mode, exit it, doesn't make sense to be measuring while looping.
             if (jQuery("#toolBar").data("mode") === "measure"){
         	    jQuery("#moveButton").first().trigger("click.disableMode");
                 jQuery("#toolBar").data("mode","none");
         	}
-            
+        	// We disable measure here, but do not set measureSafe to false 
+        	// because unless the image actually changes, it is still safe to 
+        	// enable it again. We need the measureSafe because it is possible that
+        	// while it is safe to Measure, we cannot actually enable it because we are
+        	// in cineloop, so we have to know if we can turn it on if cineloop is disabled.
+			disableMeasure();
+			// Hide DICOM headers, flickering is irritating:
+			jQuery("#nativeRes").hide();
+			jQuery("#pixelMessage").hide();
+    		jQuery("#pixelSpacing").hide();
+			cineloop=1;
 			$('cineLoop').style.color="#FFFFFF";
 			$('cineSlider').style.visibility="visible";
 			$('cineLoop').style.background="url(images/icons/icn_play_1.png)  0px center no-repeat";
 			slideit();
 		}else{
 			cineloop=0;
-			if ($("picture")){
-			    ajaxDicomHeaders($("picture"));
-		    }
+			// If it is safe to turn measure on, do it, otherwise, it will be turned on when the latest 
+			// image and data is loaded
+			if (measureSafe && !jQuery("#measureButton").data("enabled")){
+			    enableMeasure();
+			}
+		    jQuery("#nativeRes").show();
+    		jQuery("#pixelSpacing").show();
+    		jQuery("#pixelMessage").show();
 			$('cineSlider').style.visibility="hidden";
 			$('cineLoop').style.background="url(images/icons/icn_play_0.png)  0px center no-repeat";
 			$('cineLoop').style.color="#616161";
-			//changeBorder($("img"+whichimage));
 		}
 	}
 	
 
 	function slideit(){
-	    if(cineloop==0 || $("img"+whichimage) == null){
-    	      return
-    	    }
-    	    $('picture').src=$("img"+whichimage).src; 
-            if(multiFrames == true) {
-    	         $('number').innerHTML="Frame "+(whichimage+1)+" of "+numberOfImages;
-	         if(ftv == null)
-		     changeSpeed(slideshowspeed);
-	         else
-	             changeSpeed(ftv[fti]);
-	         fti++;
-	         if(fti == numberOfImages-1) {
-	              fti = 0;
-	         }
-           }
-	   else {
-    	       $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
-               $('cineSlider').title = slideshowspeed;
+	    // Not sure why looking for nulls here, JMM
+	    if(cineloop == 0 ||
+	      (multiFrames && $("imgCache"+whichimage) == null) || 
+	      (!multiFrames && $("img"+whichimage) == null)) {
+    	      return;
+    	}
+    	
+        if(multiFrames == true) {
+            // if we send null to setImageAndHeaders, it will keep the existing image, but 
+            // change the frame to parameter 2
+            setImageAndHeaders(null, whichimage); 
+    	    $('number').innerHTML="Frame "+(whichimage+1)+" of "+numberOfImages;
+	        if(ftv == null)
+		        changeSpeed(slideshowspeed);
+	        else
+	            changeSpeed(ftv[fti]);
+	        fti++;
+	        if(fti == numberOfImages-1) {
+	            fti = 0;
+	        }
+       } else {
+	       setImageAndHeaders($("img"+whichimage).src); 
+    	   $('number').innerHTML="Image "+(whichimage+1)+" of "+numberOfImages;
+           $('cineSlider').title = slideshowspeed;
 	   }
+	   
 	   inc=whichimage;
-           whichlink=whichimage
-    	   if (whichimage<numberOfImages-1)
-    		whichimage++
-    	   else
-    		whichimage=0;
-           interval = setTimeout("slideit()",slideshowspeed);
+       whichlink=whichimage;
+       if (whichimage<numberOfImages-1)
+            whichimage++;
+       else
+            whichimage=0;
+       interval = setTimeout("slideit()",slideshowspeed);
 	}
 	
 		
@@ -720,10 +739,22 @@
   		return false; 	 
   	}
   
-  	function load(){  
-  		for (var i=0; i < numberOfImages; i++) {
+  	function load(){
+  	    // This will be turned on if it is appropriate
+  	    turnOffMeasure();
+  	    measureSafe = false;
+  	    disableMeasure();
+  	    // was numberOfImages
+  		for (var i=0; i < jQuery("#thumbNailHolder .scale-item").length; i++) {
+  		    
   			$('img'+i).src=$('img'+i).name ;
-		}			
+		}
+		
+		// We don't want to call the setImage function
+		// on dicom objects like KO and SR
+		if (jQuery("#img0").hasClass("measurable")){
+	        jQuery("#img0").click();
+        }
 		setImage = false;
 		initScroll();  
 
@@ -736,9 +767,9 @@
 		}else{
 			changeGray();
 		}
-  	}
-  	
- 	function initScroll(){
+	}
+	
+	function initScroll(){
 		if($('picture')){
 			initMouseWheel();
 			return;	
@@ -865,9 +896,7 @@
 	          ftv = ft.split(":");
                   changeSpeed(ftv[fti]);
 		 fps = parseInt(1000/ftv[fti]);
-	      }
-
-		//cineSlider.setValue(0.5, 0);
+	     }
 
 		cineSlider.dispose();
 		cineSlider = new Control.Slider('cineHandle','cineTrack',{axis:'horizontal', minimum:100, maximum:1000, alignX:00,increment:100, sliderValue:0.5});
@@ -875,7 +904,7 @@
 
 		cineSlider.options.onSlide = function(value){
 			changeSpeed(1000-(value*1000));
-		}
+		};
 		cineSlider.options.onChange = function(value){
 			ftv = null;
 			var t1=Math.round(value*(fps*2));
@@ -885,7 +914,7 @@
 			var t2=1000/t1;
 			changeSpeed(t2);
 			$('cineSlider').title = t1+" fps";
-		}
+		};
 	}
 	
 	function changeDataset() {
@@ -917,7 +946,7 @@
 	    var img_URL = "FullResolution.jsp?imageURL=" + oriPath;
    	    var params  = 'width='+screen.width;
 	        params += ',height='+screen.height;
-	        params += ',fullscreen=yes'
+	        params += ',fullscreen=yes';
 	        params += ',scrollbars=yes';
 	        params += ',titlebar=no';
 	        params += ',location=no';
@@ -937,84 +966,242 @@
 			cineSlider = new Control.Slider('cineHandle','cineTrack',{axis:'horizontal', minimum:100, maximum:1000, alignX:00,increment:100, sliderValue:0.5});
 			cineSlider.options.onSlide = function(value){
 				changeSpeed(1000-(value*1000));
-			}
+			};
 			cineSlider.options.onChange = function(value){
 				changeSpeed(1000-(value*1000));
-			}
+			};
 	  }
 	  
-	  function showDicomHeaderInfo(rows,cols,spacing){
-	      jQuery("#nativeRes").html("<p>Native Resolution:"+rows+"px by "+cols+"px</p>");
-	      jQuery("#pixelSpacing").html("Pixel Spacing: " +spacing);
-	      
-	  }
-	  
-	  function clearDicomHeaderInfo(){
-	      jQuery("#nativeRes").empty();
-  	      jQuery("#pixelSpacing").empty();
-	  }
-	  
-	  // This function will ask the server for the dicom information represented by the img tag passed in
-	  // Uses too many globals
-	  function ajaxDicomHeaders(img){
-	      // Currently we don't want to change header info if the user is in measure mode.
-	      // This is because the image is not changing, so the headers should not change
-	      if ((jQuery("#toolBar").data("mode") === "measure") || (cineloop)){
-	          return;
-	      }
-	      clearDicomHeaderInfo();
-	      if (timeout !== null){
-	           clearTimeout(timeout);
-	           timeout=null;
-	      }
-	      
-	      var url = "DcmAttr?"+img.src.split("?")[1];
-	      executeCall = function(){
-	          timeout = null;
-	          
-	          if (latestAjaxRequest !== null){
-      	          latestAjaxRequest.abort();
-      	          latestAjaxRequest = null;
-      	      }
-      	      
-	          latestAjaxRequest  = jQuery.getJSON(url, function(data){
-	            latestAjaxequest = null;
-	            if (data.status == "error") {
-	                if ((globalWC==0) && (globalWW==0)){  // Prevent overriding user adjusted values.
-      	                defaultWC=globalWC=0;
-      	                defaultWW=globalWW=0;
+      function showDicomHeaderInfo(rows, cols, xSpacing, ySpacing, spacingAttrName, message) {
+         
+         // Set the native resolution
+         jQuery("#nativeRes").html("<p>Native Resolution:"+rows+"px by "+cols+"px</p>");
+         
+         // Show the user what we are using for measurements
+         if ((spacingAttrName === null) || (xSpacing===0) || (ySpacing===0)){
+             jQuery("#pixelSpacing").html("Measurements shown in pixels");
+         }else{
+             jQuery("#pixelMessage").html(message);
+             if (xSpacing === ySpacing) {
+                 // Spacing is the same, just show as a single value
+                 jQuery("#pixelSpacing").html(spacingAttrName + ": " +xSpacing);
+             }else{
+                 // Two discrete values, show this
+                 jQuery("#pixelSpacing").html(spacingAttrName + " Row: "+ySpacing+" , Column: " + xSpacing);
+             }
+         }
+         
+      }
+      
+      function clearDicomHeaderInfo(){
+          jQuery("#nativeRes").empty();
+          jQuery("#pixelSpacing").empty();
+          jQuery("#pixelMessage").empty();
+      }
+      
+      function enableMeasure() {
+          if (cineloop) {
+              return; // No measuring while in cineloop mode
+          } 
+          jQuery("#measureButton").data("enabled", true);
+          jQuery("#measureButton").bind("click.on", measureOn);
+          jQuery("#measureButton").hover(function(){jQuery(this).addClass("measureButtonHover");},function(){jQuery(this).removeClass("measureButtonHover");});
+          jQuery("#measureButton").css("cursor","pointer");
+      }
+      
+      function disableMeasure(){
+           jQuery("#measureButton").data("enabled", false);
+           jQuery("#measureButton").unbind("click.on");
+           jQuery("#measureButton").unbind("mouseenter mouseleave");
+           jQuery("#measureButton").css("cursor","default");
+      }
+      
+      // Utility function to create an object from a url query string
+      function queryString2Object(queryString){
+          var regEx = /[?&]([^=]*)=([^&]*)/g;
+          var match;
+          var obj = {};
+          while(match = regEx.exec(queryString)){
+              obj[match[1]]=match[2];
+          }
+          return obj;
+      }
+      
+      // This function changes the center image and requests the associated DICOM data
+      function setImageAndHeaders(img, frame){
+          turnOffMeasure();
+          var stage = jQuery("#picture");
+          
+          if (img === null){
+              if (frame === undefined){
+                  frame = 0;
+              }
+              img = stage.attr('src').replace(/frameNumber=\d*/,"frameNumber="+frame);
+          }else{
+              var c = queryString2Object(stage.attr('src'));
+              var n = queryString2Object(img);
+              // If the request is the same as the current image, just change the image, not the 
+              // dicom headers
+              // This catches multi-frame dicom images and WL/WW modification
+              if ((c.study===n.study && c.object===n.object && c.series===n.series)){
+                  stage.unbind("load");
+                  stage.attr('src',img);
+                  return;
+              }
+          }
+          // If there is an outstanding ajax request, abort it now, we are about to make
+          // the data it is delivering stale.
+          if (latestAjaxRequest){
+              latestAjaxRequest.abort();
+              latestAjaxRequest = null;
+              requestSemaphore--;
+          }
+          
+          // Keep track of the number of outstanding requests we have, only allow measuring when
+          // this becomes 0 again.
+          requestSemaphore++;
+          // Until we find out the specifics of this image, no measuring can be done
+          measureSafe = false;
+          disableMeasure();
+          clearDicomHeaderInfo();
+          // The user is seeing a new image now, invalidate old values
+          nativeRows = null;
+          nativeColumns = null;
+          xPixelSpacing  = null;
+          yPixelSpacing = null;
+          
+          var imgLoaded = false;
+          var dataLoaded = false;
+          
+          stage.unbind("load");
+          
+          stage.load(function(){
+              stage.show();
+              imgLoaded = true;
+              if (dataLoaded){
+                  measureSafe = true;
+                  enableMeasure();
+              }
+          });
+ 
+          stage.attr('src',img);
+          // Send same url parameters to the DICOM attribute servlet
+          var url = "DcmAttr?"+img.split("?")[1];
+          
+          // Cancel any existing timeout
+          if (ajaxDelayTimeout !== null){
+                clearTimeout(ajaxDelayTimeout);
+                ajaxDelayTimeout = null;
+                requestSemaphore--;
+          }
+
+          var executeCall = function(){
+              ajaxDelayTimeout = null;
+              if (latestAjaxRequest !== null){
+                  latestAjaxRequest.abort();
+                  latestAjaxRequest = null;
+                  requestSemaphore--;
+              }
+              
+              latestAjaxRequest = jQuery.ajax({
+                  url: url,
+                  dataType: 'json',
+                  cache: false,
+                  success: function(data){
+                    latestAjaxRequest = null;
+                    if (data !== null){
+                        requestSemaphore--;
                     }
-                    
-                    nativeRows    =    0;
-      	            nativeColumns =    0;
-      	            pixelSpacing  =    0;
-      	            showWindowAttributes(globalWC,globalWW);
-      	            showDicomHeaderInfo(nativeRows,nativeColumns,pixelSpacing);
-                    return;
-	            }
-  	            if ((globalWC==0) && (globalWW==0)){  // Prevent overriding user adjusted values.
-  	                defaultWC=globalWC=data.windowCenter;
-  	                defaultWW=globalWW=data.windowWidth;
-                }
-                
-  	            nativeRows =    data.nativeRows;
-  	            nativeColumns = data.nativeColumns; 
-  	            pixelSpacing =  data.pixelSpacing;
-  	            showWindowAttributes(globalWC,globalWW);
-  	            showDicomHeaderInfo(nativeRows,nativeColumns,pixelSpacing);
-  	        });
-	      }
-	      timeout = setTimeout(executeCall,150); 
+                    if (requestSemaphore === 0) {
+                        if (data === null || data.status == "error") {
+                            return;
+                        }
+                        
+                        if ((globalWC==0) && (globalWW==0)){
+                            // Prevent overriding user adjusted values
+                            defaultWC=globalWC=data.windowCenter;
+                            defaultWW=globalWW=data.windowWidth;
+                        }
+
+                        nativeRows = data.nativeRows;
+                        nativeColumns = data.nativeColumns; 
+                        xPixelSpacing =  data.xPixelSpacing;
+                        yPixelSpacing = data.yPixelSpacing;
+                        showWindowAttributes(globalWC,globalWW);
+                        showDicomHeaderInfo(nativeRows,nativeColumns,xPixelSpacing,yPixelSpacing,data.pixelAttrName,data.pixelMessage);
+                        dataLoaded = true;
+
+                        if (imgLoaded){
+                            measureSafe = true;
+                            enableMeasure();
+                        }
+                    }
+                  },
+                  error: function(request){
+                     // An error occurred.
+                     requestSemaphore--;
+                  }});
+          };
+          
+          // When scrolling quickly through images, we wind up making unnecessary
+          // ajax calls, wait to see if the user stays on the image before
+          // making the call out
+          ajaxDelayTimeout = setTimeout(executeCall,150);
 	  }
-	  
-	  function loadHtml(containerid, url) {
-		  if($(containerid).innerHTML == "") {
-			  ajaxpage(containerid, url);
-		  }
-	  }
-	  
-	  function loadStudyDesc(studyDesc) {
-		  if($('patStudyDesc').innerHTML == "") {
-			  $('patStudyDesc').innerHTML = studyDesc;
-		  }
-	  }
+
+      function loadSeriesHandler(domImage, loadPage, numOfImages, injectID, loadCenter){
+          turnOffMeasure();
+          measureSafe = false;
+          disableMeasure();
+          borderThumb='';
+          if (numOfImages !== undefined){
+              setImageInfos(numOfImages);
+          }
+          initScroll();
+          if (injectID !== undefined){
+            jQuery.get(loadPage, function(content){
+               jQuery("#imagePane").get(0).innerHTML = content;
+               changeSeriesBorder(domImage);
+               changeFirstImgBorder('img0');
+               ajaxpage(injectID,loadCenter);
+            });
+          }else{
+              ajaxpage("imagePane", loadPage);
+              changeSeriesBorder(domImage);
+              changeFirstImgBorder('img0');
+          }
+          
+          return false;
+      }
+      
+      function loadStudyDesc(studyDesc) {
+          if($('patStudyDesc').innerHTML == "") {
+              $('patStudyDesc').innerHTML = studyDesc;
+          }
+      }
+      
+      // If measure is on, turn it off
+      function turnOffMeasure(){
+          if (jQuery("#toolBar").data("mode") === "measure"){
+                 jQuery("#moveButton").first().trigger("click.disableMode");
+                 jQuery("#toolBar").data("mode","none");
+          }
+      }
+      
+      
+      var imageCacheTemplate = jQuery.jqotec([
+            '<% for (var frameNo = 0; frameNo < this.frames; frameNo++) {%>',
+                '<img alt="" id="imgCache<%=frameNo%>" src="<%=this.src%><%=frameNo%>" width="100%">',
+            '<% } %>'
+      ].join(""));
+      
+      
+      // This function will inject into the DOM an img tag for each image in a multi-frame DICOM image.
+      // This used to be done in MultiFrames.jsp, but the code has been moved to the client to 
+      // simplify things
+      function loadImageCache(img, numberOfFrames){
+          if (!enableImageCache){
+              return;
+          }
+          jQuery('#imageCacheHolder').empty().append(jQuery.jqote(imageCacheTemplate, {src:img, frames:numberOfFrames}));
+      }

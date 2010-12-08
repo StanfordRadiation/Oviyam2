@@ -60,6 +60,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" language="javascript" src="js/lib/prototype.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/ahpi.imgload.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/jquery.jqote2.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/oviyam7.js"></script>
 <script type="text/javascript" language="javascript" src="js/imageDrag.js"></script>
 <script type="text/javascript" language="javascript" src="js/imageZoom.js"></script>
@@ -78,6 +80,8 @@
 <script type="text/javascript" language="javascript" src="js/Ruler.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/raphael-min.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/raphaelle.js"></script>
+
+
 
 <c:choose>
 	<c:when test="${param.studyUID != null && param.seriesUID!=null}">
@@ -247,12 +251,11 @@
 					   </c:otherwise>
 					</c:choose>
 
-					    <script type="text/javascript" language="javascript">
-							    ispatientlistvisible=0;
-								setPatientInfoVisible("${patientName}");
-								ispatientlistvisible=1;
-					   </script>
-					</td>
+					<script type="text/javascript" language="javascript">
+						 ispatientlistvisible=0;
+						 setPatientInfoVisible("${patientName}");
+						 ispatientlistvisible=1;
+					</script></td>
 				</tr>
 			</ser:Series>
 		</table>
@@ -397,14 +400,13 @@
 			</div>
 		</img:Image></div>
 		</div>
-
 			<script type="text/javascript" language="javascript">	
 				numberOfImages=${img+1};
 				ispatientlistvisible=0;
 				setPatientInfoVisible("${patientName}");
 				ispatientlistvisible=1;
 				keynav=1;
-				document.getElementById('picture').src=document.getElementById("img0").src;
+				setImageAndHeaders(document.getElementById("img0").src);
 				document.getElementById('number').innerHTML="Image 1 of "+numberOfImages;
 			</script>
 			</div>

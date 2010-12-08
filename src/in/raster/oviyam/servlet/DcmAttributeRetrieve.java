@@ -71,129 +71,199 @@ import org.dcm4che2.data.Tag;
  *
  */
 public class DcmAttributeRetrieve extends HttpServlet{
-	
-	/**
-	 * Initialize the logger.
-	 */
-	 
-	private static Logger log = Logger.getLogger(DcmAttributeRetrieve.class);
-	private static final String WINDOW_CENTER_PARAM = "windowCenter";
-	private static final String WINDOW_WIDTH_PARAM = "windowWidth";
-	private static final String PIXEL_SPACING = "pixelSpacing";
-	private static final String NATIVE_ROWS = "nativeRows";
-	private static final String NATIVE_COLUMNS = "nativeColumns";
-	                                  
-	private static final String CT = "1.2.840.10008.5.1.4.1.1.2";
-	private static final String MR = "1.2.840.10008.5.1.4.1.1.4";
-	private static final String XA = "1.2.840.10008.5.1.4.1.1.12.1";
-	private static final String CR = "1.2.840.10008.5.1.4.1.1.1";
-	
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+    
+    /**
+     * Initialize the logger.
+     */
+     
+    private static Logger log = Logger.getLogger(DcmAttributeRetrieve.class);
+    private static final String WINDOW_CENTER_PARAM = "windowCenter";
+    private static final String WINDOW_WIDTH_PARAM = "windowWidth";
+    private static final String X_PIXEL_SPACING = "xPixelSpacing";
+    private static final String Y_PIXEL_SPACING = "yPixelSpacing";
+    private static final String NATIVE_ROWS = "nativeRows";
+    private static final String NATIVE_COLUMNS = "nativeColumns";
+    private static final String PIXEL_SPACING_ATTRIBUTE = "pixelAttrName";
+    private static final String PIXEL_MESSAGE = "pixelMessage";
+                                      
+    private static final String CT = "1.2.840.10008.5.1.4.1.1.2";
+    private static final String MR = "1.2.840.10008.5.1.4.1.1.4";
+    private static final String XA = "1.2.840.10008.5.1.4.1.1.12.1";
+    private static final String CR = "1.2.840.10008.5.1.4.1.1.1";
+    
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 
-		// Reads the parameters from the request.
-		
-		response.setContentType("text/html");
-		PrintWriter out=response.getWriter();
-		
-		String dicomURL = "http://"+((ServerConfiguration)(getServletContext().getAttribute("serverConfig"))).getHostName()+":"+((ServerConfiguration)(getServletContext().getAttribute("serverConfig"))).getWadoPort()+"/wado?requestType=WADO&";
-		String seriesUID = request.getParameter("series");
-		String objectUID = request.getParameter("object");
-		String studyUID = request.getParameter("study");
-		
-		// Generates the URL for the requested DICOM Dataset page.
-		dicomURL += "contentType=application/dicom&studyUID="+studyUID+"&seriesUID="+seriesUID+"&objectUID="+objectUID+"&transferSyntax=1.2.840.10008.1.2.1";
-		dicomURL = dicomURL.replace("+", "%2B");  
+        // Reads the parameters from the request.
+        response.setContentType("text/html");
+        PrintWriter out=response.getWriter();
+        
+        String dicomURL = "http://"+((ServerConfiguration)(getServletContext().getAttribute("serverConfig"))).getHostName()+":"+((ServerConfiguration)(getServletContext().getAttribute("serverConfig"))).getWadoPort()+"/wado?requestType=WADO&";
+        String seriesUID = request.getParameter("series");
+        String objectUID = request.getParameter("object");
+        String studyUID = request.getParameter("study");
+        
+        // Generates the URL for the requested DICOM Dataset page.
+        dicomURL += "contentType=application/dicom&studyUID="+studyUID+"&seriesUID="+seriesUID+"&objectUID="+objectUID+"&transferSyntax=1.2.840.10008.1.2.1";
+        dicomURL = dicomURL.replace("+", "%2B");  
 
-		InputStream is = null;
-		DicomInputStream dis = null;
-	
-				
-		try{
-			//Initialize the URL for the requested page.
-			URL url = new URL(dicomURL);
-			//opens the inputStream of the URL.
-			is = url.openStream();
-			
-			dis = new DicomInputStream(is);
-			DicomObject dob = dis.readDicomObject();
-			DicomElement sopClassUID = dob.get(Tag.SOPClassUID);
-			DicomElement nativeRows = dob.get(Tag.Rows);
-			DicomElement nativeColumns = dob.get(Tag.Columns);
-			DicomElement windowCenter = dob.get(Tag.WindowCenter);
-			DicomElement windowWidth = dob.get(Tag.WindowWidth);
-			
-			String sopClassUIDValue  =  sopClassUID == null ? null :  new String(sopClassUID.getBytes()).trim();
-			int nativeRowsValueNum      =  nativeRows == null ? 0 :  nativeRows.getInt(false);
-			int nativeColumnsValueNum   =  nativeColumns == null ? 0 :   nativeColumns.getInt(false);
-			String windowCenterValue =  windowCenter == null ? null : new String(windowCenter.getBytes());
-			String windowWidthValue  =  windowWidth == null ? null :  new String(windowWidth.getBytes());
-			
-			
-			// Different types of modalities store pixel data in different attributes
-			DicomElement spacing = null;
-			if ((sopClassUID != null) && (sopClassUIDValue.equals(CT) || sopClassUIDValue.equals(MR))){
-				spacing = dob.get(Tag.PixelSpacing);
-			} else if ((sopClassUID != null) && (sopClassUIDValue.equals(CR) || sopClassUIDValue.equals(XA))){
-				spacing = dob.get(Tag.ImagerPixelSpacing);
-			} 
-			
-			String spacingValue = spacing == null ? null : new String(spacing.getBytes());
-			
-			// Some values come packed as strings contain two numbers, we are only currently interested in one
-			double spacingValueNum    = 0;
-			double windowWidthValueNum   = 0;
-			double windowCenterValueNum  = 0;
-			
-			if ((windowCenter != null) &&(windowCenter.vm(null) == 2)){
-				windowCenterValueNum = new Double(windowCenterValue.split("\\\\")[0].trim()).doubleValue();
-			}else if (windowCenter != null) {
-			    windowCenterValueNum = new Double(windowCenterValue.trim());
-			}   
-			
-			if ((windowWidth != null) && (windowWidth.vm(null) == 2)){
-				windowWidthValueNum = new Double(windowWidthValue.split("\\\\")[0].trim()).doubleValue();
-			}else if (windowWidth != null) {
-			    windowWidthValueNum = new Double(windowWidthValue.trim()).doubleValue();
-			}
-			
-			if ((spacing != null) && (spacing.vm(null) == 2)){
-			    // Only report a pixel spacing value if both row and col
-			    // spacing are the same.
-			    String[] spacingValues = spacingValue.split("\\\\");
-			    if (spacingValues[0].trim().equals(spacingValues[1].trim())){
-			        spacingValueNum = new Double(spacingValues[0].trim()).doubleValue();
-			    }
-			} else if ((spacing != null) && (spacing.vm(null) == 1)){
-			    spacingValueNum = new Double(spacingValue.trim()).doubleValue();
-			}
-			
-			dis.close();
-			
-			JSONObject jsonResponse = new JSONObject();
-			
-     		// set the window center and window width attributes
-			jsonResponse.put(WINDOW_CENTER_PARAM, windowCenterValueNum);
-			jsonResponse.put(WINDOW_WIDTH_PARAM, windowWidthValueNum);
-			jsonResponse.put(PIXEL_SPACING, spacingValueNum);
-			jsonResponse.put(NATIVE_ROWS, nativeRowsValueNum);
-			jsonResponse.put(NATIVE_COLUMNS, nativeColumnsValueNum);
-			
-			jsonResponse.put("status","success");
-			
-			is.close();
-			dis.close();
-		
-			out.println(jsonResponse.toString());
-			out.close();
-			
-		} catch (Exception e) {
-			 is.close();
-			 dis.close();
-			 out.println("{\"status\":\"error\"}");
-			 out.close();
-			 System.out.println(e);
-			 log.error("Unable to read and send the DICOM dataset page",e);
-		}
-	}
+        InputStream is = null;
+        DicomInputStream dis = null;
+    
+                
+        try{
+            //Initialize the URL for the requested page.
+            URL url = new URL(dicomURL);
+            //opens the inputStream of the URL.
+            is = url.openStream();
+            
+            dis = new DicomInputStream(is);
+            DicomObject dob = dis.readDicomObject();
+            DicomElement sopClassUID = dob.get(Tag.SOPClassUID);
+            DicomElement nativeRows = dob.get(Tag.Rows);
+            DicomElement nativeColumns = dob.get(Tag.Columns);
+            DicomElement windowCenter = dob.get(Tag.WindowCenter);
+            DicomElement windowWidth = dob.get(Tag.WindowWidth);
+            
+            String sopClassUIDValue  =  sopClassUID == null ? null : new String(sopClassUID.getBytes()).trim();
+            int nativeRowsValueNum      =  nativeRows == null ? 0 : nativeRows.getInt(false);
+            int nativeColumnsValueNum   =  nativeColumns == null ? 0 : nativeColumns.getInt(false);
+            String windowCenterValue =  windowCenter == null ? null : new String(windowCenter.getBytes());
+            String windowWidthValue  =  windowWidth == null ? null :  new String(windowWidth.getBytes());
+            String pixelSpaceAttributeName = null;
+            String pixelMessage = null; // Message to be displayed to the user about the measurement
+            
+            // Different types of modalities store pixel data in different attributes
+            DicomElement spacing = null;
+            DicomElement imagerSpacing = null;
+            DicomElement pixelSpacing = null;
+            if ((sopClassUID != null) && (sopClassUIDValue.equals(CT) || sopClassUIDValue.equals(MR))){   
+                spacing = dob.get(Tag.PixelSpacing);
+                pixelSpaceAttributeName = "Pixel Spacing";
+            } else if ((sopClassUID != null) && (sopClassUIDValue.equals(CR) || sopClassUIDValue.equals(XA))){  // Projection Radiography
+                // This logic is taken from CP 586
+                pixelSpacing = dob.get(Tag.PixelSpacing);
+                imagerSpacing = dob.get(Tag.ImagerPixelSpacing);
+                String pixelSpacingStr = getDcmStrAttrVal(pixelSpacing);
+                if (!pixelSpacingStr.equals("")){
+                     String imagerSpacingStr = getDcmStrAttrVal(imagerSpacing);
+                     if (!imagerSpacingStr.equals("")){
+                         if (imagerSpacingStr.equals(pixelSpacingStr)){
+                             // Spacing attributes are equal
+                             spacing = imagerSpacing;
+                             pixelSpaceAttributeName = "Imager Pixel Spacing";
+                             pixelMessage = "Measurements are at the detector plane.";
+                         } else {
+                             // We will use Pixel Spacing, check to see if we can determine what type of calibration was done.
+                             spacing = pixelSpacing;
+                             pixelSpaceAttributeName = "Pixel Spacing";
+                             pixelMessage = "Measurement has been calibrated, details: " + getCalibrationDetails(dob);
+                         }
+                     }else{
+                         // Only pixel spacing is present, we can check for a calibration type, but in the end
+                         // it is not clear what this actually means
+                         spacing = pixelSpacing;
+                         pixelSpaceAttributeName = "Pixel Spacing";
+                         pixelMessage = "Warning: Measurement MAY have been calibrated, details: " + getCalibrationDetails(dob);
+                         pixelMessage += " It is not clear what this measurement represents.";
+                     }
+                }else{
+                    // Only Imager Spacing has been specified
+                    spacing = imagerSpacing;
+                    pixelSpaceAttributeName = "Imager Pixel Spacing";
+                    pixelMessage = "Measurements are at the detector plane.";
+                }
+            }
+            
+            String spacingValue = spacing == null ? null : new String(spacing.getBytes());
+            
+            double xSpacingValueNum = 0;
+            double ySpacingValueNum = 0;
+            double windowWidthValueNum   = 0;
+            double windowCenterValueNum  = 0;
+            
+            if ((windowCenter != null) &&(windowCenter.vm(null) == 2)){
+                windowCenterValueNum = new Double(windowCenterValue.split("\\\\")[0].trim()).doubleValue();
+            }else if (windowCenter != null) {
+                windowCenterValueNum = new Double(windowCenterValue.trim());
+            }   
+            
+            if ((windowWidth != null) && (windowWidth.vm(null) == 2)){
+                windowWidthValueNum = new Double(windowWidthValue.split("\\\\")[0].trim()).doubleValue();
+            }else if (windowWidth != null) {
+                windowWidthValueNum = new Double(windowWidthValue.trim()).doubleValue();
+            }
+            
+            if ((spacing != null) && (spacing.vm(null) == 2)){
+                String[] spacingValues = spacingValue.split("\\\\");
+                // From dicom correction item CP-626
+                // The order of values in the Pixel Spacing and Imager Pixel Spacing is
+                // Row Spacing\Column Spacing
+                // This translates to 
+                // Distance between center of Y pixels/ Distance between center of X pixel
+                // for this application
+                ySpacingValueNum = new Double(spacingValues[0].trim()).doubleValue();
+                xSpacingValueNum = new Double(spacingValues[1].trim()).doubleValue();
+
+            } else if ((spacing != null) && (spacing.vm(null) == 1)){
+                // If only one is specifed, assuming a square pixel.
+                ySpacingValueNum = new Double(spacingValue.trim()).doubleValue();
+                xSpacingValueNum = ySpacingValueNum;
+            }
+            
+            dis.close();
+            
+            JSONObject jsonResponse = new JSONObject();
+            
+            // set the window center and window width attributes
+            jsonResponse.put(WINDOW_CENTER_PARAM, windowCenterValueNum);
+            jsonResponse.put(WINDOW_WIDTH_PARAM, windowWidthValueNum);
+            jsonResponse.put(X_PIXEL_SPACING, xSpacingValueNum);
+            jsonResponse.put(Y_PIXEL_SPACING, ySpacingValueNum);
+            jsonResponse.put(PIXEL_SPACING_ATTRIBUTE, pixelSpaceAttributeName);
+            jsonResponse.put(PIXEL_MESSAGE, pixelMessage);
+            jsonResponse.put(NATIVE_ROWS, nativeRowsValueNum);
+            jsonResponse.put(NATIVE_COLUMNS, nativeColumnsValueNum);
+            
+            jsonResponse.put("status","success");
+            
+            is.close();
+            dis.close();
+            out.println(jsonResponse.toString());
+            out.close();
+            
+        } catch (Exception e) {
+             is.close();
+             dis.close();
+             out.println("{\"status\":\"error\"}");
+             out.close();
+             System.out.println(e);
+             log.error("Unable to read and send the DICOM dataset page",e);
+        }
+    }
+    
+    private String getDcmStrAttrVal(DicomElement dcmElement){
+        if (dcmElement == null){
+            return ("");
+        }
+        String stringRepr = new String(dcmElement.getBytes());
+        stringRepr = stringRepr.trim();
+        return (stringRepr);
+    }
+    
+    private String getCalibrationDetails(DicomObject dob){
+        String calibrationTypeStr = getDcmStrAttrVal(dob.get(Tag.PixelSpacingCalibrationType));
+        String calibrationDescrStr = getDcmStrAttrVal(dob.get(Tag.PixelSpacingCalibrationDescription));
+        String details = null;
+        if (!calibrationTypeStr.equals("") && !calibrationDescrStr.equals("")){
+            details = calibrationTypeStr + " - " + calibrationDescrStr;
+        }else if (!calibrationTypeStr.equals("")){
+            details = calibrationTypeStr;
+        }else if(!calibrationDescrStr.equals("")){
+            details = calibrationDescrStr;
+        }else{
+            details = "Not available.";
+        }
+        return (details);
+    }
 }

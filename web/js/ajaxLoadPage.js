@@ -26,13 +26,14 @@ var directSeries=0;
 		} else if(containerid != '') {
 		  	page_request.onreadystatechange=function() {
 		  		loadpage(page_request,containerid,url);
-		  	}
+		  	};
 		  	page_request.open('GET',url,true);
 		  	page_request.send(null);
 		} else {
 			page_request.open('GET', url, false);
 			page_request.send(null);
 		        if(multiFrames==true) {
+		        document.getElementById("loadingView").style.visibility="hidden";
 			    return(page_request.responseText);
 			}
 		}
@@ -43,25 +44,26 @@ var directSeries=0;
 	function loadpage(page_request, containerid, url){
 		if (page_request.readyState == 4 && (page_request.status==200 || window.location.href.indexOf("http")==-1)){
 			var pr = page_request.responseText;
-			if(pr.indexOf("wado?") >=0)
-				document.getElementById(containerid).innerHTML = pr.replace(/wado?/g, "/wado");
-			else			
+			if(pr.indexOf("wado?") >=0){
+			    if (document.getElementById(containerid)){
+				    document.getElementById(containerid).innerHTML = pr.replace(/wado?/g, "/wado");
+			    }
+			}
+			else{			
 				document.getElementById(containerid).innerHTML = pr;
-			
+			}
 			document.getElementById("loadingView").style.visibility="hidden";
-
 			setPatientInfos();
 			if(setImage == true){
 			    // This function call actually downloads the images that wind up in the thumbnails, ImageContainer.jsp just puts thumbnails in there, and sets the name
 			    // attribute of the img tag equal to the path.
-				load();		
+				load();
 			}
 			
 			if(directSeries==1){
 			 loadSeriesImage();
 			 directSeries=0;
-			}			
-			//urchinTracker(url);
+			}
 		}
 	}
 	

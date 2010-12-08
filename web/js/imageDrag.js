@@ -20,13 +20,15 @@
     	       drag=false;
     	       jQuery("#moveButton").removeClass("moveButtonOn").addClass("moveButton");
                jQuery(".toolBarButton").unbind("click.disableMode.Drag");
-               jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover")},function(){jQuery(this).removeClass("moveButtonHover")});
-               jQuery("#moveButton").click(dragMe);
+               jQuery("#moveButton").hover(function(){jQuery(this).addClass("moveButtonHover");},function(){jQuery(this).removeClass("moveButtonHover");});
+               jQuery("#moveButton").bind("click.on",dragMe);
                var pic = document.getElementById('picture');
                if (pic){
                    pic.style.cursor="default";
                }
-               jQuery("#toolBar").data("mode","none");
+               if( jQuery("#toolBar").data("mode") === "drag"){
+                   jQuery("#toolBar").data("mode","none");
+               }
 
     	};
 		jQuery("#moveButton").unbind();

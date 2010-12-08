@@ -57,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 /**
- * Creates the new ServerConfiguration file(oviyam-config.xml).
+ * Creates the new ServerCofiguration file(oviyam-config.xml).
  * @author bharathi
  * @version 0.7
  *
@@ -82,7 +82,6 @@ public class ServerConfig extends HttpServlet {
 		String port = request.getParameter("port");
 		String wadoPort = request.getParameter("wadoPort");		
 		String dcmProtocol = request.getParameter("dcmProtocol");
-						
 		try {
 			// Initialize the ServerXmlConfiguration instance.
 			ServerXmlConfiguration sxc = new ServerXmlConfiguration();
@@ -98,5 +97,7 @@ public class ServerConfig extends HttpServlet {
 		response.sendRedirect("oviyam");		
 	}
 
+	
+	
 
 }

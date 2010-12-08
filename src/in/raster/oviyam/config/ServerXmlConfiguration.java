@@ -78,7 +78,6 @@ public class ServerXmlConfiguration {
 	Document dom;
 	
 	File documentNameFile;
-	public static String fname;
 	
 	// Constructor -----------------------------------------------------------
 	/*
@@ -99,8 +98,9 @@ public class ServerXmlConfiguration {
 	 * It reads and checks whether the file exists or not. If the file does not exist then it creates 
 	 * a new xml document with the specified name.
 	 * 
+	 * @param documentName
 	 */
-	public void createAndParseXML() {
+	public void createAndParseXML(String documentName) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
 
@@ -111,7 +111,7 @@ public class ServerXmlConfiguration {
 			// check the server and set the documentNameFile according to server
 			
 			if(xmlFileName.indexOf("default") > 0)  // for JBOSS server
-				documentNameFile = new File(xmlFileName.substring(5,xmlFileName.indexOf("default"))+"default/" + fname);
+				documentNameFile = new File(xmlFileName.substring(5,xmlFileName.indexOf("default"))+"default/oviyam-config.xml");
 			else  // other than JBOSS
 			    documentNameFile = new File(this.getClass().getClassLoader().getResource("/conf/oviyam-config.xml").toURI());
 
@@ -257,7 +257,7 @@ public class ServerXmlConfiguration {
 	 * @return The ServerConfiguration object.
 	 */
 	public ServerConfiguration getElementValues(){
-						
+		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		URL url;
@@ -268,7 +268,7 @@ public class ServerXmlConfiguration {
 			
 			if(xmlFileName.indexOf("default") >0) {
 				File srcFile = new File(this.getClass().getResource("/conf/oviyam-config.xml").toURI());
-				File destFile = new File(xmlFileName. substring(5,xmlFileName. indexOf("default"))+"default/" + fname);
+				File destFile = new File(xmlFileName. substring(5,xmlFileName. indexOf("default"))+"default/oviyam-config.xml");
 
 				// check the exists of oviyam-config.xml file. If not exists, copy the file to default folder
 				if(!destFile.exists()) {
@@ -331,7 +331,7 @@ public class ServerXmlConfiguration {
 	 */
 	public void creatXml(String aeTitle, String hostName, String port, String wadoPort, String dcmProtocol){
 		
-		createAndParseXML();
+		createAndParseXML("oviyam-config.xml");
 		ServerConfiguration  s=new ServerConfiguration();
 		s.setAeTitle(aeTitle);
 		s.setHostName(hostName);

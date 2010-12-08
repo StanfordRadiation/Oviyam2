@@ -55,33 +55,41 @@
 				<tr><td>
 				<c:choose>				 
 					<c:when test="${modality =='SR' }">
-						<div class="image" onclick="borderThumb=''; initScroll();  loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }');"><img  width="128px" class="reflec" src="images/icons/SR_Latest.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); "></div>
-						<div class="seriesDetails">${seriesDescs}</div>				
+						<div class="image">
+						<img width="128px" class="reflec" src="images/icons/SR_Latest.png"  onclick="loadSeriesHandler(this,'ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs }&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate}&studyDates=${param.studyDates }&physicianName=${param.physicianName}','${numberOfImages}', 'SRContent','Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"/>
+						</div>
+						<div class="seriesDetails">${seriesDescs}</div>
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>
 					
 					<c:when test="${modality =='KO' }">
-						<div class="image" onclick="borderThumb=''; initScroll(); loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }');"><img  width="128px" class="reflec" src="images/icons/KO.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); "></div>
+						<div class="image" onclick=>
+						    <img  width="128px" class="reflec" src="images/icons/KO.png"  onclick="loadSeriesHandler(this,'ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }',' ${numberOfImages}', 'KOContent', 'Image.do?study=${param.study}&series=${seriesId}&object=${imageId }&contentType=text/html');"/>
+						</div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>
 					
-
 					<c:when test="${modality =='XA' }">
-						<div class="image" onclick="borderThumb=''; setImageInfos('${numberOfImages}'); initScroll(); inc=0; loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }'); "><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&rows=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+						<div class="image">
+						    <img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&rows=128" onclick="inc=0; loadSeriesHandler(this,'ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }','${numberOfImages}');">
+						</div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>
 					
 					<c:when test="${modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">					
-						<div class="image" onclick="loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}'); "><img id="series${seriesNumber}" width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="changeSeriesBorder(this);"></div>
+						<div class="image">
+						    <img id="series${seriesNumber}" width="128px" class="reflec" src="images/icons/icn_video.gif" onclick="loadSeriesHandler(this,'ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}'); "/>
+						</div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:when>					
 
 					<c:otherwise>
-<%--Removing call to DCMW here, not necessary.--%>
-						<div class="image" onclick="resetAll();globalWC=globalWW=0;isWLAdjusted=false; slideshowspeed=500; resetLoop(); multiFrames=false; borderThumb=''; setImageInfos('${numberOfImages}'); initScroll(); inc=0; loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }'); changeFirstImgBorder('img0');"><img id="series${seriesNumber}"  width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&rows=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); hideDataSet();"></div>
+<%--Standard dicom image here.--%>
+						<div class="image"> 
+						    <img id="series${seriesNumber}"  width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&rows=128" onclick="resetAll();globalWC=globalWW=0;isWLAdjusted=false; slideshowspeed=500; resetLoop(); multiFrames=false;inc=0; loadSeriesHandler(this,'ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }', '${numberOfImages}'); hideDataSet();"/></div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
 					</c:otherwise>

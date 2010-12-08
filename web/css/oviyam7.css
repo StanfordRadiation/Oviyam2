@@ -142,7 +142,6 @@
 		position: absolute;
 		height: 50px;
 		top:57px;
-		text-align: left;		
 		overflow: hidden;
 		background: transparent url('../images/icons/tb_back.png') repeat-x scroll top left;
 		width:100%;
@@ -154,10 +153,9 @@
 	#toolBarContainer {
 		position: absolute;
 		top: 4px;
-		/*left:60%;*/
-		margin-left: 400px;
+        right:20%;
 		text-align: center;
-		width: 100%;
+		width: auto;
 	}
 	
 	.toolBarButton {
@@ -166,7 +164,6 @@
 		width:80px;
 		height:50px;
 		margin: 0px 0px;
-		margin-top: 0px;
 		cursor: pointer; /* hand-shaped cursor */		
 		color: #616161;
 		font-size:11px;
@@ -529,11 +526,17 @@
 	#pixelSpacing{
 	    position:absolute;	
 		width:auto;
-		/*vertical-align:middle;
-		text-align:left;	*/
 		right: 50px;
-		bottom:40px;
+		bottom:30px;
 		font-size: 15px;
+	}
+	
+	#pixelMessage{
+	    position:absolute;	
+        width:auto;
+        right: 50px;
+        bottom:50px;
+        font-size: 15px;
 	}
 	
 	#nativeRes{
@@ -549,8 +552,8 @@
 	
 	#full_resolution {
 		position: absolute;
-		left: 77%;
-		bottom: 70px;
+		left: 85%;
+		bottom: 80px;
 		font-size: 13px;
 		cursor: pointer; /* hand-shaped cursor */	
 		background:#000000;

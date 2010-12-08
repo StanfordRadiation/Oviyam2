@@ -102,6 +102,7 @@
 	
 	<div class="shadow" id="windowLevel"></div>
 	<div class="shadow" id="pixelSpacing"></div>
+	<div class="shadow" id="pixelMessage"></div>
 	<div class="shadow" id="nativeRes"></div>
 	
     <div class="shadow" id="number">Frame 1 of ${param.totalImages }</div>
@@ -129,6 +130,7 @@
 	
 	<div class="shadow" id="windowLevel"></div>
 	<div class="shadow" id="pixelSpacing"></div>
+	<div class="shadow" id="pixelMessage"></div>
 	<div class="shadow" id="nativeRes"></div>
 	
 	<div class="shadow" id="full_resolution" style="visibility:hidden;" onclick="showFullResolution();">&nbsp;View Full Resolution&nbsp;</div>
@@ -139,9 +141,7 @@
 			<lbx:LightBox patientId="${param.patient}" study="${param.study}" seriesId="${param.series}" objectId="${param.imageId}" >
 			<td class="imageHolder">
 				<div id = "imageHolder" class="imageHolder">
-				
-						<img alt="" class="dragme" name="picture" src="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&rows=${rows}" width="512" id="picture" onload="ajaxDicomHeaders(this)"></img>
-				 	
+						<img style="display:none;" alt="" class="dragme" name="picture" src="" width="512" id="picture"></img>
 				 </div>
 			<td>
 			</lbx:LightBox>
@@ -157,10 +157,13 @@
 <%--//ThumbNails Div to hold the thumbDivider and thumbNailHolder --%>
 <div id="thumbNails" class='flexcroll'>
 
-	<%--thumbDivider to seperate the image and thumbnails --%>
+	<%--thumbDivider to separate the image and thumbnails --%>
 	<div id="thumbDivider" onclick="singleImage();" title="Click or press 'i' to toggle thumbnails visibility">
 		<img id="dividerImg" src="images/icn_grip1.gif" alt="">
 	</div><%--End of thumbDivider --%>
+	
+	<div id="imageCacheHolder" style="display:none">
+	</div>
 	
 	<%-- thumbNailHolder Div to contain the thumbnails of the selected Series. --%>
 	<div id="thumbNailHolder">
@@ -170,13 +173,13 @@
 		<div class="scale-item">
 			<div class="imgNo">${instanceNumber}</div>
 			<input type="hidden" id="imgs${img}" name='http://${applicationScope.serverConfig.hostName }:${applicationScope.serverConfig.wadoPort }/wado?requestType=WADO&contentType=application/dicom%2Bxml&studyUID=${param.study}&seriesUID=${param.series }&objectUID=${imageId }' style="position:fixed;top:0px;">
-			<c:choose>				 
+			<c:choose>			 
 			<c:when test="${param.modality =='SR' }">
-				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${param.imageId}&contentType=text/html'); loadStudyDesc('${studyDesc}');">
+				<img alt="" id="img${img}" name="images/icons/SR_Latest.png" class="scale-image" src="images/icons/SR_Latest.png" width="100%" onclick="ajaxpage('SRContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('SRContent').style.color='#000000'; changeBorder(this); return false;">
 			</c:when>
 			
 			<c:when test="${param.modality =='KO' }">
-				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;" onload="loadHtml('KOContent','Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}&contentType=text/html'); loadStudyDesc('${studyDesc}');">
+				<img alt="" id="img${img}" name="images/icons/KO.png" class="scale-image" src="images/icons/KO.png" width="100%" onclick="ajaxpage('KOContent','Image.do?study=${param.study}&series=${param.series }&object=${imageId }&contentType=text/html'); $('KOContent').style.color='#000000'; changeBorder(this); return false;">
 			</c:when>
 
 			<c:when test="${param.modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
@@ -186,11 +189,10 @@
 			<c:otherwise>
 				<c:choose>
 				<c:when test="${frames =='yes' }">		 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); setImage=false; cineloop=0; ajaxpage('imagePane','MultiFrames.jsp?study=${param.study}&series=${param.series }&object=${imageId }&studyDescription=${param.studyDescription }&numberOfFrames=${numberOfFrames }&sex=${param.sex }&physicianName=${param.physicianName }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&modality=${param.modality }'); cineLoop(); changeInstanceBorder('instance${img}'); selectedInstanceIndex = ${img}; changeDataset();" onload="loadStudyDesc('${studyDesc}');">		
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image measurable" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); if (cineloop) cineLoop(); loadImageCache('Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}&frameNumber=',${numberOfFrames}); setImageAndHeaders('Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}&frameNumber=0'); cineLoop(); changeBorder(this); selectedInstanceIndex = ${img}; changeDataset();" onload="loadStudyDesc('${studyDesc}');">		
 				</c:when>
-
-				<c:otherwise> 
-					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image" src="images/icons/filler_black.jpg" width="100%" onclick="changeslides(${img}); changeBorder(this); changeDataset();" onload = "checkResolution(${rows}); loadStudyDesc('${studyDesc}');">
+				<c:otherwise>
+					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}" class="scale-image measurable" src="images/icons/filler_black.jpg" width="100%" onclick="if (cineloop) cineLoop(); setImageInfos('${numberOfImages}'); changeslides(${img}); changeBorder(this); changeDataset();" onload = "checkResolution(${rows}); loadStudyDesc('${studyDesc}');">
 				</c:otherwise>
 				</c:choose>
 			</c:otherwise>

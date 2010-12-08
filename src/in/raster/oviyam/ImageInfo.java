@@ -293,7 +293,7 @@ public class ImageInfo {
 	
 	public Map<Integer,InstanceModel> getSortedMap(){
 		Map<Integer,InstanceModel> sortedMap = new TreeMap<Integer, InstanceModel>(instance);
-		System.out.println("The data set count after sorting is "+sortedMap.size());
+		//System.out.println("The data set count after sorting is "+sortedMap.size());
 		return sortedMap;
 	}
 

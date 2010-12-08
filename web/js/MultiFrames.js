@@ -6,8 +6,7 @@ var frameNumber=1;
   if(frameNumber>=numberOfFrames){
   frameNumber=0;    	
   }
-  document.getElementById('picture').src = document.getElementById("img"+frameNumber).src;
-  
+  setImageAndHeaders(document.getElementById("img"+frameNumber).src);
   }
   
    function prevFrame(){
@@ -15,7 +14,7 @@ var frameNumber=1;
    	if(frameNumber<1){
   		frameNumber=numberOfFrames-1;    	
  	 }
-  	document.getElementById('picture').src = document.getElementById("img"+frameNumber).src;
+  setImageAndHeaders(document.getElementById("img"+frameNumber).src);
     	
   }
   
@@ -32,7 +31,7 @@ var frameNumber=1;
   
   function changeslides(which){
   		frameNumber=which;
-  		document.getElementById('picture').src = document.getElementById("img"+which).src;
+  		setImageAndHeaders(document.getElementById("img"+which).src);
   		document.getElementById('frameNumber').innerHTML="Frame "+(frameNumber+1)+" of "+numberOfFrames;
   
   }

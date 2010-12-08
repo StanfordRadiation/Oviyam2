@@ -2,7 +2,7 @@
 	//Image zoom in/out script
 	
 	var zoomFlag=false;
-	var zoomfactor=0.05 //Enter factor (0.05=5%)
+	var zoomfactor=0.05; //Enter factor (0.05=5%)
 	function zoomhelper(state){
 		if (parseInt(whatcache.style.width)>=70){
 			whatcache.style.width=(parseInt(whatcache.style.width)+parseInt(whatcache.style.width)*zoomfactor*prefix)+'px';
@@ -58,9 +58,11 @@
        	   
        	   jQuery("#zoomButton").removeClass("zoomButtonOn").addClass("zoomButton");
            jQuery(".toolBarButton").unbind("click.disableMode.Zoom");
-           jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover")},function(){jQuery(this).removeClass("zoomButtonHover")});
-           jQuery("#zoomButton").click(zoomOnOff);
-           jQuery("#toolBar").data("mode","none");
+           jQuery("#zoomButton").hover(function(){jQuery(this).addClass("zoomButtonHover");},function(){jQuery(this).removeClass("zoomButtonHover");});
+           jQuery("#zoomButton").bind("click.on", zoomOnOff);
+           if (jQuery("#toolBar").data("mode")==="zoom"){
+               jQuery("#toolBar").data("mode","none");
+            }
 	   };
 	   
 	   document.getElementById('zoomInButton').style.visibility="visible";

@@ -1,8 +1,8 @@
 // This file contains the handlers called when the user clicks on the measure icon.
-function measureOn(){
+function measureOn(evt){
         var lb = null;
         jQuery("#measureButton").removeClass("measureButton").addClass("measureButtonOn");
-        lb = lightBox("picture", pixelSpacing, nativeRows, nativeColumns);
+        lb = lightBox("picture");
         if (cineloop == 1){
             cineLoop();
         }
@@ -20,12 +20,14 @@ function measureOn(){
         var turnOff = function(event) {
              jQuery("#measureButton").removeClass("measureButtonOn").addClass("measureButton");
              jQuery(".toolBarButton").unbind("click.disableMode.Measure");
-             jQuery("#measureButton").click(measureOn);
+             jQuery("#measureButton").bind("click.on", measureOn);
              lb.measureOff();
              lb.destroy();
              jQuery("#measureButton").hover(function(){jQuery(this).addClass("measureButtonHover");},function(){jQuery(this).removeClass("measureButtonHover");});
-             jQuery("#toolBar").data("mode","none");
-             ajaxDicomHeaders(jQuery("#picture").get(0));
+             if (jQuery("#toolBar").data("mode") === "measure"){
+                 jQuery("#toolBar").data("mode","none");
+             }
+             setImageAndHeaders(jQuery("#picture").get(0).src);
         };
         
         jQuery("#measureButton").unbind();
