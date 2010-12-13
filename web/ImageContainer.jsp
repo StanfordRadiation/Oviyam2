@@ -92,6 +92,14 @@
      <img alt="" class="dragme" name="picture" src="" width="0" id="picture">
 </c:when>
 
+<c:when test="${param.sopClassUid=='1.2.840.10008.5.1.4.1.1.104.1' }">
+	<div id="PDFContent">
+		<OBJECT id="pdf" type="application/pdf" data="Image.do?study=${param.study}&series=${param.series}&object=${param.imageId}" width=700 height=700>
+			PDF Plugin not found. Please install PDF Plugin and try again.
+		</OBJECT> 
+	</div>
+</c:when>
+
 <c:when test="${frames =='yes' }">
 	<div class="shadow" id="patStudyDesc"></div>	
 	<div class="shadow" id="patSex">${param.sex }</div>
@@ -184,7 +192,11 @@
 
 			<c:when test="${param.modality == 'ES' && sopClassUID == '1.2.840.10008.5.1.4.1.1.77.1.1.1' }">
 			    <img alt="" id="img${img}" name="images/icons/icn_video.gif" class="scale-image" src="images/icons/icn_video.gif" width="100%" onclick="vlc_controls=null; init_vlc_player(); vlc_controls.play('wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${param.series}&objectUID=${imageId}'); changeBorder(this); return false;" onload="loadStudyDesc('${studyDesc}');">
-			</c:when>		
+			</c:when>
+			
+			<c:when test="${sopClassUID =='1.2.840.10008.5.1.4.1.1.104.1' }">
+				<img alt="" id="img${img}" name="images/icons/PDF.png" class="scale-image" src="images/icons/PDF.png" width="100%" onclick="$(pdf).data ='Image.do?study=${param.study}&series=${param.series}&object=${imageId}'; changeBorder(this); ">
+			</c:when>
 			
 			<c:otherwise>
 				<c:choose>

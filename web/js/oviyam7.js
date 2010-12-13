@@ -400,6 +400,9 @@
 			$('imagePane').style.visibility="visible";
 			ispatientlistvisible=0;
 			$("patientDisName").style.visibility="visible";
+			if($('pdf') != null)
+    			document.getElementById('pdf').style.display='';
+			
 			return false;
 		}
 		else{
@@ -409,6 +412,9 @@
 			$('seriesPane').style.visibility="hidden";	
 			$('imagePane').style.visibility="hidden";
 			$("patientDisName").style.visibility="hidden";
+			if($('pdf') != null)
+    			document.getElementById('pdf').style.display='none';
+			
 			return false;			
 		}		
 	}
@@ -1204,4 +1210,35 @@
               return;
           }
           jQuery('#imageCacheHolder').empty().append(jQuery.jqote(imageCacheTemplate, {src:img, frames:numberOfFrames}));
+      }
+      
+      // onClick event for "Cancel" button in Search Panel.
+      function cancelButtonClicked() {
+    	  if($('mymovie') != null) 
+    		  document.getElementById('mymovie').style.visibility='visible'; 
+    	  keynav=1; 
+    	  new Effect.SlideUp('searchPane',{duration:0.5}); 
+  		
+    	  if($('pdf') != null)
+    		  document.getElementById('pdf').style.display='';
+
+    	  return false;
+      }
+    
+      // onClick event for "Search" button in Page Header
+      function searchButtonClicked() {
+    	  resetAll(); 
+    	  ajaxpage('searchTools','SearchPopup.jsp'); 
+    	  new Effect.SlideDown('searchPane',{duration:0.5}); 
+    	  document.getElementById('buttons').style.visibility='visible';
+    	  document.getElementById('divider').style.visibility='visible';
+    	  keynav=0;
+    	  keyaplhabet=0; 
+    	  hideDataSet(); 
+    	  if($('mymovie') != null)
+    		  document.getElementById('mymovie').style.visibility='hidden';
+    	  if($('pdf') != null)
+    		  document.getElementById('pdf').style.display='none';
+    	
+    	  return false;
       }

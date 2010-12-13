@@ -84,7 +84,13 @@
 						</div>
 						<div class="seriesDetails">${seriesDescs}</div>				
 						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
-					</c:when>					
+					</c:when>	
+					
+					<c:when test="${sopClassUID =='1.2.840.10008.5.1.4.1.1.104.1' }">
+						<div class="image" onclick="borderThumb=''; initScroll(); loadImages('ImageContainer.jsp?patient=${param.patient}&study=${param.study}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId }&studyDescription=${param.studyDescription }&sex=${param.sex }&birthDate=${param.birthDate }&studyDates=${param.studyDates }&physicianName=${param.physicianName }&sopClassUid=${sopClassUID}');"><img  width="128px" class="reflec" src="images/icons/PDF.png" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0'); "></div>
+						<div class="seriesDetails">${seriesDescs}</div>				
+						<div class="seriesDetails">Total Images : ${numberOfImages}</div><br>
+					</c:when>
 
 					<c:otherwise>
 <%--Standard dicom image here.--%>

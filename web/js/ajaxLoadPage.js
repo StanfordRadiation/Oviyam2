@@ -70,8 +70,9 @@ var directSeries=0;
 	
 	function loadSeriesImage(){	
 		keynav=1;
-		document.getElementById('picture').src=document.getElementById("img0").src;
-	
+		if(document.getElementById('picture') != null) {
+			document.getElementById('picture').src=document.getElementById("img0").src;
+		}
 	}
 	
 	

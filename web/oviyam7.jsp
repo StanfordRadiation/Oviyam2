@@ -126,14 +126,7 @@
 	<c:choose><c:when test="${cookie.color != null}">style="background:${cookie.color.value};" </c:when> 
 	<c:otherwise> style="background:#232323;" </c:otherwise></c:choose>>
 <div id="pageHeader">
-<button id="searchButton" class="large"
-	onclick="resetAll(); ajaxpage('searchTools','SearchPopup.jsp'); new Effect.SlideDown('searchPane',{duration:0.5}); 
-	document.getElementById('buttons').style.visibility='visible';
-	document.getElementById('divider').style.visibility='visible';
-	keynav=0;keyaplhabet=0; hideDataSet(); 
-	if($('mymovie') != null)
-	   document.getElementById('mymovie').style.visibility='hidden';
-	return false;">
+<button id="searchButton" class="large" onclick="searchButtonClicked();">
 </button>
 
 <div id="patientDisName"></div>
@@ -517,8 +510,8 @@
 <div class="label">Search</div>
 </div>
 </button>
-<button class="pushCancel" type="reset"
-	onclick="if($('mymovie') != null) document.getElementById('mymovie').style.visibility='visible'; keynav=1; new Effect.SlideUp('searchPane',{duration:0.5}); return false; keynav=1;">
+<button class="pushCancel" type="reset" onclick="cancelButtonClicked();">
+
 <div class="outer">
 <div class="label">Cancel</div>
 </div>

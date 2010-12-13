@@ -1069,6 +1069,11 @@
 		margin: 125px 5px 5px 75px;
 	}
 	
+    #PDFContent {
+		position: relative;
+		margin: 10px 10px 10px 40px;
+	}
+
 	/* define width of TD (TH) elements of fixedHeader   */
 	thead.fixedHeader td {
 		width: 3%;
