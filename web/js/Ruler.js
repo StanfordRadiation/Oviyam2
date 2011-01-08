@@ -124,12 +124,14 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         text = lightBox.paper.text(endPoint.x+textPlacement, endPoint.y, measurement);
 
         // White text with a black border
-        text.attr("font-size", 17);
-        text.attr("font-weight", "bold");
-        text.attr("stroke",BLACK);
+        text.attr("font-size", 12);
+        text.attr("font-weight", "normal");
+        text.attr("font-style","normal");
+
+        //text.attr("stroke",BLACK);
         text.attr("stroke-width", 0.5);
         text.attr("font-family","courier");
-        text.attr("fill",WHITE);
+        text.attr("fill",YELLOW);
         var textBox = text.getBBox();
         textBoundaryBox = lightBox.paper.rect(endPoint.x+textPlacement - textBox.width/2, endPoint.y-textBox.height/2, textBox.width, textBox.height);
         textBoundaryBox.attr("fill", WHITE);
