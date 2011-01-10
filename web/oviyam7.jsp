@@ -449,7 +449,7 @@
 		</div>
 		</td>
 		<td><a href="http://oviyam.raster.in" target="_blank"><img
-			src="images/oviyam_logo_b.png" alt="" title="Version:0.9.1(02.12.2010)"></a></td>
+			src="images/oviyam_logo_b.png" alt="" title="Version: 0.9.1 (10.01.2011)"></a></td>
 		<td width="300" align="right">
 		<div class="colorChooser" id="colorChooser">
 		<div class="label">Background:&nbsp;</div>
