@@ -100,7 +100,7 @@
 	</div>
 </c:when>
 
-<c:when test="${frames =='yes' }">
+<c:when test="${frames =='yes' && numberOfFrames > 1 }">
 	<div class="shadow" id="patStudyDesc"></div>	
 	<div class="shadow" id="patSex">${param.sex }</div>
 	<div class="shadow" onclick=" even=document.getElementById('picture').event; initwl();" id="patPhyName">${phy_name}</div>
@@ -200,7 +200,7 @@
 			
 			<c:otherwise>
 				<c:choose>
-				<c:when test="${frames =='yes' }">		 
+				<c:when test="${frames =='yes' && numberOfFrames > 1 }">		 
 					<img alt="" id="img${img}" name="Image.do?study=${param.study}&series=${param.series }&object=${imageId }" class="scale-image measurable" src="images/icons/filler_black.jpg" width="100%" onclick="fti=0; multiFrames=true; changeSpeed1(ajaxpage('','MFrames?datasetURL=http://${applicationScope.serverConfig.hostName}:${applicationScope.serverConfig.wadoPort}/wado?requestType=WADO&contentType=application/dicom&studyUID=${param.study}&seriesUID=${seriesId}&objectUID=${imageId}')); setImageInfos('${numberOfFrames}'); if (cineloop) cineLoop(); loadImageCache('Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}&frameNumber=',${numberOfFrames}); setImageAndHeaders('Image.do?study=${param.study}&series=${param.series }&object=${imageId }&rows=${rows}&frameNumber=0'); cineLoop(); changeBorder(this); selectedInstanceIndex = ${img}; changeDataset();" onload="loadStudyDesc('${studyDesc}');">		
 				</c:when>
 				<c:otherwise>
