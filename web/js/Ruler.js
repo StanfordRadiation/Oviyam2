@@ -5,6 +5,8 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
     var ORANGE = "#FFAA56";
     var BLACK = "#000000";
     var WHITE = "#FFFFFF";
+    var GREEN = "#00FF00";
+    
     var that = {};
     var line = null;
     var startPoint = null;
@@ -131,7 +133,7 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         //text.attr("stroke",BLACK);
         text.attr("stroke-width", 0.5);
         text.attr("font-family","courier");
-        text.attr("fill",YELLOW);
+        text.attr("fill",GREEN);
         var textBox = text.getBBox();
         textBoundaryBox = lightBox.paper.rect(endPoint.x+textPlacement - textBox.width/2, endPoint.y-textBox.height/2, textBox.width, textBox.height);
         textBoundaryBox.attr("fill", WHITE);
@@ -157,11 +159,11 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         var endPath1 = "M"+a[0].x+" "+a[0].y+"L"+a[1].x+" "+a[1].y;
         var endPath2 = "M"+b[0].x+" "+b[0].y+"L"+b[1].x+" "+b[1].y;
         line = lightBox.paper.path(rulerPath);        
-        line.attr("stroke", YELLOW);
+        line.attr("stroke", GREEN);
         end1 = lightBox.paper.path(endPath1);
-        end1.attr("stroke", YELLOW);
+        end1.attr("stroke", GREEN);
         end2 = lightBox.paper.path(endPath2);
-        end2.attr("stroke", YELLOW);
+        end2.attr("stroke", GREEN);
 
         // The line is very thin, but we need that for accuracy, however for useability, its needs to be easier to move and manipulate
         // This creates a bounding box around the middle of the line that acts as a proxy for the line on rollover and dragging
@@ -175,7 +177,7 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         boundingBox.attr("fill",WHITE);
         boundingBox.toFront();
         jQuery(boundingBox.node).hover(function(){line.attr('stroke',ORANGE);end1.attr('stroke',ORANGE);end2.attr('stroke',ORANGE);lightBox.moveCursorOn();},
-                                       function(){line.attr('stroke',YELLOW);end1.attr('stroke',YELLOW);end2.attr('stroke',YELLOW);lightBox.moveCursorOff();});
+                                       function(){line.attr('stroke',GREEN);end1.attr('stroke',GREEN);end2.attr('stroke',GREEN);lightBox.moveCursorOff();});
 
         // Now bounding boxes for the rule marks
         var oppositeSlope = null;
@@ -193,7 +195,7 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         boundingBoxEnd1.attr("opacity",0);
         boundingBoxEnd1.attr("stroke",WHITE);
         boundingBoxEnd1.attr("fill",WHITE);
-        jQuery(boundingBoxEnd1.node).hover(function(){end1.attr('stroke',ORANGE);}, function(){end1.attr('stroke',YELLOW);});
+        jQuery(boundingBoxEnd1.node).hover(function(){end1.attr('stroke',ORANGE);}, function(){end1.attr('stroke',GREEN);});
 
         a = solver(end2BeginPoint.x, end2BeginPoint.y, 3, oppositeSlope);
         b = solver(end2EndPoint.x, end2EndPoint.y, 3, oppositeSlope);
@@ -201,7 +203,7 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
         boundingBoxEnd2.attr("opacity",0);
         boundingBoxEnd2.attr("stroke",WHITE);
         boundingBoxEnd2.attr("fill",WHITE);
-        jQuery(boundingBoxEnd2.node).hover(function(){end2.attr('stroke',ORANGE);}, function(){end2.attr('stroke',YELLOW);});
+        jQuery(boundingBoxEnd2.node).hover(function(){end2.attr('stroke',ORANGE);}, function(){end2.attr('stroke',GREEN);});
 
 
         // Make the line draggable
@@ -319,7 +321,7 @@ var ruler = function(lightBox, ratio, xHeaderSpacing, yHeaderSpacing){
     var adjust = function(point){
        clear();
        line = lightBox.paper.path("M"+startPoint.x+" "+startPoint.y+"L"+point.x+" "+point.y);
-       line.attr("stroke",YELLOW);
+       line.attr("stroke",GREEN);
     };
     that.adjust = adjust;
 
