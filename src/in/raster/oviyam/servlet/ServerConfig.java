@@ -57,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 /**
- * Creates the new ServerCofiguration file(oviyam-config.xml).
+ * Creates the new ServerCofiguration file.
  * @author bharathi
  * @version 0.7
  *
@@ -87,7 +87,7 @@ public class ServerConfig extends HttpServlet {
 			ServerXmlConfiguration sxc = new ServerXmlConfiguration();
 			/*
 			 * Calls the creatXml(aeTitle, hostName, port,
-			 * wadoPort,dcmProtocol). It will create the new oviyam-config.xml
+			 * wadoPort,dcmProtocol). It will create the new xml
 			 * file with the given element values.
 			 */
 			sxc.creatXml(aeTitle, hostName, port, wadoPort, dcmProtocol);
