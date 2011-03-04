@@ -95,6 +95,7 @@ public class DcmImage extends HttpServlet {
         String windowCenter = request.getParameter("windowCenter");
         String windowWidth = request.getParameter("windowWidth");
 
+                
         imageURL = "http://" + sc.getHostName() + ":" + sc.getWadoPort()
                 + "/wado?requestType=WADO&studyUID=" + study + "&seriesUID="
                 + series + "&objectUID=" + object; // +"&windowCenter="+windowCenter+"&windowWidth="+windowWidth;
