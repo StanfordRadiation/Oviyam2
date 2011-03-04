@@ -200,7 +200,7 @@
 					<div id="image"><A HREF=""
 						onclick="borderThumb=''; setImageInfos('${numberOfImages}'); loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); return false;"><img
 						width="130px" class="reflec"
-						src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=135" /></a></div>
+						src="Image.do?study=${param.studyUID}&series=${seriesId}&object=${imageId}&row=135" /></a></div>
 					<script type="text/javascript" language="javascript">
 											ispatientlistvisible=0;
 											setPatientInfoVisible("${patientName}");
