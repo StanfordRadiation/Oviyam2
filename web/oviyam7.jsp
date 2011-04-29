@@ -240,7 +240,7 @@
 					
 <%-- Removing call to dcmWL, a separate ajax call is more appropriate. --%>
 			           <c:otherwise>
-					     <div class="image" onclick="resetAll(); globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+					     <div class="image" onclick="resetAll(); globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.studyUID}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
 					   </c:otherwise>
 					</c:choose>
 
@@ -285,7 +285,7 @@
 					       </c:when>
 					       
 					       <c:otherwise>
-						      <div class="image" onclick="resetAll();globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.study}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
+						      <div class="image" onclick="resetAll();globalWC=globalWW=0; borderThumb=''; setImageInfos('${numberOfImages}');  loadImages('ImageContainer.jsp?patient=${serPk}&study=${param.studyUID}&series=${seriesId}&modality=${modality}&seriesDesc=${seriesDescs}&totalImages=${numberOfImages}&imageId=${imageId}&sex=${patientSex}&birthDate=${patientBirthDate}&studyDates=${studyDate}&studyDescription=${studyDesc}&physicianName=${refPhysicianName}'); changeFirstImgBorder('img0'); return false;"><img id="series${seriesNumber}" width="128px" class="reflec" src="Image.do?study=${param.studyUID}&series=${seriesId}&object=${imageId}&row=128" onclick="changeSeriesBorder(this); changeFirstImgBorder('img0');"></div>
 						   </c:otherwise>
 						 </c:choose>
 
