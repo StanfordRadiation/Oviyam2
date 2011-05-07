@@ -188,13 +188,15 @@ public class ImageInfo {
 				 * Creates the InstanceModel and adds it to the instance.
 				 */				
 				
-				if(instance.containsKey(Integer.parseInt(dataSet.getString(Tags.InstanceNumber)))){
-					instance.put(dataSetCount+1, new InstanceModel(dataSet));
-				}else{
-					instance.put(Integer.parseInt(dataSet.getString(Tags.InstanceNumber)), new InstanceModel(dataSet));
-				}
-				
-
+				 if (dataSet.getString(Tags.InstanceNumber)==null)
+				 {
+					 instance.put(dataSetCount+1, new InstanceModel(dataSet));
+				 }else {
+					 if(instance.containsKey(Integer.parseInt(dataSet.getString(Tags.InstanceNumber))))
+					 	 instance.put(dataSetCount+1, new InstanceModel(dataSet));
+					 else
+					   	 instance.put(Integer.parseInt(dataSet.getString(Tags.InstanceNumber)), new InstanceModel(dataSet));
+				 }
 			} catch (Exception e) {
 				log.error("Unable to get the Dataset from the datasetVector and \n add it to the instaces ArrayList<InstanceModel>",e);
 				e.printStackTrace();
