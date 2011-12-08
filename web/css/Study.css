@@ -579,6 +579,21 @@
 		position: relative;
 		margin: 125px 5px 5px 75px;
 	}
+
+	#full_resolution {
+		position: absolute;
+		left: 85%;
+		bottom: 80px;
+		font-size: 13px;
+		cursor: pointer; /* hand-shaped cursor */	
+		background:#000000;
+	}
+
+ 	#full_resolution:hover {
+ 		font-weight: bold;
+		/* background:#FFCC00;
+		color:#000000 !important; */
+	}
 			
 	#imgTable{
 		position:absolute;
