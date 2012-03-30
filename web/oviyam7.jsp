@@ -59,7 +59,7 @@
 <title>Oviyam</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" language="javascript" src="js/lib/prototype.js"></script>
-<script type="text/javascript" language="javascript" src="js/lib/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/lib/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/ahpi.imgload.js"></script>
 <script type="text/javascript" language="javascript" src="js/lib/jquery.jqote2.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/oviyam7.js"></script>
