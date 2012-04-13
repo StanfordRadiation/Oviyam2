@@ -571,12 +571,18 @@
 		
 		$('seriesPane').innerHTML="";  // This is causing an issue when multiFrame = yes and the user hits search, not sure where the fix is yet. -JM
 		$('imagePane').innerHTML="";	
-		sortPatientTable();
+		//sortPatientTable();
+		
+		if($('queryResult') != null) {
+			var parNode = $('queryResult').parentNode;
+			parNode.removeChild(parNode.childNodes[1]);
+		}
 	
 		hidepatient=1;
 		if(hidepatient==1){
 			hidePatient();
 			ajaxpage('patientDiv', filename );		 // Hacky fix to repair Search in multi frame mode			
+			sortPatientTable();
 			$('viewPatient').style.color="#FFFFFF";			
 			$('viewSeries').style.color="#616161";
 			$('gridView').style.color="#616161";
@@ -585,6 +591,7 @@
 		}
 	    ajaxpage('patientDiv', filename );        // Hacky fix to repair Search in multi frame mode
 		$('loadingText').innerHTML='Loading patient/study details...';
+		sortPatientTable();
 	}
 	
 	function loadDataSet(url,imgurl){
