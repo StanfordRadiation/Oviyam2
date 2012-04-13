@@ -49,6 +49,9 @@
 <%@taglib prefix="study" uri="StudyInfo" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+String patName = new String(request.getParameter("patientName").getBytes("ISO-8859-1"), "UTF-8");
+%>
 
 <div id="tableContainer" class="TableContainer">
 <table id="queryResult"  class="queryResult">
@@ -71,7 +74,7 @@
 </thead>
 
 <tbody class="scrollContent" id="queryBody">
-	<pat:Patient patientId="${param.patientId}" patientName="${param.patientName}" birthDate="${param.birthDate}" searchDate="${param.searchDate}" modality="${param.modality}" 
+	<pat:Patient patientId="${param.patientId}" patientName="<%=patName%>" birthDate="${param.birthDate}" searchDate="${param.searchDate}" modality="${param.modality}" 
 	
 		from="${param.from}" to="${param.to}" searchDays="${param.group1}" accessionNumber="${param.accessionNumber}">
 	
