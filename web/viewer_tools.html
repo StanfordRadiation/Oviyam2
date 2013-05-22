@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
+        <script type="text/javascript" src="js/features.js"></script>
+        <script type="text/javascript" src="js/zoom1.js"></script>
+        <script type="text/javascript" src="js/windowing.js"></script>
+        <script type="text/javascript" src="js/lib/jqcombo.js"></script>
+        <script type="text/javascript" src="js/LoadLanguage.js"></script>
+
+        <script type="text/javascript" src="js/oviyam.js"></script>
+        <script type="text/javascript" src="js/dicom/NewDicomParser.js"></script>
+        <script type="text/javascript" src="js/dicom/NewDictionary.js"></script>
+
+        <script type="text/javascript" src="js/html/html.js"></script>
+        <script type="text/javascript" src="js/utils/string.js"></script>
+
+        <script type="text/javascript" language="javascript" src="js/imageMeasure.js"></script>
+        <script type="text/javascript" language="javascript" src="js/LightBox.js"></script>
+        <script type="text/javascript" language="javascript" src="js/Ruler.js"></script>
+        <script type="text/javascript" language="javascript" src="js/lib/raphael-min.js"></script>
+        <script type="text/javascript" language="javascript" src="js/lib/raphaelle.js"></script>
+        <script type="text/javascript" language="javascript" src="js/viewer_tools.js"></script>
+
+        <style type="text/css">
+            .toolbarButton {
+                position: relative;
+                float: left;
+                margin-left: 0px;
+                height: 100%;
+                width: 40px;
+            }
+
+            .toggleButton {
+                position: relative;
+                float: left;
+                margin-left: 0px;
+                height: 100%;
+                width: 40px;
+            }
+
+            .toggleButton:hover {
+                cursor: pointer;
+                background: #666;
+            }
+
+            .toggleOff {
+                background: #666;
+                color: #FFFFFF;
+                opacity: 1.0;
+            }
+
+
+            .imgOff {
+                opacity: 0.5;
+                position: relative;
+                top: 7px;
+            }
+
+            .imgOn {
+                opacity: 1.0;
+                position: relative;
+                top: 7px;
+            }
+
+            .current {
+                background: #666;
+                color: #FFFFFF;
+            }
+
+            #containerBox {
+                height:45px;
+                width: 101%;
+                background: #000;
+                margin-left: -6px;
+                margin-top: -6px;
+            }
+
+            .textOverlay {
+                position: absolute;
+                color: #FFFFFF;
+                font-weight: bold;
+                font-family: Arial,Helvitica,Serif;
+                font-size: 14px;
+                z-index: 900;
+            }
+
+            #loopSlider{
+                width: 145px;
+                float: right;
+                margin-top: 15px;
+            }
+
+            #loopDiv {
+                float: right;
+                font-size: 62.5%;
+                width: 200px;
+                margin-right: 10px;
+            }
+
+            #presetDiv {
+                float: left;
+                width: 100px;
+                display: table;
+                height: 100%;
+                text-align: center;
+            }
+
+            .tooltip{
+                margin:4px;
+                padding:4px;
+                border:1px solid blue;
+                background-color:#FFF;
+                position: absolute;
+                z-index: 2;
+                color: #000;
+                font-size: 11px;
+            }
+
+            /* Metadata Tag list */
+            table.tagList {
+                border-collapse:collapse;
+            }
+
+            table.tagList thead td {
+                font-weight: bold;
+            }
+            table.tagList td {
+                border: 1px solid grey;
+                padding: 2px;
+                font-size: 80%;
+            }
+
+        </style>
+
+        <style>
+            .ui-combobox {
+                position: relative;
+                display: inline-block;
+            }
+
+            .ui-button {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin-left: -1px;
+                padding: 0;
+                /* adjust styles for IE 6/7
+                *height: 1.7em;
+                *top: 0.1em; */
+            }
+
+            .ui-autocomplete-input {
+                margin: 0;
+                padding: 0.3em;
+            }
+        </style>
+
+
+
+
+
+    </head>
+    <body>
+
+        <div id='contentDiv' style="z-index:1000;top:30px;position:fixed;"></div>
+
+
+        <div id="containerBox">
+            <div class="toolbarButton" align="center" id="layout" onclick="changeLayout('layout.html')">
+                <img src="images/layout.png" id="lblLayout" class="imgOff" alt="Layout" title="Layout">
+            </div>
+            <div class="toolbarButton" align="center" id="windowing" onclick="loadDicom()">
+                <img src="images/windowing.png" id="lblWindowing" class="imgOff" alt="Windowing" title="Windowing">
+            </div>
+            <div class="toggleButton" align="center" id="zoomIn" onclick="startZoom(this)">
+                <img src="images/zoomin.png" id="lblZoom" class="imgOff" alt="Zoom In" title="Zoom">
+            </div>
+            <div class="toggleButton" align="center" id="move" onclick="moveCanvas(this)">
+                <img src="images/move.png" id="lblMove" class="imgOff" alt="Move" title="Move">
+            </div>
+            <div class="toggleButton" align="center" id="scoutLine" onclick="doScout(this)">
+                <img src="images/scout.png" id="lblScoutLine" class="imgOff" alt="Scout Line" title="Show Scout Line">
+            </div>
+            <div class="toggleButton" align="center" id="stackImage" onClick="doStack(this)">
+                <img src="images/layer.png" id="lblScrollImages" class="imgOff" alt="Scroll Images" title="Stack Images">
+            </div>
+            <div class="toolbarButton" align="center" id="syncSeries" onclick="doSyncSeries()">
+                <img src="images/Link.png" id="lblSynchronize"  class="imgOff" alt="Synchronize" title="Sync. Series">
+            </div>
+            <div class="toolbarButton" align="center" id="vflip" onclick="flipVertical()">
+                <img src="images/vflip.png" id="lblVFlip" class="imgOff" alt="VFlip" title="Vert.Flip">
+            </div>
+            <div class="toolbarButton" align="center" id="hflip" onclick="flipHorizontal()">
+                <img src="images/hflip.png" id="lblHFlip" class="imgOff" alt="HFlip" title="Hori.Flip">
+            </div>
+            <div class="toolbarButton" align="center" id="rotateLeft" onclick="rotateLeft()">
+                <img src="images/rotate_left.png" id="lblLRotate" class="imgOff" alt="LRotate" title="Rotate Left">
+            </div>
+            <div class="toolbarButton" align="center" id="rotateRight" onclick="rotateRight()">
+                <img src="images/rotate_right.png" id="lblRRotate" class="imgOff" alt="RRotate" title="Rotate Right">
+            </div>
+            <div class="toolbarButton" align="center" id="reset" onclick="resetActiveFrame()">
+                <img src="images/reset.png" id="lblReset" class="imgOff" alt="Reset" title="Reset">
+            </div>
+            <div class="toolbarButton" align="center" id="invert" onclick="invert()">
+                <img src="images/invert.png" id="lblInvert" class="imgOff" alt="Invert" title="Invert">
+            </div>
+            <div class="toolbarButton" align="center" id="txtOverlay" onclick="doTextOverlay()">
+                <img src="images/textoverlay.png"  id="lblTextOverlay" class="imgOff" alt="Text Overlay" title="Text Overlay">
+                <!-- <div id="overlayChoice"></div> -->
+            </div>
+
+            <div class="toolbarButton" align="center" id="3dDiv" onclick="do3D()">
+                <img src="images/Cube3D.png" class="imgOff" alt="3D">
+            </div>  
+
+            <div class="toolbarButton" align="center" id="fullScreen" onclick="doFullScreen(this)">
+                <img src="images/fullscreen1.png" id="lblfullscreen" class="imgOff" alt="View fullscreen" title="View Fullscreen">
+            </div>
+            <div class="toolbarButton" align="center" id="metaData" onclick="showMetaData()">
+                <img src="images/metadata.png" id="lblMetadata" class="imgOff" alt="View meta-data" title="View Meta-data">
+            </div>
+            <div class="toolbarButton" align="center" id="ruler" onclick="doMeasurement()">
+                <img src="images/ruler.png" id="lblLines" class="imgOff" alt="Draw measurement lines" title="Draw Measurement Lines">
+            </div>
+
+            <div id="presetDiv" align="center">
+                <div style="vertical-align: middle;display: table-cell;">
+                    <select name="preset" id="preset">
+                        <option value="1" selected>Default</option>
+                        <option value="2" >Abdomen</option>
+                        <option value="3" >Lung</option>
+                        <option value="4" >Brain</option>
+                        <option value="5" >Bone</option>
+                        <option value="6" >Head/Neck</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="loopDiv">
+                <input type="checkbox" id="loopChkBox" style="margin-top:15px" onchange="doLoop(this.checked)">
+                <span style="color: #FFF; font-weight: bold;">Loop</span>
+                <div id="loopSlider"></div>
+            </div>
+        </div>
+
+    </body>
+</html>

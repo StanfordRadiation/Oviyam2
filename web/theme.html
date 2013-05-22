@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <!-- theme switcher -->
+        <script type="text/javascript" src="js/lib/debug.js"></script>
+        <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ambiance.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                $.get("UserConfig.do", {'settings':'theme', 'todo':'READ'}, function(data){
+                    $('#theme').themeswitcher({
+                        cookieName: '',
+                        "loadTheme": data.trim(),
+                        onClose: function() {
+                            /*var selTheme = $(".jquery-ui-themeswitcher-title").html();
+                                selTheme = selTheme.split(': ')[1];
+                                if(typeof selTheme != 'undefined') {
+                                        $.get("UserConfig.do", {'settings':'theme', 'settingsValue':selTheme, 'todo':'UPDATE'});
+                                } */
+                        }
+                    });
+                });
+
+                $('#saveTheme').click(function() {
+                    var selTheme = $(".jquery-ui-themeswitcher-title").html();
+                    selTheme = selTheme.split(': ')[1];
+                    if(typeof selTheme != 'undefined') {
+                        $.get("UserConfig.do", {'settings':'theme', 'settingsValue':selTheme, 'todo':'UPDATE'}, function(data) {
+                            var msg = '';
+                            if(data.trim() == 'Success') {
+                                msg = "Done!!!";
+                                $.ambiance({
+                                    message: msg,
+                                    type: 'success'
+                                });
+
+                                //put selected theme in cookies.
+                                $.cookies.set( 'theme', selTheme );
+                            } else {
+                                msg = "Failure!!!";
+                                $.ambiance({
+                                    message: msg,
+                                    type: 'error'
+                                });
+                            }
+                        });  //for get
+                    } // for if
+                }); //for saveTheme click
+
+            }); // for document.ready
+
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css" />
+        <link rel="stylesheet" type="text/css" href="css/preferences.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.ambiance.css"/>
+
+    </head>
+    <body>
+        <table style="height:100%">
+            <tbody>
+                <tr>
+                    <td>Enter preferred theme </td>
+                    <td>
+                        <div id="theme"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center"><button id="saveTheme" class="cssButton">Save</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('a.slider').click(function() {
+                    $('a').parent().removeClass('active');
+                    $(this).parent().addClass('active');
+
+                    var html = [];
+                    html.push('<iframe src="slider.html" frameBorder="0">Load failed</iframe>');
+                    $('#right').html(html.join(""));
+                    $('#right').find("iframe").height($('#right').height());
+                    $('#right').find("iframe").width($('#right').width() - $('#navcontainer').width()-2);
+                });
+
+                $('a.timeout').click(function() {
+                    $('a').parent().removeClass('active');
+                    $(this).parent().addClass('active');
+
+                    var html = [];
+                    //html.push('<div>');
+                    html.push('<iframe src="timeout.html" frameBorder="0">Load Failed</iframe>');
+                    //html.push('</div>');
+                    $('#right').html(html.join(""));
+                    $('#right').find("iframe").height($('#right').height());
+                    $('#right').find("iframe").width($('#right').width() - $('#navcontainer').width()-2);
+                });  //for timeout click
+
+                $('a.theme').click(function() {
+					$('a').parent().removeClass('active');
+                    $(this).parent().addClass('active');
+
+                    var html = [];
+                    html.push('<iframe src="theme.html" frameBorder="0">Load Failed</iframe>');
+                    $('#right').html(html.join(""));
+                    $('#right').find("iframe").height($('#right').height());
+                    $('#right').find("iframe").width($('#right').width() - $('#navcontainer').width()-2);
+                });  //for theme click
+
+            }); //for document.ready
+
+        </script>
+
+        <style>
+            div.box { background: #EEE; height: 90%; width: 100%; }
+            /*div.div1{ background: #999; float: left; height: 100%; width: 20%; }*/
+            div.div2{ background: url('images/bg.jpg') center center; height: 100%; background-size:contain; }
+
+
+            #navcontainer
+            {
+                background: #d0d0d0;
+                width: 30%;
+                margin: 0 auto;
+                font-family: georgia, serif;
+                font-size: 13px;
+                text-align: center;
+                /*text-transform: lowercase;*/
+                float: left;
+                height: 100%;
+                width: 20%;
+            }
+
+            ul#navlist
+            {
+                text-align: left;
+                list-style: none;
+                padding: 0;
+                margin: 25 auto;
+                width: 65%;
+            }
+
+            ul#navlist li
+            {
+                display: block;
+                margin: 0;
+                padding: 0;
+            }
+
+            ul#navlist li a
+            {
+                display: block;
+                width: 100%;
+                padding: 0.5em 0 0.5em 2em;
+                border-width: 1px;
+                border-color: #ffe #aaab9c #ccc #fff;
+                border-style: solid;
+                color: #777;
+                text-decoration: none;
+                background: #f7f2ea;
+            }
+
+            #navcontainer>ul#navlist li a { width: auto; }
+
+            ul#navlist li.active a
+            {
+                background: #606060;
+                color: #FFF;
+            }
+
+            ul#navlist li a:hover, ul#navlist li.active a:hover
+            {
+                color: #800000;
+                background: transparent;
+                border-color: #aaab9c #fff #fff #ccc;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="box" id="container">
+            <div class="div1" id="navcontainer">
+                <ul id="navlist">
+                    <li><a class="slider" href="#">Viewer Slider</a></li>
+                    <li><a class="timeout" href="#">Session Timeout</a></li>
+                    <li><a class="theme" href="#">Theme</a></li>
+                </ul>
+            </div>
+            <div class="div2" id="right"></div>
+        </div>
+    </body>
+</html>

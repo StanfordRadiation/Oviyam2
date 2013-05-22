@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                jQuery('#preValueSelect').change(function() {
+                    jQuery('#pixel_value').val(jQuery(this).val());
+                    if(jQuery(this).find("option:selected").text() != 'Custom') {
+                        jQuery('#pixel_value').attr('disabled','disabled');
+                    } else {
+                        jQuery('#pixel_value').removeAttr('disabled');
+                    }
+		});
+
+                jQuery('#okBtn').click(function() {
+                    var pix_val = jQuery('#pixel_value').val();
+                    jQuery('#dialog3D').dialog('close');
+                    start3D(pix_val);
+		}); //ok button click
+
+                jQuery('#cancalBtn').click(function() {
+                    jQuery('#dialog3D').dialog('close');
+                });
+
+            }); //for document ready
+
+        </script>
+
+        <style type="text/css">
+            html, body {
+                font-size:10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="a">
+            <table width="100%">
+                <tbody>
+                   <tr>
+                      <td>Predefined value</td>
+                      <td>
+                      	<select id="preValueSelect">
+                      	  <option value="300">Custom</option>
+                      	  <option value="-500">CT-Skin</option>
+                      	  <option value="500">CT-Bone</option>
+                      	  <option value="2000">CT-Metal</option>
+                      	</select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Pixel value</td>
+                      <td><input type="text" id="pixel_value" value="300" size="10"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                      </td>
+                      <td><button id="okBtn">OK</button>
+                      <button id="cancalBtn">Cancel</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+</html>

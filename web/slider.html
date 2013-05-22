@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ambiance.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                $.get("UserConfig.do", {'settings':'viewerSlider', 'todo':'READ'}, function(data){
+                    if(data.trim() == 'show') {
+                        $('#sliderVisibility').val('show');
+                    } else if(data.trim() == 'hide') {
+                	$('#sliderVisibility').val('hide');
+                    }
+                });
+
+                $('#saveSlider').click(function() {
+                    var msg = '';
+                    var sliderVisible = $('#sliderVisibility').val();
+                    if(sliderVisible == 'none') {
+                        msg = "Please select valid visibility";
+                        $.ambiance({
+                            message: msg,
+                            type: 'error'
+                        });
+                        return;
+                    }
+
+                    $.get("UserConfig.do", {'settings':'viewerSlider', 'settingsValue':sliderVisible, 'todo':'UPDATE'}, function(data) {
+                        if(data.trim() == 'Success') {
+                            msg = "Done!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'success'
+                            });
+                        } else {
+                            msg = "Failure!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'error'
+                            });
+                        }
+                    });
+                });
+            }); // for document.ready
+
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="css/preferences.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.ambiance.css"/>
+
+    </head>
+    <body>
+        <table style="height:100%">
+            <tbody>
+                <tr>
+                    <td>Select Slider Visibility </td>
+                    <td>
+                        <select id="sliderVisibility">
+                            <option value="show">Show</option>
+                            <option value="hide">Hide</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center"><button id="saveSlider" class="cssButton">Save</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

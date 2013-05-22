@@ -1,0 +1,90 @@
+html, body {
+    overflow:	hidden !important;
+    font-size: 	80%;
+    background-color: black;
+    margin: 0px;
+}
+
+.toolbarButton {
+    position: relative;
+    float: left;
+    margin-left: 0px;
+    height: 100%;
+    width: 40px;
+}
+
+.imgOff {
+    opacity: 0.5;
+    position: relative;
+    top: 7px;
+}
+
+.imgOn {
+    opacity: 1.0;
+    position: relative;
+    top: 7px;
+}
+
+.current {
+    background: #666;
+    color: #FFFFFF;
+}
+
+#containerBox {
+    height:40px;
+    width: 100%;
+    background: #363636;
+}
+
+.textOverlay {
+    position: absolute;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-family: Arial,Helvitica,Serif;
+    font-size: 14px;
+    z-index: 900;
+}
+
+#loopSlider{
+    width: 145px;
+    float: right;
+    margin-top: 15px;
+}
+
+#loopDiv {
+    float: right;
+    font-size: 62.5%;
+    height: 100%;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.dragme{
+    position:absolute;
+    z-index: 1000;
+}
+
+.crosshair{
+    cursor:crosshair;
+}
+
+.move{
+    cursor:move;
+}
+div#footer{
+    position:absolute;
+    bottom:0;
+    /*left:0;
+    width:100%;*/
+    width: 98%;
+    /*height:footer-<length>;*/
+    height: 8px;
+    z-index: 950;
+    background: #000 transparent;
+    padding-top: 7px;
+}
+@media screen{
+    body>div#footer{
+        position:fixed;
+    }
+}

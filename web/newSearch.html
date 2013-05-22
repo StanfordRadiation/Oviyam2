@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="js/newSearch.js"></script>
+        <script type="text/javascript" src="js/LoadLanguage.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('button').button();
+                $('.bdate').datepicker();
+                $('.fsdate').datepicker();
+                $('.tsdate').datepicker();
+
+//                var lang = getCookie('language');
+//                if (lang == 'none') {
+//                $.getScript('js/i18n/Bundle.js', function() {
+//                    loadLabels();
+//                });
+//                } else {
+//                var fileName = 'js/i18n/' + "Bundle_" + lang + ".js";
+//                        $.getScript(fileName, function() {
+//                    loadLabels();
+//                });
+//                }
+//                $("label[for=patId]").text(languages['PatientId']);
+//                $("label[for=patName]").text(languages['PatientName']);
+//                $("label[for=accessionNo]").text(languages['AccessionNumber']);
+//                $("label[for=birthDate]").text(languages['BirthDate']);
+//                $("label[for=studyDesc]").text(languages['StudyDesc']);
+//                $("label[for=referPhysician]").text(languages['ReferPhysician']);
+//                $(".bdate").prev().text(languages['BirthDate']);
+//                $(".fsdate").prev().text(languages['FromStudyDate']);
+//                $(".tsdate").prev().text(languages['ToStudyDate']);
+//                $(".searchBtn").text(languages['Search']);
+//                $(".clearBtn").text(languages['Reset']);
+
+            });  //for document.ready
+        </script>
+
+        <style>
+            /* css for timepicker */
+            .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+            .ui-timepicker-div dl { text-align: left; }
+            .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+            .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+            .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+            #newQueryParamDiv label {
+                float: left;
+                width: 10em;
+                margin-right: 1em;
+            }
+
+        </style>
+
+    </head>
+    <body>
+        <div id="newQueryParamDiv" class="ui-widget-content">
+            <table id="findTable" class="ui-widget-content" width="80%" height="90%" cell-spacing="4" style="margin-left: 10px; font-size: 100%;border: none;">
+                <tr>
+                    <td>
+                        <label for="patId">Patient Name</label>
+                        <input type="search" id="patId" />
+                    </td>
+                    <td>
+                        <label for="patName">Patient ID</label>
+                        <input type="search" id="patName"/>
+                    </td>
+                    <td>
+                        <label for="accessionNo">Accession Number</label>
+                        <input type="search" id="accessionNo" />
+                    </td>
+                    <td>
+                        <label>Birth Date</label>
+                        <input type="search" class="bdate" />
+                    </td>
+                    <td>
+                        <label for="studyDesc">Study Description</label>
+                        <input type="search" id="studyDesc" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Study Date (From)</label>
+                        <input type="search" class="fsdate"/>
+                    </td>
+                    <td>
+                        <label>Study Date (To)</label>
+                        <input type="search" class="tsdate"/>
+                    </td>
+                    <td>
+                        <label for="referPhysician">Referring Physician</label>
+                        <input type="search" id="referPhysician"/>
+                    </td>
+                    <td>
+                        <label for="modalities">Modality</label>
+                        <select id="modalities" multiple="multiple" size="5" class="modalitiesList">
+                            <option value="CT">CT</option>
+                            <option value="CR">CR</option>
+                            <option value="XA">XA</option>
+                            <option value="MR">MR</option>
+                            <option value="US">US</option>
+                            <option value="DX">DX</option>
+                            <option value="PX">PX</option>
+                            <option value="SC">SC</option>
+                            <option value="NM">NM</option>
+                            <option value="RF">RF</option>
+                            <option value="OT">OT</option>
+                        </select>
+                    </td> 
+                    <td><button id="okBtn" onclick="searchClick(this)" style="width:64px;height:27px;" class="searchBtn">Search</button>
+                        <button id="resetBtn" onclick="resetClick(this)" style="width:57px;height:27px;" class="clearBtn">Reset</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

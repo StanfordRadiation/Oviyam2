@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <users>
+     <user>
+	<user-name>user</user-name>
+        <search-params>
+           <buttons>
+              <button>
+                <button-label>Today CT</button-label>
+                <date-criteria>t</date-criteria>
+                <time-criteria></time-criteria>
+                <modality>CT</modality>
+                <auto-refresh>0</auto-refresh>
+              </button>
+          </buttons>
+       </search-params>
+       <theme>Dark Hive</theme>
+       <viewer-slider>hide</viewer-slider>
+       <session-timeout>1800</session-timeout>
+     </user>
+   </users>
+
+   <servers>
+   </servers>
+
+   <listener>
+       <aetitle>OVIYAM2</aetitle>
+       <port>1025</port>
+   </listener>
+
+   <languages>
+      <language>
+         <lang>English</lang>
+         <country>United Kingdom</country>
+         <localeID>en_GB</localeID>
+         <selected>true</selected>
+      </language>
+      <language>
+         <lang>Tamil</lang>
+         <country>India</country>
+         <localeID>ta_IN</localeID>
+         <selected>false</selected>
+      </language>
+   </languages>
+
+</configuration>

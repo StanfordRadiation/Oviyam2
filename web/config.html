@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Oviyam 2.0 Settings</title>
+
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
+        <script type="text/javascript" src="js/LoadLanguage.js"></script>
+        
+        <!-- theme switcher -->
+        <script type="text/javascript" src="js/lib/debug.js"></script>
+        <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $.get("UserConfig.do", {'settings':'roles', 'todo':'READ'}, function(data){
+                    var role = data.trim();
+                    //roles = roles.substring(roles.indexOf(':')+1, roles.length-1).split(",");
+                    //if($.inArray("WebAdmin", roles) >=  0) {
+                    if(role == 'Admin') {
+                        $( "#tabs" ).tabs();
+                    } else {
+                        $( "#tabs" ).tabs().tabs( "remove", 0);
+                    }
+                });
+
+                $.get("UserConfig.do", {'settings':'theme', 'todo':'READ'},
+                function(data){
+                    $('#switcher').themeswitcher({
+                        loadTheme: data.trim(),
+                        cookieName:''
+                    });
+                    if(data.trim() == 'Dark Hive') {
+                        $('.ui-widget-content').css('background', 'black');
+                    }
+                });
+
+                $("#tabs").css("height","93%");
+                $("#tabs").css("margin-top","4%");
+
+            });  //for document.ready
+
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css" />
+        <style type="text/css">
+            #productname {
+                top: 15px;
+                left: 4px;
+                position: absolute;
+                font-size: 18px;
+                font-weight: bold;
+                font-family: sans-serif;
+                color: white;
+                text-align: center;
+            }
+
+            .cssButton {
+                height: 25px;
+                width: 84px;
+            }
+
+        </style>
+    </head>
+
+    <body style="margin: 0px">
+        <div id="productName">Oviyam 2.0</div>
+        <div class="demo">
+            <div id="tabs">
+                <ul>
+                    <li><a href="server.html" id="lblServer" >Server</a></li>
+                    <li><a href="queryParam.html" id="lblQueryParam" >Query Params</a></li>
+                    <li><a href="preferenceTab.html" id="lblPreferences" >Preferences</a></li>
+                </ul>
+
+            </div>
+
+        </div><!-- End demo -->
+
+    </body>
+</html>

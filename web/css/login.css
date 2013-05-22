@@ -1,0 +1,124 @@
+/* GENERAL STUFF */
+
+body {
+    width:702px;
+    margin: 13% auto;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#666;
+    background: url('../images/bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    vertical-align: middle;
+}
+
+body>footer {
+    padding:10px;
+    /*color:#303030;*/
+    clear:both;
+    height:20px;
+    font-size:15px;
+}
+
+form, fieldset{
+    margin: 0;
+    padding: 0;
+}
+
+/* LAYOUT */
+#login, #register, #forgot{
+    width: 480px;
+    margin: 20px auto 0;
+    text-align: left;
+    /*  background: #eee;*/
+    padding: 20px 30px 30px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border: 1px solid white;
+}
+
+/* --- EXPERIMENT --- */
+#step, #login, #register, #forgot{
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-border-radius:4px;
+}
+/* --- END EXPERM --- */
+
+
+/* DEFAULT TEXT STYLES */
+h1{
+    font-size: 24px;
+    font-weight: normal;
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0 10px;
+}
+
+h1 span#stepid{
+    color: #999;
+}
+
+h3 span{
+    color: #999;
+    font-weight: normal;
+}
+
+/* FORM */
+label span{
+    color: #a00;
+}
+
+fieldset{
+    border: none;
+}
+
+legend{
+    display: none;
+}
+
+label{
+    display: block;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+input.button{
+    background: #090;
+    color: #fff;
+    border: 1px groove #090;
+    padding: 7px 21px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: hand;
+    cursor: pointer;
+
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -moz-box-shadow: 1px 1px 5px #ccc;
+    -webkit-box-shadow: 1px 1px 5px #ccc;
+    box-shadow: 1px 1px 5px #aaa;
+}
+
+input.disabled{
+    background: #999;
+    border: 1px groove #aaa;
+    cursor: pointer;
+}
+
+input.disabled:hover{
+    background: #999;
+    /* border: 1px groove #666; */
+}
+
+input.textInput, input.textInputTiny, input.deleteTextInput{
+    width: 97%;
+    padding: 7px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}

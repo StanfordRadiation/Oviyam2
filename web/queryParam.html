@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-timepicker.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ambiance.js"></script>
+        <script type="text/javascript" src="js/lib/date.js"></script>
+        <script type="text/javascript" src="js/modal.js"></script>
+        <script type="text/javascript" src="js/LoadLanguage.js"></script>
+        <script type="text/javascript">
+            var qpTable = null;
+
+            $(document).ready(function() {
+                $('button').button();
+
+                qpTable = $('#queryParamTable').dataTable({
+                    "bJQueryUI": true,
+                    "bPaginate": false,
+                    "bFilter": false,
+                    "bSort": false,
+                });
+
+                loadQueryParamTable();
+
+                $('#qpAddBtn').click(function() {
+                    //var content = $('#newQueryParamDiv').html();
+                    //modal.open({content: content});
+                    $.get('newQueryParam.html', function(data) {
+                        modal.open({content: data});
+                    });
+                });
+
+                $('#qpDeleteBtn').click(function() {
+                    var sel_item = $('#queryParamTable :checked');
+                    if(sel_item.length == 1) {
+                        var sel_label = sel_item.parent().next();
+                        $.ajax({
+                            url: 'QueryParams.do',
+                            data: {'buttonLabel':sel_label.html(), 'todo':'DELETE'},
+                            type: 'POST',
+                            success: function(msg) {
+                                qpTable.fnClearTable();
+                                loadQueryParamTable();
+                            }
+                        });
+                    } else {
+                        var msg = 'Please select query parameter to delete';
+                        $.ambiance({
+                            message: msg,
+                            type: 'error'
+                        });
+                    }
+                });
+
+                $('#queryParamTable tbody tr').live('click', function(e) {
+                    //get checkbox of current row
+                    var $checkbox = $(this).find(':checkbox');
+                    //deselect the already selected checkbox
+                    $('#queryParamTable :checkbox').not($checkbox).removeAttr('checked');
+
+                    if(e.target.type == 'checkbox') {
+                        //$(this).filter(':has(:checkbox)').toggleClass('selected', $checkbox.attr('checked'));
+                        $(e.target).toggleClass('selected', $checkbox.attr('checked'));
+                    } else {
+                        $checkbox.attr('checked', !$checkbox.attr('checked'));
+                    }
+                });
+
+            });  // for document.ready
+
+            function loadQueryParamTable() {
+                $.ajax({
+                    type: "GET",
+                    url: "UserConfig.do",
+                    data: {'settings':'buttons', 'todo':'READ'},
+                    dataType: "json",
+                    success: loadJSON
+                });
+            }
+
+            function loadJSON(json) {
+                $(json).each(function() {
+                    var btnLabel = this["label"];
+                    var dt_crit = this["dateCrit"];
+                    var tm_crit = this["timeCrit"];
+                    var mod_crit = this["modality"];
+                    var auto_refresh = this["autoRefresh"];
+
+                    if(dt_crit != null && dt_crit != '') {
+                        if(dt_crit == 't') {
+                            if(tm_crit != '' && tm_crit == '000000-120000') {
+                                dt_crit = 'Today AM';
+                                //tm_crit = '';
+                            } else if(tm_crit != '' && tm_crit == '120000-235959') {
+                                dt_crit = 'Today PM';
+                                //tm_crit = '';
+                            } else {
+                                dt_crit = 'Today';
+                            }
+                        } else if(dt_crit == 't-1') {
+                            dt_crit = 'Yesterday';
+                        } else if(dt_crit == 't-7') {
+                            dt_crit = 'Last week';
+                        } else if(dt_crit == 't-30') {
+                            dt_crit = 'Last month';
+                        } else {
+                            dt_crit = dt_crit.replace('t', 'Today');
+                        }
+                    }
+
+                    if(tm_crit != '') {
+                        if(tm_crit == '-30m') {
+                            tm_crit = 'Last 30 Mins';
+                        } else if(tm_crit == '-1h') {
+                            tm_crit = 'Last 1 Hour';
+                        } else if(tm_crit == '-3h') {
+                            tm_crit = 'Last 3 Hours';
+                        } else if(tm_crit == '-6h') {
+                            tm_crit = 'Last 6 Hours';
+                        } else if(tm_crit == '-8h') {
+                            tm_crit = 'Last 8 Hours';
+                        } else if(tm_crit == '-12h') {
+                            tm_crit = 'Last 12 Hours';
+                        }
+                    }
+
+                    var autoRef = '';
+                    if(auto_refresh != '0') {
+                    	if( parseInt(auto_refresh) >= 60000) {
+                            autoRef = parseInt(auto_refresh/1000/60) + " min ";
+                            autoRef += parseFloat(auto_refresh/1000) % 60  + " sec";
+                        } else {
+                            autoRef = parseInt(auto_refresh / 1000) + " seconds";
+                        }
+                    } else {
+                        autoRef = '-';
+                    }
+
+                    qpTable.fnAddData([
+                        "<input type='checkbox' style='text-align:center'>",
+                        btnLabel,
+                        dt_crit,
+                        tm_crit,
+                        mod_crit,
+                        autoRef
+                    ]);
+                });
+            }
+
+        </script>
+
+        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.alerts.css"/>
+        -->
+        <link rel="stylesheet" type="text/css" href="css/demo_table_jui.css">
+        <link rel="stylesheet" type="text/css" href="css/modal.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.ambiance.css"/>
+
+
+        <style type="text/css">
+
+            html, body {
+                font-size: 80%;
+                background:#000;
+            }
+        </style>
+
+    </head>
+    <body bgcolor="#606060" style="font-size: 50%; padding: 10px;">
+        <div style="margin-top: 5px;">
+            <button id="qpAddBtn" class="cssButton">Add</button>
+            <button id="qpDeleteBtn" class="cssButton">Delete</button>
+        </div>
+
+        <div id="queryParamDiv" style="margin-top: 15px;">
+            <table id="queryParamTable" width="100%" style="font-size: 12px;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center"></th>
+                        <th id="lblFilterName">Filter Name</th>
+                        <th id="lblStudyDateFilter">Study Date Filter</th>
+                        <th id="lblStudytimeFilter">Study Time Filter</th>
+                        <th id="lblModalityFilter">Modality Filter</th>
+                        <th id="lblAutoRefresh">Auto Refresh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+</html>

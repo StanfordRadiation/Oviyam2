@@ -1,0 +1,93 @@
+﻿.jscroller
+{
+	position: static;
+	z-index: 998;
+}
+.slider
+{
+	position: absolute;
+	z-index: 1000;
+}
+.inner
+{
+	width: 1px;
+	height: 100%;
+	z-index: 999;
+}
+.lgripper
+{
+	position: relative;
+	z-index: 1001;
+	top: 0px;
+	border: none;
+	outline: none;
+}
+.ticks
+{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	float: left;
+	position: absolute;
+	z-index: 997;
+}
+.ticks li
+{
+	display: inline;
+	float: left;
+	font-size: xx-small;
+}
+.slider.style1
+{
+	background-color: #D7D7D7;
+	border: solid 1px #B6B6B6;
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+}
+.inner.style1
+{
+	background-color: #606060;
+	-moz-box-shadow: 0 1px 2px rgba(17, 35, 45, 0.6) inset;
+	-webkit-box-shadow: 0 1px 2px rgba(17, 35, 45, 0.6) inset;
+}
+.lgripper.style1
+{
+	background: url('images/tracker.png') 0px 0px no-repeat;
+}
+
+.slider.style2
+{
+	background-color: #D7D7D7;
+	border: solid 4px #888F97;
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+}
+.inner.style2
+{
+	background-color: #DFECF4; 
+	-moz-box-shadow: 0 1px 2px rgba(17, 35, 45, 0.6) inset;
+	-webkit-box-shadow: 0 1px 2px rgba(17, 35, 45, 0.6) inset;
+}
+.lgripper.style2
+{
+	background: url('images/tracker_black.png') 0px 0px no-repeat;
+}
+
+.slider.style3
+{
+	background-color: #D7D7D7;
+	border: solid 2px #888F97;
+	-moz-box-shadow: 2 1px 2px #000 inset;
+	-webkit-box-shadow: 2 1px 2px #000 inset;
+}
+.inner.style3
+{
+	background-image:url('images/gradient_red.jpg');
+	background-repeat:repeat-x;
+	-moz-box-shadow: 2 1px 2px rgba(17, 35, 45, 0.6) inset;
+	-webkit-box-shadow: 2 1px 2px rgba(17, 35, 45, 0.6) inset;
+}
+.lgripper.style3
+{
+	background: url('images/tracker_simple.png') 0px 0px no-repeat;
+}

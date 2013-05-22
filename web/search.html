@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="js/search.js"></script>
+
+        <style type="text/css">
+            table.curvedEdges {
+                border:10px solid Grey;
+                -webkit-border-radius:13px;
+                -moz-border-radius:13px;
+                -ms-border-radius:13px;
+                -o-border-radius:13px;
+                border-radius:13px;
+            }
+            table.curvedEdges td {
+                padding: 5px;
+                background-color: #DFDDDD;
+            }
+        </style>
+
+        <style>
+            /* css for timepicker */
+            .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+            .ui-timepicker-div dl { text-align: left; }
+            .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+            .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+            .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+        </style>
+
+    </head>
+    <body>
+        <div id='newQueryParamDiv'>
+            <table class="curvedEdges">
+                <tr>
+                    <td>Patient Name</td>
+                    <td><input type="text" id="patName" /> </td>
+                </tr>
+                <tr>
+                    <td>Patient ID</td>
+                    <td><input type="text" id="patId" /> </td>
+                </tr>
+                <tr>
+                    <td>Accession No.</td>
+                    <td><input type="text" id="accessionNo" /> </td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td><input type="text" id="birthDate" /></td>
+                </tr>
+                <tr>
+                    <td>Study Date</td>
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr><td>From </td><td> <input type="text" id="fromDate" /></td></tr>
+                                <tr><td>To </td><td> <input type="text" id="toDate" /></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Study Description</td>
+                    <td><input type="text" id="studyDesc" /> </td>
+                </tr>
+                <tr>
+                    <td>Referring Physician</td>
+                    <td><input type="text" id="referPhysician" /> </td>
+                </tr>
+                <tr>
+                    <td>Modality</td>
+                    <td>
+                        <table id="modalitiesTable" style="width: 103%">
+                            <tbody><tr>
+                                    <td> <input type="checkbox" name="modality" value="CT">CT</td>
+                                    <td> <input type="checkbox" name="modality" value="CR">CR</td>
+                                    <td> <input type="checkbox" name="modality" value="DX">DX</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="MR">MR</td>
+                                    <td> <input type="checkbox" name="modality" value="SC">SC</td>
+                                    <td> <input type="checkbox" name="modality" value="US">US</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="DR">DR</td>
+                                    <td> <input type="checkbox" name="modality" value="NM">NM</td>
+                                    <td> <input type="checkbox" name="modality" value="PX">PX</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="XA">XA</td>
+                                    <td> <input type="checkbox" name="modality" value="MG">MG</td>
+                                    <td> <input type="checkbox" name="modality" value="OT">OT</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6">
+                                        <input type="text" id="modalities" size="22">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br>
+
+            <button id="okBtn">OK</button>
+            <button id="resetBtn">Clear</button>
+
+            <a href='#' id='close'>close</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- <title>Viewer</title> -->
+
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.sleep.js"></script>
+        <script type="text/javascript" src="js/viewer1.js"></script>
+        <script type="text/javascript" src="js/viewer.js"></script>
+        <script type="text/javascript" src="js/database.js"></script>
+        <script type="text/javascript" src="js/sync.js"></script>
+        <script type="text/javascript" src="js/lib/smartslider.js"></script>
+
+        <!-- Scout line  -->
+        <script type="text/javascript" src="js/Localizer.js"></script>
+        <script type="text/javascript" src="js/MRLocalizer.js"></script>
+        <script type="text/javascript" src="js/SliceLocator.js"></script>
+        <script type="text/javascript" src="js/ScoutLineModel.js"></script>
+        <script type="text/javascript" src="js/ImageOrientation.js"></script>
+        <script type="text/javascript" src="js/frameContent.js"></script>
+
+        <script type="text/javascript" src="js/lib/jqcontextmenu.js">
+
+            /***********************************************
+             * jQuery Context Menu- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+             * This notice MUST stay intact for legal use
+             * Visit Dynamic Drive at http://www.dynamicdrive.com/ for this script and 100s more
+             ***********************************************/
+
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="css/jqcontextmenu.css" />
+        <link rel="stylesheet" type="text/css" href="css/smartslider.css" />
+        <link rel="stylesheet" type="text/css" href="css/demos.css" />
+        <link rel="stylesheet" type="text/css" href="css/frameContent.css" />
+    </head>
+    <body>
+        <div id="footer" class="demo">
+            <div id="trackbar1" >
+            </div>
+        </div>
+
+        <div id="ImagePane" style="height:100% !important;">
+            <div id="patName" class="textOverlay" style="left:5px; top:10px"></div>
+            <div id="patID" class="textOverlay" style="left:5px; top:30px"></div>
+            <div id="patGender" class="textOverlay" style="left:5px; top:50px"></div>
+            <div id="studyDate" class="textOverlay" style="right:7px;top:10px"></div>
+            <div id="studyDesc" class="textOverlay" style="right:7px;top:30px"></div>
+            <div id="seriesDesc" class="textOverlay" style="right:7px;top:50px"></div>
+            <div id="PDFContent" align="center"></div>
+            <div id="SRContent"></div>
+            <div style="height:100%; margin:auto;" id="canvasDiv">
+                <canvas id="imageCanvas"  style="z-index:1; position:absolute; margin:auto;">Your browser doesn't support canvas.</canvas>
+                <canvas id="canvasLayer1" style="z-index:2; position:absolute; margin:auto;">Your browser doesn't support canvas.</canvas>
+                <canvas id="canvasLayer2" style="z-index:3; position:absolute; margin:auto;" onclick="setBorder(this)">Your browser doesn't support canvas.</canvas>
+            </div>
+            <div id="totalImages" class="textOverlay" style="left:5px; bottom:55px"></div>
+            <div id="windowLevel" class="textOverlay" style="left:5px; bottom:35px"></div>
+            <div id="huDisplayPanel" class="textOverlay" style="left:5px; bottom:15px"></div>
+            <div id="thickLocationPanel" class="textOverlay" style="left:5px; bottom:15px"></div>
+            <div id="imageSize" class="textOverlay" style="bottom:55px; right:7px;">Image size: </div>
+            <div id="viewSize" class="textOverlay" style="bottom:35px; right:7px;">View size: </div>
+            <div id="zoomPercent" class="textOverlay" style="bottom:15px; right:7px;">Zoom: </div>
+
+            <div id="imgOriTop" class="textOverlay" style="left:50%; top:10px"></div>
+            <div id="imgOriRight" class="textOverlay" style="top:50%;right:7px"></div>
+            <div id="imgOriBottom" class="textOverlay" style="bottom:15px; right:50%"></div>
+            <div id="imgOriLeft" class="textOverlay" style="top:50%;left:5px;"></div>
+
+            <div id="frameSrc" style="visibility:hidden"></div>
+            <div id="forUIDPanel" style="visibility:hidden"></div>
+            <div id="imgPosition" style="visibility:hidden"></div>
+            <div id="imgOrientation" style="visibility:hidden"></div>
+            <div id="pixelSpacing" style="visibility:hidden"></div>
+            <div id="imgType" style="visibility:hidden"></div>
+            <div id="refSOPInsUID" style="visibility:hidden"></div>
+            <div id="modalityDiv" style="visibility:hidden"></div>
+            <div id="applyWLDiv" class="textOverlay" style="bottom:100px; right:7px; cursor:pointer; display:none">Apply All</div>
+        </div>
+
+        <script type="text/javascript">
+            function loadContextMenu() {
+                var myDb = systemDB;
+                var sql1 = "select SeriesInstanceUID, SeriesDescription from series where StudyInstanceUID='" + parent.pat.studyUID + "'";
+                myDb.transaction(function(tx) {
+                    tx.executeSql(sql1, [], getSeriesDescription, errorHandler);
+                }, errorHandler);
+            }
+
+            function getSeriesDescription(trans, results) {
+                var cxtContent = '<ul id="contextmenu1" class="jqcontextmenu" style="z-index:10">';
+
+                if(isCompatible()) {
+                    for(var i=0; i<results.rows.length; i++) {
+                        var row = results.rows.item(i);
+                        cxtContent += '<li><a href="frameContent.html?seriesUID=' + row['SeriesInstanceUID'] + '">' + convertSplChars(row['SeriesDescription']) + '</a></li>';
+                    }
+                    cxtContent += '</ul>';
+                } else {
+                    //console.log("Safari");
+
+                    var queryString = window.location.href; //window.top.location.search.substring(1);
+                    for(var i=0; i<results.rows.length; i++) {
+                        var row = results.rows.item(i);
+                        cxtContent += '<li><a href="frameContent.html?serverURL=';
+                        cxtContent += getParameter(queryString, 'serverURL');
+                        cxtContent += '&studyUID=' + getParameter(queryString, 'studyUID');
+                        cxtContent += '&seriesUID=' + row['SeriesInstanceUID'] + '">' + convertSplChars(row['SeriesDescription']) + '</a></li>';
+                    }
+                    cxtContent += '</ul>';
+                }
+
+                var div = document.createElement("div");
+                div.innerHTML = cxtContent;
+                document.body.appendChild(div);
+
+                jQuery('canvas').addcontextmenu('contextmenu1');
+            }
+
+        </script>
+
+    </body>
+</html>

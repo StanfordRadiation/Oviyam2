@@ -1,0 +1,296 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#fromDate').datepicker();
+                //$('#toDate').datepicker();
+                $("#fromTime").timepicker({});
+                $("#toTime").timepicker({});
+                $('button').button();
+
+                $('#studyDateFilter').change(function() {
+                    var selFilter = $(this).find('option:selected').val();
+                    if(selFilter == 'Custom') {
+                        $('#dateRange').show();
+                    } else {
+                        $('#dateRange').hide();
+                    }
+                    if(selFilter == 'TodayAM' || selFilter == 'TodayPM') {
+                        $('#studyTimeFilter').attr('disabled', true);
+                    } else {
+                        $('#studyTimeFilter').attr('disabled', false);
+                    }
+                });
+
+                $('#studyTimeFilter').change(function() {
+                    var selTimeFil = $(this).find('option:selected').val();
+                    if(selTimeFil == 'Custom') {
+                        $('#timeRange').show();
+                    } else {
+                        $('#timeRange').hide();
+                    }
+                });
+
+                $('#modalitiesTable tbody tr td').click(function() {
+                    var $checked = $("#modalitiesTable :checked");
+                    var $len = $checked.length;
+                    var selModalities = "";
+                    for(var i=0; i<$len; i++) {
+                        if(selModalities == "") {
+                            selModalities = selModalities + $checked[i].value;
+                        } else {
+                            selModalities = selModalities + "\\" + $checked[i].value;
+                        }
+                    }
+
+                    $("#modalities").val(selModalities);
+                });
+
+                $('#resetBtn').click(function() {
+                    $('#displayName').val('');
+                    $('#studyDateFilter').val('Any date');
+                    $('#studyTimeFilter').val('Last 30 min');
+                    $('#fromDate').val('');
+                    //$('#toDate').val('');
+                    $('#dateRange').hide();
+                    $('#fromTime').val('00:00');
+                    $('#toTime').val('23:59');
+                    $('#timeRange').hide();
+                    //To clear modality filter
+                    var $checked = $("#modalitiesTable :checked");
+                    $checked.each(function() {
+                        $(this).attr('checked', false);
+                    });
+                    $('#modalities').val('');
+                    $('#autoRefreshTF').val('');
+                });
+
+                $('#saveBtn').click(function() {
+                    if($('#displayName').val() != '') {
+                        var selectDt = $('#studyDateFilter').val();
+                        var dateFilter = '';
+                        var timeFilter = '';
+                        if(selectDt.indexOf('Today')>=0) {
+                            dateFilter = 't';
+                            if(selectDt == 'TodayAM') {
+                                timeFilter = '000000-120000';
+                            } else if(selectDt == 'TodayPM') {
+                                timeFilter = '120000-235959';
+                            }
+                        } else if(selectDt == 'Yesterday') {
+                            dateFilter = 't-1';
+                        } else if(selectDt == 'Lastweek') {
+                            dateFilter = 't-7';
+                        } else if(selectDt == 'Lastmonth') {
+                            dateFilter = 't-30';
+                        } else if(selectDt == 'Custom') {
+                            var fmDate = Date.parse($('#fromDate').val());
+                            var toDate = Date.today();
+                            var diff = (toDate.getTime() - fmDate.getTime()) / (1000 * 60 * 60 * 24);
+                            dateFilter = 't-' + diff;
+                        }
+
+                        var selectTime = $('#studyTimeFilter').val();
+                        if(selectTime == 'Last30Mins') {
+                            timeFilter = '-30m';
+                        } else if(selectTime == 'Last1Hour') {
+                            timeFilter = '-1h';
+                        } else if(selectTime == 'Last3Hour') {
+                            timeFilter = '-3h';
+                        } else if(selectTime == 'Last6Hour') {
+                            timeFilter = '-6h';
+                        } else if(selectTime == 'Last8Hour') {
+                            timeFilter = '-8h';
+                        } else if(selectTime == 'Last12Hour') {
+                            timeFilter = '-12h';
+                        } else if(selectTime == 'Custom') {
+                            var fmTime = new String($('#fromTime').val());
+                            var toTime = new String($('#toTime').val());
+                            timeFilter = fmTime.replace(':', '') + "-" + toTime.replace(':', '');
+                        }
+
+                        var autoRef;
+                        if(!$('#autoRefresh').is(':checked')) {
+                            autoRef = 0;
+                        } else {
+                            var arTF = $('#autoRefreshTF').val();
+                            var arDD = $('#autoRefreshDD').val();
+                            if(arDD == 'minutes') {
+                                autoRef = parseInt(arTF) * 60 * 1000;
+                            } else if(arDD == 'seconds') {
+                                autoRef = parseInt(arTF) * 1000;
+                            }
+                        }
+
+                        $.ajax({
+                            url: 'QueryParams.do',
+                            data: {'buttonLabel':$('#displayName').val(), 'dateCriteria':dateFilter, 'timeCriteria':timeFilter, 'modality':$('#modalities').val(), 'autoRefresh':autoRef, 'todo':'ADD'},
+                            type: 'POST',
+                            success: function(msg) {
+                                alert("added");
+                            }
+                        });
+                    } else {
+                        alert("Please enter all the details");
+                    }
+                });
+
+                $('#autoRefresh').change(function() {
+                    if(!$(this).is(':checked')) {
+                        $('#autoRefreshTF').attr('disabled', 'disabled');
+                        $('#autoRefreshDD').attr('disabled', 'disabled');
+                    } else {
+                        $('#autoRefreshTF').removeAttr('disabled');
+                        $('#autoRefreshDD').removeAttr('disabled');
+                    }
+                });
+
+            }); //for document.ready
+        </script>
+
+        <style type="text/css">
+            table.curvedEdges {
+                border:10px solid Grey;
+                -webkit-border-radius:13px;
+                -moz-border-radius:13px;
+                -ms-border-radius:13px;
+                -o-border-radius:13px;
+                border-radius:13px;
+                font-size: 135%;
+            }
+            table.curvedEdges td {
+                padding: 5px;
+                background-color: #DFDDDD;
+            }
+        </style>
+
+        <style>
+            /* css for timepicker */
+            .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+            .ui-timepicker-div dl { text-align: left; }
+            .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+            .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+            .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+        </style>
+
+    </head>
+    <body>
+        <div id='newQueryParamDiv'>
+            <table class="curvedEdges">
+                <tr>
+                    <td>Filter Name</td>
+                    <td><input type="text" id="displayName" /> </td>
+                </tr>
+                <tr>
+                    <td>Study Date filter</td>
+                    <td>
+                        <select id="studyDateFilter">
+                            <option value="Anydate">Any date</option>
+                            <option value="TodayAM">Today AM</option>
+                            <option value="TodayPM">Today PM</option>
+                            <option value="Today">Today</option>
+                            <option value="Yesterday">Yesterday</option>
+                            <option value="Lastweek">Last week</option>
+                            <option value="Lastmonth">Last month</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <table id="dateRange" width="100%" style="display: none;">
+                            <tbody>
+                                <tr>
+                                    <td>From</td>
+                                    <td><input type="text" name="fromDate" id="fromDate"></td>
+                                </tr>
+                                <tr>
+                                    <td>To</td>
+                                    <td><input type="text" name="toDate" id="toDate" value="Today" disabled="true"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Study Time filter</td>
+                    <td>
+                        <select id="studyTimeFilter">
+                            <option value="All">All</option>
+                            <option value="Last30Mins">Last 30 min</option>
+                            <option value="Last1Hour">Last 1 hour</option>
+                            <option value="Last3Hour">Last 3 hours</option>
+                            <option value="Last6Hour">Last 6 hours</option>
+                            <option value="Last8Hour">Last 8 hours</option>
+                            <option value="Last12Hour">Last 12 hours</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <table id="timeRange" width="100%" style="display: none;">
+                            <tbody>
+                                <tr>
+                                    <td>From</td>
+                                    <td><input type="text" name="fromTime" id="fromTime" value="00:00"></td>
+                                </tr>
+                                <tr>
+                                    <td>To</td>
+                                    <td><input type="text" name="toTime" id="toTime" value="23:59"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Modality filter</td>
+                    <td style="width: 65%">
+                        <table id="modalitiesTable" style="width: 103%">
+                            <tbody><tr>
+                                    <td> <input type="checkbox" name="modality" value="CT">CT</td>
+                                    <td> <input type="checkbox" name="modality" value="CR">CR</td>
+                                    <td> <input type="checkbox" name="modality" value="DX">DX</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="MR">MR</td>
+                                    <td> <input type="checkbox" name="modality" value="SC">SC</td>
+                                    <td> <input type="checkbox" name="modality" value="US">US</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="DR">DR</td>
+                                    <td> <input type="checkbox" name="modality" value="NM">NM</td>
+                                    <td> <input type="checkbox" name="modality" value="PX">PX</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <input type="checkbox" name="modality" value="XA">XA</td>
+                                    <td> <input type="checkbox" name="modality" value="MG">MG</td>
+                                    <td> <input type="checkbox" name="modality" value="OT">OT</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6">
+                                        <input type="text" id="modalities" size="22">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" id="autoRefresh">Auto Refresh</td>
+                    <td><input type="text" size="10" id="autoRefreshTF" value="0" disabled>
+                        <select id="autoRefreshDD" disabled>
+                            <option value="minutes" selected="">Minutes</option>
+                            <option value="seconds">Seconds</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br>
+
+            <button id="saveBtn">Save</button>
+            <button id="resetBtn">Clear</button>
+
+            <a href='#' id='close'>close</a>
+        </div>
+    </body>
+</html>

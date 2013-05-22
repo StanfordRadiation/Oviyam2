@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ambiance.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                $.get("UserConfig.do", {'settings':'sessTimeout', 'todo':'READ'}, function(data){
+                    var sTimeout = parseInt(data.trim());
+                    if(sTimeout == '-1') {
+                        $('#timeoutEnabled').attr('checked', false);
+                        $('#timeoutTF').attr('disabled', 'disabled');
+                        $('#timeDropdown').attr('disabled', 'disabled');
+                    } else {
+                        $('#timeoutEnabled').attr('checked', true);
+                        var hours = sTimeout / 60 / 60;
+                        if(hours % 1 == 0) {
+                            $('#timeoutTF').val(hours);
+                            $('#timeDropdown').val('hours');
+                        } else {
+                            $('#timeoutTF').val(sTimeout / 60);
+                            $('#timeDropdown').val('minutes');
+                        }
+                    }
+                });
+
+                $('#timeoutEnabled').change(function() {
+                    if(!$(this).is(':checked')) {
+                        $('#timeoutTF').attr('disabled', 'disabled');
+                        $('#timeDropdown').attr('disabled', 'disabled');
+                    } else {
+                        $('#timeoutTF').removeAttr('disabled');
+                        $('#timeDropdown').removeAttr('disabled');
+                    }
+                });  //checkbox onchange
+
+                $('#saveTimeout').click(function() {
+                    var timeoutValue;
+
+                    if(!$('#timeoutEnabled').is(':checked')) {
+                        timeoutValue = '-1';
+                    } else {
+                        var tfValue = $('#timeoutTF').val();
+                        var timeDD = $('#timeDropdown').val();
+                        if(timeDD == 'hours') {
+                            timeoutValue = parseInt(tfValue) * 60 * 60;
+                        } else if(timeDD == 'minutes') {
+                            timeoutValue = parseInt(tfValue) * 60;
+                        }
+                    }
+
+                    $.get("UserConfig.do", {'settings':'sessTimeout', 'settingsValue':timeoutValue, 'todo':'UPDATE'}, function(data) {
+                        var msg = '';
+                        if(data.trim() == 'Success') {
+                            msg = "Done!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'success'
+                            });
+                        } else {
+                            msg = "Failure!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'error'
+                            });
+                        }
+                    });
+                });
+            }); // for document.ready
+
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="css/preferences.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.ambiance.css"/>
+
+    </head>
+    <body>
+        <table style="height:100%">
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" id="timeoutEnabled" /> </td>
+                    <td>Session timeout </td>
+                    <td><input type="text" size="10" id="timeoutTF"></td>
+                    <td>
+                        <select id="timeDropdown">
+                            <option value="minutes" selected>Minutes</option>
+                            <option value="hours">Hours</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center"><button id="saveTimeout" class="cssButton">Save</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

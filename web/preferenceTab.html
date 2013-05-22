@@ -1,0 +1,371 @@
+<html>
+    <head>
+        <style type="text/css">
+            table {
+                font-size: 100%;
+            }            
+        </style>
+        <script type="text/javascript" src="js/LoadLanguage.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.cssButton').button();
+
+                /*$('#panel1').panel({
+                 'collapsed':false,
+                 'draggable':true
+                 }); */
+
+                // Multilangual Support 
+                
+                var language = getCookie('language');
+                if (language != null) {
+                    $('#languageDropdown').val(language.trim());
+                }
+                var selectedLanguage = "";
+                var selectedCountry = "";
+                var localeID = "";
+                var languageObject;
+                
+                // get language from server.
+                $.get("Language.do", {'option': 'getall'}, function(data) {
+                    languageObject = data;
+                    loadCountry();
+                    countryToLanguage(selectedCountry,false);
+                });
+
+                function loadCountry() {
+                    var country = new Array();
+                    for (var i = 0; i < languageObject.length; i++) {
+
+                        if (country.indexOf(languageObject[i].country) == -1) {
+                            country.push(languageObject[i].country);
+                            $('#countryDropdown').append('<option value="' + languageObject[i].country + '">' + languageObject[i].country + '</option>');
+                        }
+
+                        if (languageObject[i].selected == true) {
+                            $('#countryDropdown').val(languageObject[i].country);
+                            selectedCountry = languageObject[i].country;
+                            selectedLanguage = languageObject[i].language;
+                            localeID = languageObject[i].localeID;
+                        }
+                    }
+                }
+
+                function countryToLanguage(country,islanguageDD) {
+                    $('#languageDropdown').html('');
+
+                    for (var i = 0; i < languageObject.length; i++) {
+                         if (languageObject[i].country == country) {
+                            $('#languageDropdown').append('<option value="' + languageObject[i].language + '">' + languageObject[i].language + '</option>');
+			    if(islanguageDD){
+			      $('#languageDropdown').val(languageObject[i].language); 	
+                              $('#lblLocaleID').html(languageObject[i].localeID);
+			     }
+                            if (selectedLanguage == languageObject[i].language) {
+                                $('#languageDropdown').val(selectedLanguage);
+                                $('#lblLocaleID').html(localeID);
+	                     }
+
+                        }
+                    }
+                }
+
+                $('#countryDropdown').change(function() {
+                    countryToLanguage($('#countryDropdown').val(),true);
+                });
+                
+                $('#languageDropdown').change(function() {
+                      for (var i = 0; i < languageObject.length; i++) {
+                           if ($('#languageDropdown').val() == languageObject[i].language) {
+                                 $('#lblLocaleID').html( languageObject[i].localeID);
+                           }
+                      }
+                });
+                
+                // end of multilangual Support
+
+                $.get("UserConfig.do", {'settings': 'viewerSlider', 'todo': 'READ'}, function(data) {
+                    if (data.trim() == 'show') {
+                        $('#sliderVisibility').val('show');
+                    } else if (data.trim() == 'hide') {
+                        $('#sliderVisibility').val('hide');
+                    }
+                });
+
+                $('#saveSlider').click(function() {
+                    var msg = '';
+                    var sliderVisible = $('#sliderVisibility').val();
+                    if (sliderVisible == 'none') {
+                        msg = "Please select valid visibility";
+                        $.ambiance({
+                            message: msg,
+                            type: 'error'
+                        });
+                        return;
+                    }
+
+                    $.get("UserConfig.do", {'settings': 'viewerSlider', 'settingsValue': sliderVisible, 'todo': 'UPDATE'}, function(data) {
+                        if (data.trim() == 'Success') {
+                            msg = "Done!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'success'
+                            });
+                        } else {
+                            msg = "Failure!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'error'
+                            });
+                        }
+                    });
+                });
+
+                //for session timeout
+                $.get("UserConfig.do", {'settings': 'sessTimeout', 'todo': 'READ'}, function(data) {
+                    var sTimeout = parseInt(data.trim());
+                    if (sTimeout == '-1') {
+                        $('#timeoutEnabled').attr('checked', false);
+                        $('#timeoutTF').attr('disabled', 'disabled');
+                        $('#timeDropdown').attr('disabled', 'disabled');
+                    } else {
+                        $('#timeoutEnabled').attr('checked', true);
+                        var hours = sTimeout / 60 / 60;
+                        if (hours % 1 == 0) {
+                            $('#timeoutTF').val(hours);
+                            $('#timeDropdown').val('hours');
+                        } else {
+                            $('#timeoutTF').val(sTimeout / 60);
+                            $('#timeDropdown').val('minutes');
+                        }
+                    }
+                });
+
+                $('#timeoutEnabled').change(function() {
+                    if (!$(this).is(':checked')) {
+                        $('#timeoutTF').attr('disabled', 'disabled');
+                        $('#timeDropdown').attr('disabled', 'disabled');
+                    } else {
+                        $('#timeoutTF').removeAttr('disabled');
+                        $('#timeDropdown').removeAttr('disabled');
+                    }
+                });  //checkbox onchange
+
+                $('#saveTimeout').click(function() {
+                    var timeoutValue;
+
+                    if (!$('#timeoutEnabled').is(':checked')) {
+                        timeoutValue = '-1';
+                    } else {
+                        var tfValue = $('#timeoutTF').val();
+                        var timeDD = $('#timeDropdown').val();
+                        if (timeDD == 'hours') {
+                            timeoutValue = parseInt(tfValue) * 60 * 60;
+                        } else if (timeDD == 'minutes') {
+                            timeoutValue = parseInt(tfValue) * 60;
+                        }
+                    }
+
+                    $.get("UserConfig.do", {'settings': 'sessTimeout', 'settingsValue': timeoutValue, 'todo': 'UPDATE'}, function(data) {
+                        var msg = '';
+                        if (data.trim() == 'Success') {
+                            msg = "Done!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'success'
+                            });
+                        } else {
+                            msg = "Failure!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'error'
+                            });
+                        }
+                    });
+                });
+
+                //for theme
+
+                $.get("UserConfig.do", {'settings': 'theme', 'todo': 'READ'}, function(data) {
+                    $('#theme').themeswitcher({
+                        cookieName: '',
+                        "loadTheme": data.trim(),
+                        onClose: function() {
+                            /*var selTheme = $(".jquery-ui-themeswitcher-title").html();
+                             selTheme = selTheme.split(': ')[1];
+                             if(typeof selTheme != 'undefined') {
+                             $.get("UserConfig.do", {'settings':'theme', 'settingsValue':selTheme, 'todo':'UPDATE'});
+                             } */
+                        }
+                    });
+                });
+
+                $('#saveTheme').click(function() {
+                    var selTheme = $(".jquery-ui-themeswitcher-title").html();
+                    selTheme = selTheme.split(': ')[1];
+                    if (typeof selTheme != 'undefined') {
+                        $.get("UserConfig.do", {'settings': 'theme', 'settingsValue': selTheme, 'todo': 'UPDATE'}, function(data) {
+                            var msg = '';
+                            if (data.trim() == 'Success') {
+                                msg = "Done!!!";
+                                $.ambiance({
+                                    message: msg,
+                                    type: 'success'
+                                });
+
+                                //put selected theme in cookies.
+                                $.cookies.set('theme', selTheme);
+                            } else {
+                                msg = "Failure!!!";
+                                $.ambiance({
+                                    message: msg,
+                                    type: 'error'
+                                });
+                            }
+                        });  //for get
+                    } // for if
+                }); //for saveTheme click
+
+                $('#saveLanguage').click(function() {
+
+                    $.get("Language.do", {'language': $('#languageDropdown').val(), 'option': 'set'}, function(data) {
+                        if (data.trim() == 'Success') {
+                            setCookie('language', $('#lblLocaleID').html(), 365);
+                            msg = "Done!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'success'
+                            });
+                        } else {
+                            msg = "Failure!!!";
+                            $.ambiance({
+                                message: msg,
+                                type: 'error'
+                            });
+                        }
+                    });
+                });
+
+            }); //for document.ready
+
+        </script>
+
+        <script type="text/javascript" src="js/lib/ui.panel.min.js"></script>
+        <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
+        <link type="text/css" href="css/ui.panel.css" rel="stylesheet" />
+
+    </head>
+    <body>
+        <div id="panel1" class="panel ui-helper-reset ui-widget ui-panel" style="width: 45%;height: 10%;" role="panel">
+            <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+                <div class="ui-panel-title">
+                    <span class="ui-panel-title-text">Viewer Slider</span>
+                </div>
+            </h3>
+            <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="display: block;">
+                <div class="ui-panel-content-text" id="panel1_content">
+                    <table style="width: 90%;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 40%"><span class="ui-widget-content" style="border:none;">Select Slider Visibility</span></td>
+                                <td>
+                                    <select id="sliderVisibility" style="width:100px;">
+                                        <option value="show">Show</option>
+                                        <option value="hide">Hide</option>
+                                    </select>
+                                </td>
+                                <td align="right"><button id="saveSlider" class="cssButton">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id="panel2" class="panel ui-helper-reset ui-widget ui-panel" style="width: 45%;height: 10%;" role="panel">
+            <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+                <div class="ui-panel-title">
+                    <span class="ui-panel-title-text">Session Timeout</span>
+                </div>
+            </h3>
+            <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="display: block;">
+                <div class="ui-panel-content-text" id="panel2_content">
+                    <table style="width: 90%;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 40%"><input type="checkbox" id="timeoutEnabled" /><span class="ui-widget-content" style="border:none;">Session timeout</span></td>
+                                <td><input type="text" size="10" id="timeoutTF">
+                                    <select id="timeDropdown">
+                                        <option value="minutes" selected>Minutes</option>
+                                        <option value="hours">Hours</option>
+                                    </select>
+                                </td>
+                                <td colspan="3" align="right"><button id="saveTimeout" class="cssButton">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id="panel3" class="panel ui-helper-reset ui-widget ui-panel" style="width: 45%;height: 10%;" role="panel">
+            <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+                <div class="ui-panel-title">
+                    <span class="ui-panel-title-text">Theme</span>
+                </div>
+            </h3>
+            <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="display: block;">
+                <div class="ui-panel-content-text" id="panel3_content">
+                    <table style="width: 90%;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 40%"><span class="ui-widget-content" style="border:none;">Select preferred theme</span></td>
+                                <td>
+                                    <div id="theme"></div>
+                                </td>
+                                <td colspan="3" align="right"><button id="saveTheme" class="cssButton">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id="panel4" class="panel ui-helper-reset ui-widget ui-panel" style="width: 45%;height: 10%;" role="panel">
+            <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+                <div class="ui-panel-title">
+                    <span class="ui-panel-title-text">Language</span>
+                </div>
+            </h3>
+            <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="display: block;">
+                <div class="ui-panel-content-text" id="panel3_content">
+                    <table style="width: 90%;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 40%"><span class="ui-widget-content" style="border:none;">Select Country</span></td>
+                                <td>
+                                    <select id="countryDropdown" style="width:100px;"></select>
+                                </td>
+                               
+                            </tr>
+                            <tr>
+                                <td style="width: 40%"><span class="ui-widget-content" style="border:none;">Language</span></td>
+                                <td>
+                                    <select id="languageDropdown" style="width:100px;"></select>
+                                </td>
+                               
+                            </tr>
+                            <tr>
+                                <td style="width: 40%"><span class="ui-widget-content" style="border:none;">Locale ID</span></td>
+                                <td>
+                                    <span id="lblLocaleID" class="ui-widget-content" style="border:none;"></span> 
+                                </td>
+                                <td colspan="3" align="right"><button id="saveLanguage" class="cssButton">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

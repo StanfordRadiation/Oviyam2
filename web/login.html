@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
+        <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
+        
+        <script type="text/javascript" src="js/i18n/Bundle.js"></script>
+
+        <link rel="stylesheet" href="css/login.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css" />
+
+
+        <script type="text/javascript">
+            //if(navigator.platform.indexOf('iPad') != -1) {
+/*            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+                var loc = window.location.toString();
+                loc = loc.substring(0, loc.indexOf('/', loc.lastIndexOf(':')));
+                window.location = loc + '/ioviyam2';
+                //alert('Your browser is not supported.');
+                //window.stop();
+            }
+*/
+            $(document).ready(function() {
+                var theme = $.cookies.get( 'theme' );
+            	if(theme == null) {
+                    theme = 'Dark Hive';
+            	}
+
+		$('#switcher').themeswitcher({
+                    loadTheme: theme,
+                    cookieName:'',
+                    width: 160
+                });
+
+		$('#loginButton').button();
+			$(document).attr('title', languages['PageTitle']);
+			$("#loginButton").val(languages['Login']);
+            });
+
+        </script>
+    </head>
+    <body class="ui-widget-content" style="border:none;" onload="document.login.j_username.focus()">
+    <section>
+        <form name="login" id="login" action="j_security_check" method="POST">
+            <fieldset>
+                <legend><font>Login</font></legend>
+                <h1><script>document.write(languages['PageTitle'])</script></h1> <h4>HTML5 Web DICOM Viewer</h4>
+                <label><font><script>document.write(languages['UserName'])</script> </font><span class="mandatory"><font>*</font></span><font> :</font></label>
+                <input type="text" name="j_username" class="textInput" required>
+
+                <label><font><script>document.write(languages['Password'])</script> </font><span class="mandatory"><font>*</font></span><font> :</font></label>
+                <input type="password" name="j_password" class="textInput" required>
+
+                <input type="submit" name="submit" id="loginButton" value="" class="button disabled">
+            </fieldset>
+        </form>
+    </section>
+    <footer align="center"><script>document.write(languages['Footer'])</script></footer>
+</body>
+</html>
