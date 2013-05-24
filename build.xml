@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="oviyam2" default="main">
+	<property name="vendor" value="Raster Images" />
+	<property name="version" value="2.0" />
+	<property name="source" location="src" />
+	<property name="output" location="target" />
+	<property name="web.dir" location="web" />
+	<property name="lib.dir" location="${web.dir}/WEB-INF/lib" />
+	<property name="classes" location="${web.dir}/WEB-INF/classes" />
+	<property name="war.dir" location="${output}/war" />
+	
+	<property name="commons-cli-1.2.jar" value="${lib.dir}/commons-cli-1.2.jar" />
+	<property name="dcm4che-core-2.0.27.jar" value="${lib.dir}/dcm4che-core-2.0.27.jar" />
+	<property name="dcm4che-filecache-2.0.27.jar" value="${lib.dir}/dcm4che-filecache-2.0.27.jar" />
+	<property name="dcm4che-net-2.0.27.jar" value="${lib.dir}/dcm4che-net-2.0.27.jar" />
+	<property name="dcm4che-tool-dcmqr-2.0.27.jar" value="${lib.dir}/dcm4che-tool-dcmqr-2.0.27.jar" />
+	<property name="getopt.jar" value="${lib.dir}/getopt.jar" />
+	<property name="json.jar" value="${lib.dir}/json.jar" />
+	<property name="jstl.jar" value="${lib.dir}/jstl.jar" />
+	<property name="standard.jar" value="${lib.dir}/standard.jar" />
+	
+	<property name="dcm4che-image-2.0.27.jar" value="${lib.dir}/dcm4che-image-2.0.27.jar" />
+	<property name="dcm4che-imageio-2.0.27.jar" value="${lib.dir}/dcm4che-imageio-2.0.27.jar" />
+	<property name="dcm4che.jar" value="${lib.dir}/dcm4che.jar" />
+	<property name="jboss-system.jar" value="${lib.dir}/jboss-system.jar" />
+	<property name="json_simple-1.1.jar" value="${lib.dir}/json_simple-1.1.jar" />
+	<property name="jsp-api.jar" value="${lib.dir}/jsp-api.jar" />
+	<property name="log4j-1.2.13.jar" value="${lib.dir}/log4j-1.2.13.jar" />
+	<property name="servlet-api.jar" value="${lib.dir}/servlet-api.jar" />
+	<property name="simple-xml-2.6.7.jar" value="${lib.dir}/simple-xml-2.6.7.jar" />
+	<property name="slf4j-api-1.4.3.jar" value="${lib.dir}/slf4j-api-1.4.3.jar" />
+	<property name="slf4j-log4j12-1.4.3.jar" value="${lib.dir}/slf4j-log4j12-1.4.3.jar" />
+	<property name="vtk.jar" value="${lib.dir}/vtk.jar" />
+	
+	<path id="ref.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="main" depends="init,compile,war">
+		<property name="cp" refid="ref.classpath" />
+		<echo message="${cp}" />
+	</target>
+	
+	<target name="clean">
+		<delete dir="${output}" />
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${output}/classes" />
+		<mkdir dir="${output}/classes/resources" />
+		<mkdir dir="${output}/classes/conf" />
+	</target>
+	
+  	<target name="compile" depends="init">
+		<javac srcdir="${source}" debug="on" destdir="${output}/classes"> 
+            <classpath refid="ref.classpath"/>
+		</javac>
+		<copy todir="${output}/classes/resources">
+			<fileset dir="${source}/resources" includes="**/*" />
+    	</copy>
+		<copy todir="${output}/classes/conf">
+			<fileset dir="${source}/conf" includes="**/*" />
+        </copy>
+	</target>	
+	
+	<target name="war" depends="compile">
+		<copy todir="${classes}">
+			<fileset dir="${output}/classes" includes="**/*" />
+		 </copy>
+		 <mkdir dir="${classes}" />
+		 <mkdir dir="${output}/war" />
+		 <war destFile="${war.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml" update="true">
+	     	<manifest>
+				<attribute name="Implementation-Title" value="oviyam2-web"/>
+				<attribute name="Implementation-Version" value="${version} ${TODAY}"/> 
+				<attribute name="Implementation-Vendor" value="${vendor}"/>
+	     	</manifest>
+			<fileset dir="${web.dir}">
+				<exclude name="**/web.xml" />
+				<exclude name="WEB-INF/lib/dcm4che.jar" />
+				<exclude name="WEB-INF/lib/log4j-1.2.13.jar"/>
+				<exclude name="WEB-INF/lib/slf4j-api-1.4.3.jar" />
+				<exclude name="WEB-INF/lib/slf4j-log4j12-1.4.3.jar" />
+				<exclude name="WEB-INF/lib/jsp-api.jar"/>
+				<exclude name="WEB-INF/lib/servlet-api.jar"/>
+			</fileset>
+		</war>
+	</target>
+
+</project>
