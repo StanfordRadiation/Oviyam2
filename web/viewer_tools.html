@@ -1,29 +1,18 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" manifest="oviyam2.manifest">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
-        <script type="text/javascript" src="js/features.js"></script>
-        <script type="text/javascript" src="js/zoom1.js"></script>
-        <script type="text/javascript" src="js/windowing.js"></script>
-        <script type="text/javascript" src="js/lib/jqcombo.js"></script>
+       
         <script type="text/javascript" src="js/LoadLanguage.js"></script>
-
         <script type="text/javascript" src="js/oviyam.js"></script>
         <script type="text/javascript" src="js/dicom/NewDicomParser.js"></script>
         <script type="text/javascript" src="js/dicom/NewDictionary.js"></script>
-
         <script type="text/javascript" src="js/html/html.js"></script>
         <script type="text/javascript" src="js/utils/string.js"></script>
-
-        <script type="text/javascript" language="javascript" src="js/imageMeasure.js"></script>
-        <script type="text/javascript" language="javascript" src="js/LightBox.js"></script>
-        <script type="text/javascript" language="javascript" src="js/Ruler.js"></script>
-        <script type="text/javascript" language="javascript" src="js/lib/raphael-min.js"></script>
-        <script type="text/javascript" language="javascript" src="js/lib/raphaelle.js"></script>
-        <script type="text/javascript" language="javascript" src="js/viewer_tools.js"></script>
+        <script type="text/javascript" language="javascript" src="js/viewer_tools.js"></script>       
 
         <style type="text/css">
             .toolbarButton {
@@ -159,11 +148,70 @@
             }
         </style>
 
+		<script type="text/javascript">
+		jQuery(document).ready(function() {
+    jQuery("#loopSlider").slider({
+        max:1000,
+        value:500
+    });
+    jQuery("#loopSlider").bind("slidechange", function(event, ui) {
+        loopSpeed = parseInt(1000 - ui.value);
+        doLoop(jQuery('#loopChkBox').is(':checked'));
+    });
 
+    jQuery("#preset").combobox({
+    	selected: function(event, ui) {
+            changePreset(ui.item.value);
+    	}
+    });
 
+    jQuery("#presetDiv input").attr('disabled',true);
+    jQuery("#presetDiv input").attr('size', '10');
+    jQuery("#presetDiv a").css('visibility', 'hidden');
 
+    jQuery('#containerBox .toolbarButton').hover(function() {
+        var selected = jQuery('#containerBox').find('.current');
+        jQuery(selected).attr('class', 'toolbarButton');
+        jQuery(selected).children().attr('class', 'imgOff');
+        jQuery(this).attr('class', 'toolbarButton current');
+        jQuery(this).children().attr('class', 'imgOn');
+        jQuery(this).css('cursor', 'pointer');
+    }, function() {
+        var selected = jQuery('#containerBox').find('.current');
+        jQuery(selected).attr('class', 'toolbarButton');
+        jQuery(selected).children().attr('class', 'imgOff');
+        jQuery(this).css('cursor', 'auto');
+    });
 
-    </head>
+    showSyncSeries();
+
+    var changeTooltipPosition = function(event) {
+        var tooltipX = event.pageX - 8;
+        var tooltipY = event.pageY + 8;
+        jQuery('div.tooltip').css({
+            top: tooltipY,
+            left: tooltipX
+        });
+    };
+
+    var showTooltip = function(event) {
+        jQuery('div.tooltip').remove();
+        jQuery('<div class="tooltip">3D module not installed!!!</div>').appendTo('body');
+        changeTooltipPosition(event);
+    };
+
+    var hideTooltip = function() {
+        jQuery('div.tooltip').remove();
+    };
+
+    jQuery('#containerBox').css('background-color', pat.bgColor);
+
+});  // for document.ready
+
+		
+		
+		</script>
+	 </head>
     <body>
 
         <div id='contentDiv' style="z-index:1000;top:30px;position:fixed;"></div>
@@ -197,16 +245,16 @@
             <div class="toolbarButton" align="center" id="hflip" onclick="flipHorizontal()">
                 <img src="images/hflip.png" id="lblHFlip" class="imgOff" alt="HFlip" title="Hori.Flip">
             </div>
-            <div class="toolbarButton" align="center" id="rotateLeft" onclick="rotateLeft()">
+            <div class="toolbarButton" align="center" id="rotateLeft" onclick="doRotateLeft()">
                 <img src="images/rotate_left.png" id="lblLRotate" class="imgOff" alt="LRotate" title="Rotate Left">
             </div>
-            <div class="toolbarButton" align="center" id="rotateRight" onclick="rotateRight()">
+            <div class="toolbarButton" align="center" id="rotateRight" onclick="doRotateRight()">
                 <img src="images/rotate_right.png" id="lblRRotate" class="imgOff" alt="RRotate" title="Rotate Right">
             </div>
             <div class="toolbarButton" align="center" id="reset" onclick="resetActiveFrame()">
                 <img src="images/reset.png" id="lblReset" class="imgOff" alt="Reset" title="Reset">
             </div>
-            <div class="toolbarButton" align="center" id="invert" onclick="invert()">
+            <div class="toolbarButton" align="center" id="invert" onclick="doInvert()">
                 <img src="images/invert.png" id="lblInvert" class="imgOff" alt="Invert" title="Invert">
             </div>
             <div class="toolbarButton" align="center" id="txtOverlay" onclick="doTextOverlay()">

@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<html manifest="oviyam2.manifest">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Oviyam 2.0</title>
@@ -88,7 +88,19 @@
         <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
         <script type="text/javascript" src="js/lib/jquery.sleep.js"></script>
+        <script type="text/javascript" src="js/features.js"></script>
+  		<script type="text/javascript" src="js/layout.js"></script>
+  		<script type="text/javascript" src="js/windowing.js"></script>
+  		<script type="text/javascript" src="js/zoom1.js"></script>
+  		<script type="text/javascript" src="js/imageMeasure.js"></script>
+  		<script type="text/javascript" src="js/LightBox.js"></script>
+        <script type="text/javascript" src="js/Ruler.js"></script>
+        <script type="text/javascript" src="js/lib/raphael-min.js"></script>
+        <script type="text/javascript" src="js/lib/raphaelle.js"></script>
+  		  		 		       
         <script type="text/javascript" src="js/LoadLanguage.js"></script>
+        <script type="text/javascript" src="js/lib/jqcombo.js"></script>
+       
         <!-- theme switcher -->
         <script type="text/javascript" src="js/lib/debug.js"></script>
         <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
@@ -118,19 +130,20 @@
 
         <script type="text/javascript">
             var myLayout;
+            var pageLoaded = false;
+           
+            window.applicationCache.oncached =  function() {
+            	loadViewerPage(); 
+            	pageLoaded = true;          
+            }
+            
+            window.applicationCache.onnoupdate = function() {
+            	if(!pageLoaded) {
+	            	loadViewerPage();
+	            	pageLoaded = true;
+            	}
+            }
 
-            $(document).ready(function() {
-                myLayout = $('#optional-container').layout({
-                    west: {
-                        size: 205
-                    }
-                });
-                //addThemeSwitcher('.ui-layout-north',{ top: '13px', right: '20px' });
-                initPage();
-
-                $("#toolbarContainer").load("viewer_tools.html");
-
-            }); // for document ready
         </script>
 
         <script type="text/javascript">

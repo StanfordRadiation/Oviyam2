@@ -1,43 +1,97 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <script type="text/javascript" src="js/layout.js"></script>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript">
+        jQuery(function() {
+            var maxCols = 3;
+            var maxRows = 3;
 
-        <style>
-            #myTable tr td {
-                border: 1px solid grey;
-                padding: 7px;
-            }
+            jQuery('#myTable td').hover(function() {
+                colIndex = jQuery(this).index();
+                rowIndex = jQuery(this).parent().index();
 
-            #myTable tr td.selected {
-                /*background-color: rgb(200, 200, 255); */
-                background-color: #FF8A00;
-            }
-        </style>
-    </head>
-    <body>
+                jQuery('#myTable td').removeClass('selected');
 
-        <div style="display: inline-block;background-color: #EEE;border: 1px solid #BBB;">
+                for (var x = 0; x <= colIndex; x++) {
+                    for (var y = 0; y <= rowIndex; y++) {
+                        jQuery(this).parent().parent().children().eq(y).children().eq(x).addClass('selected');
+                    }
+                }
 
-            <table id="myTable">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
+                if((colIndex+1) == maxCols) {
+                    //jQuery("table tr:not(:first)").append("td");
+                    //jQuery("table tr").append("<td></td>");
+                    jQuery('#myTable tr td:last-child').after(jQuery(this).clone(true));
+                    maxCols = maxCols + 1;
+                }
 
-            <div id="selectSize" align="center" style="border:1px solid #BBB; color:#FF8A00;font-weight: bold;font-size:12px;"></div>
-        </div>
-    </body>
+                if((rowIndex+1) == maxRows) {
+                    jQuery('#myTable tbody>tr:last').clone(true).insertAfter('#myTable tbody>tr:last');
+                    maxRows = maxRows + 1;
+                }
+
+                var size = (rowIndex+1) + " X " + (colIndex+1);
+                jQuery('#selectSize').html(size);
+
+            }, function() {
+                //jQuery('#myTable td').removeClass('selected');
+                });
+
+            jQuery('#myTable td').click(function() {
+                jQuery('#myTable td').unbind('mouseenter').unbind('mouseleave');
+                
+                var frames = jQuery(parent.document).find('iframe');
+                if(frames.length == 1) {
+                	var serTmp = jQuery(frames[0]).contents().find('#frameSrc').html();
+                	serTmp = getParameter(serTmp, 'seriesUID');
+                	currSer = serTmp;
+                }
+                
+                showSeries1();
+                jQuery('#contentDiv').hide();
+            });
+
+        });
+      
+        </script>
+
+<style>
+#myTable tr td {
+	border: 1px solid grey;
+	padding: 7px;
+}
+
+#myTable tr td.selected {
+	/*background-color: rgb(200, 200, 255); */
+	background-color: #FF8A00;
+}
+</style>
+</head>
+<body>
+
+	<div
+		style="display: inline-block; background-color: #EEE; border: 1px solid #BBB;">
+
+		<table id="myTable">
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+
+		<div id="selectSize" align="center"
+			style="border: 1px solid #BBB; color: #FF8A00; font-weight: bold; font-size: 12px;"></div>
+	</div>
+</body>
 </html>

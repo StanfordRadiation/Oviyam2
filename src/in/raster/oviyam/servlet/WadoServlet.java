@@ -141,7 +141,8 @@ public class WadoServlet extends HttpServlet {
                         "--dest", cMoveDest,
                         "--suid", study,
                         "--Suid", series,
-                        "--iuid", object
+                        "--iuid", object,
+                        "--ts", "ImplicitVRLittleEndian"
                     };
 
                     MoveScu.main(cmoveParam);

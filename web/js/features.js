@@ -46,7 +46,7 @@ function rotate(ang) {
     ctx.drawImage(copy,-width/2,-height/2);
 }
 
-function rotateRight() {
+function doRotateRight() {
     //jcanvas = document.getElementById('imageCanvas');
     //jcanvas = getCurrCanvas();
 
@@ -71,7 +71,7 @@ function rotateRight() {
     rotateRightTextOverlay();
 }
 
-function rotateLeft() {
+function doRotateLeft() {
     //jcanvas = document.getElementById('imageCanvas');
     //jcanvas = getCurrCanvas();
 
@@ -144,7 +144,7 @@ function flipVertical() {
     flipOrientationToVertical();
 }
 
-function invert() {
+function doInvert() {
     //jcanvas = document.getElementById('imageCanvas');
     //jcanvas = getCurrCanvas();
 
@@ -768,11 +768,13 @@ function handleURL(transaction, results) {
     var queryString = jQuery(jcanvas).parent().parent().find("#frameSrc").html();
     var insUID = getParameter(queryString, 'objectUID');
 
-    var url = "Image.do?serverURL=" + row['ServerURL'];
+    /*var url = "Image.do?serverURL=" + row['ServerURL'];
     url += '&contentType=application/dicom&study=' + row['StudyInstanceUID'];
     url += '&series=' + row['SeriesInstanceUID'];
     url += '&object=' + insUID;
-    url += '&transferSyntax=1.2.840.10008.1.2';
+    url += '&transferSyntax=1.2.840.10008.1.2';*/
+    
+    var url = "Wado.do?study=" + row['StudyInstanceUID'] + "&object=" + insUID + "&contentType=application/dicom";
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);

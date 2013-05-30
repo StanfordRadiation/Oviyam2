@@ -4,57 +4,6 @@ var rowIndex;
 
 var currSer='';
 
-jQuery(function() {
-    var maxCols = 3;
-    var maxRows = 3;
-
-    jQuery('#myTable td').hover(function() {
-        colIndex = jQuery(this).index();
-        rowIndex = jQuery(this).parent().index();
-
-        jQuery('#myTable td').removeClass('selected');
-
-        for (var x = 0; x <= colIndex; x++) {
-            for (var y = 0; y <= rowIndex; y++) {
-                jQuery(this).parent().parent().children().eq(y).children().eq(x).addClass('selected');
-            }
-        }
-
-        if((colIndex+1) == maxCols) {
-            //jQuery("table tr:not(:first)").append("td");
-            //jQuery("table tr").append("<td></td>");
-            jQuery('#myTable tr td:last-child').after(jQuery(this).clone(true));
-            maxCols = maxCols + 1;
-        }
-
-        if((rowIndex+1) == maxRows) {
-            jQuery('#myTable tbody>tr:last').clone(true).insertAfter('#myTable tbody>tr:last');
-            maxRows = maxRows + 1;
-        }
-
-        var size = (rowIndex+1) + " X " + (colIndex+1);
-        jQuery('#selectSize').html(size);
-
-    }, function() {
-        //jQuery('#myTable td').removeClass('selected');
-        });
-
-    jQuery('#myTable td').click(function() {
-        jQuery('#myTable td').unbind('mouseenter').unbind('mouseleave');
-        
-        var frames = jQuery(parent.document).find('iframe');
-        if(frames.length == 1) {
-        	var serTmp = jQuery(frames[0]).contents().find('#frameSrc').html();
-        	serTmp = getParameter(serTmp, 'seriesUID');
-        	currSer = serTmp;
-        }
-        
-        showSeries1();
-        jQuery('#contentDiv').hide();
-    });
-
-});
-
 function showSeries1() {
     var qStr = window.top.location.search.substring(1);
     var serUID = getParameter(qStr, 'seriesUID');

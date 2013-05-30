@@ -3,6 +3,18 @@ var imgLoaded = false;
 var myDatabase = null;
 var loadedImgs = 0;
 
+function loadViewerPage() {
+	myLayout = $('#optional-container').layout({
+    	west: {
+        	size: 205
+        }
+  	});
+	//addThemeSwitcher('.ui-layout-north',{ top: '13px', right: '20px' });
+    initPage();
+
+    $("#toolbarContainer").load("viewer_tools.html");
+}
+
 function getStudyDetails() {
     pat = $.cookies.get( 'patient' );
     var queryString = window.top.location.search.substring(1);

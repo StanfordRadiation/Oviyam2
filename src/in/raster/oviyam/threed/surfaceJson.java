@@ -31,6 +31,24 @@ public class surfaceJson extends HttpServlet {
             System.out.println("Library Not Found");
         }
     }
+	
+	// Load VTK library and print which library was not properly loaded
+   /* static {
+        //System.setProperty("java.library.path", "/home/sathish/Downloads/VTK6.0.0.rc1/VTK-Build/lib");
+        System.out.println("Path : " + System.getProperty("java.library.path"));
+        if (!vtkNativeLibrary.LoadAllNativeLibraries()) {
+            for (vtkNativeLibrary lib : vtkNativeLibrary.values()) {
+                if (!lib.IsLoaded()) {
+                    System.out.println(lib.GetLibraryName() + " not loaded");
+                } else {
+                    System.out.println(lib.GetLibraryName() + " loaded");
+                }
+            }
+        } else {
+            System.out.println("All Libraries are loaded");
+        }
+        vtkNativeLibrary.DisableOutputWindow(new File("error.log"));
+    }	*/
 
     /**
      * Processes requests for both HTTP
