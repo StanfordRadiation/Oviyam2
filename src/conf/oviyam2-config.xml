@@ -41,6 +41,12 @@
          <localeID>ta_IN</localeID>
          <selected>false</selected>
       </language>
+      <language>
+         <lang>German</lang>
+         <country>Germany</country>
+         <localeID>de_DE</localeID>
+         <selected>false</selected>
+      </language>
    </languages>
 
 </configuration>

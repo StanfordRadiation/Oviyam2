@@ -1,11 +1,6 @@
 var myLayout;
 $.fn.dataTableInstances = [];
 var timer;
-
-//Getting selected language from server and seved in cookies
-$.get("Language.do", {'option': 'get'}, function(data) {
-    setCookie('language', data, 365);
-});
      
 $(document).ready(function() {
 

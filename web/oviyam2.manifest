@@ -6,6 +6,7 @@ viewer_tools.html
 frameContent.html
 layout.html
 load3D.html
+oviyam2.manifest
 
 css/jquery.ui.all.css
 css/layout-default-latest.css
@@ -111,3 +112,5 @@ westContainer.jsp
 Image.do
 UserConfig.do
 Wado.do
+DcmStream.do
+

@@ -3,6 +3,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Oviyam 2.0</title>
+        
+        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
+                       
+        <script type="text/javascript">
+      	//Getting selected language from server and seved in cookies
+        $.get("Language.do", {'option': 'get'}, function(data) {
+            setCookie('language', data, 365);
+        });
+        </script>
 
         <link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css" />
         <link rel="stylesheet" type="text/css" href="css/layout-default-latest.css" />
@@ -48,12 +58,11 @@
             }
 
         </style>
-        <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
+        
         <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
         <script type="text/javascript" src="js/lib/jquery.layout-latest.js"></script>
         <script type="text/javascript" src="js/lib/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.noty.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.plugin.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.timer.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.multiselect.js"></script>
