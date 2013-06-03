@@ -43,7 +43,7 @@ var languages = {
     Description: "விளக்கம்",
     HostName: "Host Name",
     AETitle: "AE Title",
-    Port: "port",
+    Port: "Port",
     Retrieve: "Retrieve",
     Update: "புதுப்பிப்பு",
     FilterName: "Filter Name",

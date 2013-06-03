@@ -6,11 +6,13 @@
         
         <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
         <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
-                       
+
         <script type="text/javascript">
       	//Getting selected language from server and seved in cookies
         $.get("Language.do", {'option': 'get'}, function(data) {
-            setCookie('language', data, 365);
+            var cookiesExp = new Date();
+            cookiesExp.setTime(cookiesExp.getTime() + (365*24*60*60*1000) );
+            $.cookies.set('language', data, {expiresAt: cookiesExp} );
         });
         </script>
 

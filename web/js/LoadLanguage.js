@@ -1,7 +1,7 @@
 
 // getting selected language from cookies 
 var lang = getCookie('language');
-if (lang == 'none' || lang.trim() == 'en_GB') {
+if (typeof lang == 'undefined' || lang.trim() == 'en_GB') {
     $.getScript('js/i18n/Bundle.js', function() {
         loadLabels();
     });
