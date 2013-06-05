@@ -10,13 +10,12 @@
         
         <script type="text/javascript">
 	        //if(navigator.platform.indexOf('iPad') != -1) {
-    	    /*if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+    	    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
         		var loc = window.location.toString();
             	loc = loc.substring(0, loc.indexOf('/', loc.lastIndexOf(':')));
             	window.location = loc + '/ioviyam2';
             	//window.stop();
         	}
-        	*/
   
         	var lang = $.cookies.get( 'language' );
         	var bundleName = '';
@@ -39,7 +38,13 @@
             	if(theme == null) {
                     theme = 'Dark Hive';
             	}
-
+            	
+            	var browserVersion= navigator.userAgent.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+				var browserName = browserVersion[1].toUpperCase();
+            	if( !(browserName != 'CHROME' && browserName != 'SAFARI') ) {
+            		$('footer').remove();
+            	}
+            	
 		$('#switcher').themeswitcher({
                     loadTheme: theme,
                     cookieName:'',
@@ -52,13 +57,14 @@
             });
 
         </script>
+        
     </head>
     <body class="ui-widget-content" style="border:none;" onload="document.login.j_username.focus()">
     <section>
         <form name="login" id="login" action="j_security_check" method="POST">
             <fieldset>
                 <legend><font>Login</font></legend>
-                <h1><script>document.write(languages['PageTitle'])</script></h1> <h4>HTML5 Web DICOM Viewer</h4>
+                <h1><script>document.write(languages['PageTitle'])</script></h1> <h4>DICOM Web Workstation</h4>
                 <label><font><script>document.write(languages['UserName'])</script> </font><span class="mandatory"><font>*</font></span><font> :</font></label>
                 <input type="text" name="j_username" class="textInput" required>
 
@@ -70,5 +76,16 @@
         </form>
     </section>
     <footer align="center"><script>document.write(languages['Footer'])</script></footer>
+
+<div style="width: 100%; position: absolute; bottom: 0px;">
+<table style="width:100%">
+<tr>
+<td><a href="http://dcm4che.org" target="_blank"><img src="images/dcm4che.gif" alt="dcm4che.org" style="width: 132px; background: #FFF;" /></a></td> 
+<td style="text-align: center"><img src="images/html5.png" alt="" style="width: 132px" /> </td>
+<td style="text-align: right"><a href="http://oviyam.raster.in" target="_blank"><img src="images/raster.png" alt="Raster Images" style="width: 132px" /></a></td>
+</tr>
+</table>
+</div>
+
 </body>
 </html>

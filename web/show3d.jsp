@@ -14,9 +14,13 @@
         <script src="./js/lib/Three.js"> </script>
         <script src="./js/Rastergl.js"> </script>
         <script src="./js/lib/jquery-latest.js"> </script>
+        <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
+        
         <script type="text/javascript">
             window.onload = function() {
-               
+            	pat = $.cookies.get( 'patient' );
+            	document.title = pat.pat_Name + " - 3D Viewer";
+            	
             <%
                 String dirPath = request.getParameter("dirPath");
                 String pixelVal = request.getParameter("pixelValue");

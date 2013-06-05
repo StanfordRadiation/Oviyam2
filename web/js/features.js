@@ -666,6 +666,7 @@ function start3D(pix_value) {
                 "serverURL":row['ServerURL']
             }, function(data) {
                 //console.log(data + ":" + pix_value);
+            	$dialog.dialog('close');
                 window.open("./show3d.jsp?dirPath="+data+"&pixelValue="+pix_value, "_blank");
             });
         }, errorHandler);
