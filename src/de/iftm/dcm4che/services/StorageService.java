@@ -37,45 +37,26 @@
  * ***** END LICENSE BLOCK ***** */
 package de.iftm.dcm4che.services;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.net.ConnectException;
-import java.text.MessageFormat;
 import java.util.*;
 import java.text.ParseException;
 
 import org.dcm4che.data.Command;
-import org.dcm4che.data.Dataset;
-import org.dcm4che.data.DcmDecodeParam;
-import org.dcm4che.data.DcmElement;
-import org.dcm4che.data.DcmEncodeParam;
 import org.dcm4che.data.DcmObjectFactory;
-import org.dcm4che.data.DcmParser;
 import org.dcm4che.data.DcmParserFactory;
-import org.dcm4che.data.FileFormat;
 import org.dcm4che.data.FileMetaInfo;
-import org.dcm4che.dict.Status;
 import org.dcm4che.dict.Tags;
 import org.dcm4che.dict.UIDs;
-import org.dcm4che.dict.VRs;
-import org.dcm4che.net.AAbort;
 import org.dcm4che.net.AcceptorPolicy;
 import org.dcm4che.net.ActiveAssociation;
 import org.dcm4che.net.AssociationFactory;
 import org.dcm4che.net.DcmServiceBase;
-import org.dcm4che.net.DcmServiceException;
 import org.dcm4che.net.DcmServiceRegistry;
 import org.dcm4che.net.Dimse;
 import org.dcm4che.server.DcmHandler;
 import org.dcm4che.server.Server;
 import org.dcm4che.server.ServerFactory;
-import org.dcm4che.util.BufferedOutputStream;
 import org.dcm4che.util.DcmProtocol;
 import org.dcm4che.util.SSLContextAdapter;
 
@@ -292,13 +273,13 @@ public class StorageService extends DcmServiceBase {
             keypasswd = cfg.getProperty("tls-key-passwd", "secret").toCharArray();
             
             // URL of the file containing the default-keystore
-            keyURL = CDimseService.class.getResource("resources/identityJava.jks");
+            keyURL = StorageService.class.getResource("resources/identityJava.jks");
             
             // If availabel, replace URL with the one specified in the configuration file
             if ((value = cfg.getProperty("tls-key")) != null) {
                 try {
                     // Property specified, try to set to specified value
-                    keyURL = ConfigProperties.fileRefToURL(CDimseService.class.getResource(""), value);
+                    keyURL = ConfigProperties.fileRefToURL(StorageService.class.getResource(""), value);
                 } catch (Exception e) {
                     log.warn("Wrong value for tls-key: " + value + ". tls-key was set to default value.");
                 }
@@ -318,13 +299,13 @@ public class StorageService extends DcmServiceBase {
             cacertspasswd = cfg.getProperty("tls-cacerts-passwd", "secret").toCharArray();
             
             // URL of the file containing the default-keystore
-            cacertURL = CDimseService.class.getResource("resources/identityJava.jks");
+            cacertURL = StorageService.class.getResource("resources/identityJava.jks");
             
             // If availabel, replace URL with the one specified in the configuration file
             if ((value = cfg.getProperty("tls-cacerts")) != null) {
                 try {
                     // Property specified, try to set to specified value
-                    cacertURL = ConfigProperties.fileRefToURL(CDimseService.class.getResource(""), value);
+                    cacertURL = ConfigProperties.fileRefToURL(StorageService.class.getResource(""), value);
                 } catch (Exception e) {
                     log.warn("Wrong value for tls-cacerts: " + value + ". tls-cacerts was set to default value.");
                 }

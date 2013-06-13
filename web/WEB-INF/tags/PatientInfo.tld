@@ -6,10 +6,10 @@
   <short-name>PatientInfo</short-name>
   <uri>PatientInfo</uri>
   <tag>
-    <description>Patient Informations</description>
     <name>Patient</name>
     <tag-class>in.raster.oviyam.handler.PatientInfoHandler</tag-class>
     <body-content>scriptless</body-content>
+     <description>Patient Informations</description>
     <attribute>
       <name>patientId</name>
       <rtexprvalue>true</rtexprvalue>

@@ -20,7 +20,6 @@ import java.io.*;
 import java.text.ParseException;
 
 import org.dcm4che.data.*;
-import org.dcm4che.net.*;
 import org.dcm4che.dict.*;
 
 import org.apache.log4j.*;

@@ -51,9 +51,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import org.apache.log4j.Logger;
 import org.dcm4che.data.Command;
 import org.dcm4che.data.Dataset;

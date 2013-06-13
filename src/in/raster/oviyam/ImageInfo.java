@@ -43,16 +43,15 @@ package in.raster.oviyam;
 
 import de.iftm.dcm4che.services.CDimseService;
 import de.iftm.dcm4che.services.ConfigProperties;
-import de.iftm.dcm4che.services.StorageService;
+import de.iftm.dcm4che.services.GenericDicomURL;
 import in.raster.oviyam.model.InstanceModel;
+import in.raster.oviyam.util.IDataSet;
+
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Vector;
 import org.apache.log4j.Logger;
-import org.dcm4che.util.DcmURL;
 import java.text.ParseException;
-import org.dcm4che.data.Dataset;
 
 /**
  *
@@ -82,11 +81,11 @@ public class ImageInfo {
     public void callFindWithQuery(String patientID, String studyInstanceUID, String seriesInstanceUID, String SOPInstanceUID, String dcmURL) {
         ConfigProperties cfgProperties;
         boolean isOpen;
-        Vector dsVector;
+        Vector<IDataSet> dsVector;
         CDimseService cDimseService;
 
         try {
-            cfgProperties = new ConfigProperties(StorageService.class.getResource("/resources/Image.cfg"));
+            cfgProperties = new ConfigProperties(ImageInfo.class.getResource("/resources/Image.cfg"));
         } catch(IOException e) {
             log.error("Error while loading configuration properties");
             return;
@@ -101,27 +100,13 @@ public class ImageInfo {
         }
 
         //Create object for DcmURL
-        DcmURL url = new DcmURL(dcmURL);
+        GenericDicomURL url = new GenericDicomURL(dcmURL);
 
         //Create object for CDimseService
         try {
             cDimseService = new CDimseService(cfgProperties, url);
         } catch(ParseException pe) {
             log.error("Unable to create CDimseService instance ", pe);
-            return;
-        }
-
-        //Open association
-        try {
-            isOpen = cDimseService.aASSOCIATE();
-            if (!isOpen) {
-                return;
-            }
-        } catch(IOException ioe) {
-            log.error("Error while opening association ", ioe);
-            return;
-        } catch(GeneralSecurityException gse) {
-            log.error("Error while opening association ", gse);
             return;
         }
 
@@ -134,26 +119,14 @@ public class ImageInfo {
         }
 
         // Get the Dataset from the dsVector and add it to the instances ArrayList<InstanceModel>
-        Dataset dataSet = null;
         for(int i=0; i<dsVector.size(); i++) {
             try {
-                dataSet = (Dataset) dsVector.elementAt(i);
-                instancesList.add(new InstanceModel(dataSet));
+                instancesList.add(new InstanceModel(dsVector.elementAt(i)));
             } catch(Exception e) {
                 log.error(e.getMessage());
                 return;
             }
         }
-
-        //Release Association
-
-        try {
-            cDimseService.aRELEASE(true);
-	} catch (IOException e) {
-            log.error(e.getMessage());
-	} catch (InterruptedException e) {
-            log.error(e.getMessage());
-	}
 
     }
 

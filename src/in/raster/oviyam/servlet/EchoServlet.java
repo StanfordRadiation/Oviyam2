@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.dcm4che.util.DcmURL;
+import de.iftm.dcm4che.services.GenericDicomURL;
 
 /**
  * Servlet implementation class EchoServlet
@@ -73,7 +73,7 @@ public class EchoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String dcmUrl = request.getParameter("dicomURL");
-		DcmURL url = new DcmURL(dcmUrl);
+		GenericDicomURL url = new GenericDicomURL(dcmUrl);
 		EchoService echo = new EchoService();
 		echo.checkEcho(url);
 

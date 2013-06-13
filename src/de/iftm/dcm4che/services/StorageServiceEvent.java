@@ -37,8 +37,6 @@
  * ***** END LICENSE BLOCK ***** */
 package de.iftm.dcm4che.services;
 
-import java.util.*;
-
 import org.dcm4che.data.*;
 
 import org.apache.log4j.*;

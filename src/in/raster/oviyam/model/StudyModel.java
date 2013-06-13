@@ -41,8 +41,11 @@
 
 package in.raster.oviyam.model;
 
-import org.dcm4che.data.Dataset;
+import in.raster.oviyam.util.IDataSet;
+
 import org.dcm4che.dict.Tags;
+
+
 
 /**
  *
@@ -70,7 +73,7 @@ public class StudyModel {
     public StudyModel() { }
 
     //constructor
-    public StudyModel(Dataset ds) {
+    public StudyModel(IDataSet ds) {
         patientID = ds.getString(Tags.PatientID);
         patientName = ds.getString(Tags.PatientName);
         patientGender = ds.getString(Tags.PatientSex);

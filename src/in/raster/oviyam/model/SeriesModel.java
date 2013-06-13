@@ -41,8 +41,10 @@
 
 package in.raster.oviyam.model;
 
-import org.dcm4che.data.Dataset;
+import in.raster.oviyam.util.IDataSet;
+
 import org.dcm4che.dict.Tags;
+
 
 /**
  *
@@ -67,7 +69,7 @@ public class SeriesModel {
      * Used to create a instance of SeriesModel.
      * @param dataSet The Dataset instance contains the Series Information.
      */
-    public SeriesModel(Dataset ds) {
+    public SeriesModel(IDataSet ds) {
         seriesIUID = ds.getString(Tags.SeriesInstanceUID);
         seriesNumber = ds.getString(Tags.SeriesNumber);
         seriesDate = ds.getString(Tags.SeriesDate);

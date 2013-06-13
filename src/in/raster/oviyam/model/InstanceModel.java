@@ -41,8 +41,11 @@
 
 package in.raster.oviyam.model;
 
-import org.dcm4che.data.Dataset;
+import in.raster.oviyam.util.IDataSet;
+
 import org.dcm4che.dict.Tags;
+
+
 
 /**
  *
@@ -62,7 +65,7 @@ public class InstanceModel {
      * InstanceModel instance will be initialized.
      * @param dataSet The Dataset instance contains the Instance informations.
      */
-    public InstanceModel(Dataset ds) {
+    public InstanceModel(IDataSet ds) {
         sopIUID = ds.getString(Tags.SOPInstanceUID);
         instanceNumber = ds.getString(Tags.InstanceNumber);
         sopClassUID = ds.getString(Tags.SOPClassUID);

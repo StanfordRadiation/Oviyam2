@@ -6,10 +6,10 @@
   <short-name>ImageInfo</short-name>
   <uri>ImageInfo</uri>
   <tag>
-    <description>Image Information</description>
     <name>Image</name>
     <tag-class>in.raster.oviyam.handler.ImageHandler</tag-class>
     <body-content>scriptless</body-content>
+    <description>Image Information</description>
     <attribute>
       <name>patientId</name>
       <rtexprvalue>true</rtexprvalue>

@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import org.apache.log4j.Logger;
 
 /**
@@ -63,8 +62,8 @@ public class XMLFileHandler {
         String retValue = null;
         
        // if(xmlFilePath.indexOf("default") > 0) {
-            try {
-                File srcFile = new File(this.getClass().getResource("/conf/oviyam2-config.xml").toURI());
+           // try {
+            	File srcFile = new File(this.getClass().getResource("/conf/oviyam2-config.xml").getPath());
                 //retValue = xmlFilePath.substring(0, xmlFilePath.indexOf("default")) + "default" + File.separator + fname;
                 retValue = tmpDir + File.separator + fname;
                 File destFile = new File(retValue);
@@ -72,10 +71,10 @@ public class XMLFileHandler {
                 if (!destFile.exists()) {
                     copyFile(srcFile, destFile);
                 }
-            } catch (URISyntaxException ex) {
-                log.error("Error while getting XML file path",ex);
-                return "";
-            }
+            //} //catch (URISyntaxException ex) {
+              //  log.error("Error while getting XML file path",ex);
+              //  return "";
+            //}
         //}
                 
         return retValue;

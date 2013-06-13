@@ -46,10 +46,9 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
 import org.apache.log4j.Logger;
-import org.dcm4che.util.DcmURL;
-
 import de.iftm.dcm4che.services.CDimseService;
 import de.iftm.dcm4che.services.ConfigProperties;
+import de.iftm.dcm4che.services.GenericDicomURL;
 
 
 /**
@@ -80,7 +79,7 @@ public class EchoService {
 	 * Used to find whether the configured server is available(running) or not.
 	 *
 	 */
-	public void checkEcho(DcmURL url) {
+	public void checkEcho(GenericDicomURL url) {
 		ConfigProperties cfgCDimseService;
 		CDimseService cDimseService;
 		boolean isOpen;
@@ -109,40 +108,14 @@ public class EchoService {
 			return;
 		}
 
-		// Open association
-		try {
-			isOpen = cDimseService.aASSOCIATE();
-			if (!isOpen) {
-				return;
-			}
-		} catch (IOException e) {
-			log.error(e.getMessage());
-			status = "Echo failed";
-
-			return;
-		} catch (GeneralSecurityException e) {
-			log.error(e.getMessage());
-			return;
-		}
-
 		// Echo
 		try {
 			delay = cDimseService.cECHO();
-
 			status = "EchoSuccess";
 		//	log.info("C-ECHO delay: " + String.valueOf(delay));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return;
-		}
-
-		// Release association
-		try {
-			cDimseService.aRELEASE(true);
-		} catch (IOException e) {
-			log.error(e.getMessage());
-		} catch (InterruptedException e) {
-			log.error(e.getMessage());
 		}
 
 		log.info(">>>>>>>>>> C-ECHO finished. <<<<<<<<<<");

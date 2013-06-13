@@ -43,17 +43,17 @@ package in.raster.oviyam;
 
 import de.iftm.dcm4che.services.CDimseService;
 import de.iftm.dcm4che.services.ConfigProperties;
-import de.iftm.dcm4che.services.StorageService;
+import de.iftm.dcm4che.services.GenericDicomURL;
 import in.raster.oviyam.model.SeriesModel;
+import in.raster.oviyam.util.IDataSet;
+
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Vector;
 import org.apache.log4j.Logger;
-import org.dcm4che.util.DcmURL;
 import java.text.ParseException;
 import java.util.HashMap;
-import org.dcm4che.data.Dataset;
+
 
 /**
  *
@@ -82,17 +82,17 @@ public class SeriesInfo {
 
         ConfigProperties cfgProperties;
         boolean isOpen;
-        Vector dsVector;
+        Vector<IDataSet> dsVector;
         CDimseService cDimseService;
 
         try {
-            cfgProperties = new ConfigProperties(StorageService.class.getResource("/resources/Series.cfg"));
+            cfgProperties = new ConfigProperties(SeriesInfo.class.getResource("/resources/Series.cfg"));
         } catch(IOException ioe) {
             log.error("Error while loading configuration properties");
             return;
         }
 
-        DcmURL url = new DcmURL(dcmURL);
+        GenericDicomURL url = new GenericDicomURL(dcmURL);
         
         cfgProperties.put("key.PatientID", patientID);
         cfgProperties.put("key.StudyInstanceUID", studyInstanceUID);
@@ -101,20 +101,6 @@ public class SeriesInfo {
             cDimseService = new CDimseService(cfgProperties, url);
         } catch(ParseException pe) {
             log.error("Unable to create instance of CDimseService", pe);
-            return;
-        }
-
-        // Open association
-        try {
-            isOpen = cDimseService.aASSOCIATE();
-            if(!isOpen) {
-                return;
-            }
-        } catch(IOException ioe) {
-            log.error("Error while opening association ", ioe);
-            return;
-        } catch(GeneralSecurityException gse) {
-            log.error("Error while opeing association ", gse);
             return;
         }
 
@@ -129,23 +115,13 @@ public class SeriesInfo {
         // Get the Dataset from the dsVector and add it to the seriesList
         for(int i=0; i<dsVector.size(); i++) {
             try {
-                Dataset dataSet = (Dataset) dsVector.elementAt(i);
                 //Create the SeriesModel instance and adds it to the seriesList
-                SeriesModel sm = new SeriesModel(dataSet);
+                SeriesModel sm = new SeriesModel(dsVector.elementAt(i));
                 series.put(i, sm);
             } catch(Exception e) {
                 log.error("Error while adding SeriesModel in HashMap series ", e);
                 return;
             }
-        }
-
-        //close association
-        try {
-            cDimseService.aRELEASE(true);
-        } catch(IOException e) {
-            log.error("Error while releasing association ", e);
-        } catch(InterruptedException ie) {
-            log.error("Error while releasing association ", ie);
         }
     }
 

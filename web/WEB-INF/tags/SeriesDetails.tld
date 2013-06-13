@@ -6,10 +6,10 @@
   <short-name>SeriesDetails</short-name>
   <uri>SeriesDetails</uri>
   <tag>
-    <description>Series Informations</description>
     <name>Series</name>
     <tag-class>in.raster.oviyam.handler.SeriesDetailsHandler</tag-class>
     <body-content>scriptless</body-content>
+     <description>Series Informations</description>
     <attribute>
       <name>patientId</name>
       <rtexprvalue>true</rtexprvalue>
